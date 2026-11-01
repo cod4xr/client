@@ -6,6 +6,7 @@
 
 mod challenge;
 mod error;
+pub mod handshake;
 mod info_response;
 mod request;
 

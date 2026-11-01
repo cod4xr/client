@@ -6,7 +6,7 @@ private credentials or operator configurations are included.
 
 Shared protocol and logging crates are consumed from:
 https://github.com/cod4xr/server
-Revision: 2a74f2de3683a6cd0a833f27d6191eddb61b1d22
+Revision: c3bd151068465a40e11e3db9d616789fdffa146f
 Their source, license and upstream attribution remain applicable. Shared codec
 notices include Copyright (C) 2010-2013 Ninja and TheKelm and
 Copyright (C) 1999-2005 Id Software, Inc.

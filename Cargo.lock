@@ -20,7 +20,7 @@ checksum = "4e7648175b45a9a48536d676f68d918270699102aa8dab5496df06904c914600"
 [[package]]
 name = "cod4x-observability"
 version = "0.1.0"
-source = "git+https://github.com/cod4xr/server.git?rev=2a74f2de3683a6cd0a833f27d6191eddb61b1d22#2a74f2de3683a6cd0a833f27d6191eddb61b1d22"
+source = "git+https://github.com/cod4xr/server.git?rev=c3bd151068465a40e11e3db9d616789fdffa146f#c3bd151068465a40e11e3db9d616789fdffa146f"
 dependencies = [
  "tracing",
  "tracing-appender",
@@ -30,7 +30,7 @@ dependencies = [
 [[package]]
 name = "cod4x-protocol"
 version = "0.1.0"
-source = "git+https://github.com/cod4xr/server.git?rev=2a74f2de3683a6cd0a833f27d6191eddb61b1d22#2a74f2de3683a6cd0a833f27d6191eddb61b1d22"
+source = "git+https://github.com/cod4xr/server.git?rev=c3bd151068465a40e11e3db9d616789fdffa146f#c3bd151068465a40e11e3db9d616789fdffa146f"
 
 [[package]]
 name = "cod4xr-client"

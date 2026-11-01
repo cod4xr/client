@@ -4,6 +4,7 @@
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import tomllib
 
@@ -12,6 +13,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def main() -> None:
     failures = []
+    branch = subprocess.run(["git", "symbolic-ref", "--quiet", "--short", "HEAD"],
+                            cwd=ROOT, capture_output=True, text=True)
+    if branch.returncode == 0 and branch.stdout.strip() != "main" and not branch.stdout.strip().startswith("feature/"):
+        failures.append("Working branch must be main or feature/...")
+    elif branch.returncode not in (0, 1):
+        failures.append("Cannot verify local branch policy")
     largest = (0, "")
     count = 0
     for directory, children, files in os.walk(ROOT):
@@ -45,7 +52,7 @@ def main() -> None:
     workspace = tomllib.loads((ROOT / "Cargo.toml").read_text(encoding="utf-8"))
     for name in ("cod4x-protocol", "cod4x-observability"):
         dependency = workspace["workspace"]["dependencies"][name]
-        if dependency.get("git") != "https://github.com/cod4xr/server.git" or len(dependency.get("rev", "")) != 40:
+        if dependency.get("git") != "https://github.com/cod4xr/server.git" or not re.fullmatch(r"[0-9a-f]{40}", dependency.get("rev", "")):
             failures.append(f"{name}: explicit immutable shared revision required")
     if failures:
         raise SystemExit("\n".join(failures))

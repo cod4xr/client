@@ -14,6 +14,11 @@ clients**. Auth-required servers are outside this baseline. A discovery reply
 does not establish gameplay compatibility, server identity or an authenticated
 connection. In particular, discovery protocol `6` is not a negotiated join version.
 
+The core also supplies a [bounded challenge state machine](docs/challenge-probe.md)
+with exact peer/nonce correlation, cumulative quotas, monotonic deadlines and
+controlled retries. Its eight new tests bring the workspace to 24 passing debug
+and release tests. The CLI challenge adapter is the next step.
+
 ## Run
 
 Rust 1.95 is pinned. On this workstation, reuse the existing Cargo target:

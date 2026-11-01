@@ -4,7 +4,7 @@ CoD4XR is a general-purpose client and server rewrite. Product-specific mods
 consume optional features; they do not own the engine or baseline protocol.
 The independent server repository is https://github.com/cod4xr/server.
 
-- Branches are `main` or `feature/...` only. Never create a `codex/` branch.
+- Branches are `main` or `feature/...` only.
 - Commit and push validated checkpoints as work proceeds, as authorized by the user.
 - Implement the no-auth baseline. Auth-required servers are unsupported; never
   forge credentials, bypass an auth service or claim all-server compatibility.
@@ -23,4 +23,5 @@ The independent server repository is https://github.com/cod4xr/server.
   operator's existing target via tools/use-existing-target.ps1. Stop only this
   client's exact development executable if locked; do not kill unrelated builds.
 - Preserve in-progress server work; it is a separate repository.
+- Client-only scope: do not edit server source files or server worktrees.
 - Do not use Graphify. Preserve the user's branch and publishing instructions.
