@@ -1,0 +1,4 @@
+{
+  "cod4xr-client-core": ["cod4x-protocol"],
+  "cod4xr-client": ["cod4xr-client-core", "cod4x-observability", "getrandom", "tracing", "serde_json"]
+}

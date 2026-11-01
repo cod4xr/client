@@ -1,0 +1,11 @@
+/target/
+/.cargo/config.toml
+/logs/
+*.log
+*.jsonl
+*.local.*
+.env
+.env.*
+*.pem
+*.key
+__pycache__/

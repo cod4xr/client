@@ -1,0 +1,25 @@
+CoD4XR client
+
+The client is an independent Rust implementation, licensed AGPL-3.0-or-later.
+LICENSE contains the full license. No commercial game assets or executables,
+private credentials or operator configurations are included.
+
+Shared protocol and logging crates are consumed from:
+https://github.com/cod4xr/server
+Revision: 2a74f2de3683a6cd0a833f27d6191eddb61b1d22
+Their source, license and upstream attribution remain applicable. Shared codec
+notices include Copyright (C) 2010-2013 Ninja and TheKelm and
+Copyright (C) 1999-2005 Id Software, Inc.
+
+Public client source is inspected as research material:
+https://github.com/callofduty4x/CoD4x_Client_pub
+Revision: 17182c7bf04b859dea5c0db4acdb0b83c28d6dd2
+Its runtime code, assembly, game assets and license have not been copied here.
+The lock file records files inspected, not a license grant to redistribute them.
+
+Server discovery behavior is studied from:
+https://github.com/callofduty4x/CoD4x_Server
+Revision: ddd65fce1a1093017bad2dbb6840d75d11c0d56f
+The shared server project records its AGPL source notices and compatibility work.
+
+CoD4XR is independent of the official CoD4X project and of Activision.

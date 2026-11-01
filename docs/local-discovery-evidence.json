@@ -1,0 +1,10 @@
+{
+  "scenario": "CoD4XR development client to local query-only development server",
+  "result": "passed",
+  "advertised_protocol": 6,
+  "received_datagrams": 1,
+  "rejected_datagrams": 0,
+  "gameplay_compatibility": "unverified",
+  "server_executable_sha256": "61f4a974c107030ce0d6a61cf19011277a2ec111cc544a69d17537d0a639fb2f",
+  "ordinary_cod4x_peer_tested": false
+}

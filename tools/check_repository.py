@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: AGPL-3.0-or-later
+"""Enforce CoD4XR crate boundaries, immutable shared revisions and focused source."""
+import json
+import os
+from pathlib import Path
+import subprocess
+import tomllib
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def main() -> None:
+    failures = []
+    largest = (0, "")
+    count = 0
+    for directory, children, files in os.walk(ROOT):
+        children[:] = [name for name in children if name not in {".git", "target", "__pycache__"}]
+        for name in files:
+            path = Path(directory) / name
+            if path.suffix not in {".rs", ".py", ".ps1"}:
+                continue
+            length = len(path.read_text(encoding="utf-8").splitlines())
+            relative = path.relative_to(ROOT).as_posix()
+            largest = max(largest, (length, relative))
+            count += 1
+            if length > 400:
+                failures.append(f"{relative}: exceeds 400 lines")
+    rules = json.loads((ROOT / "dependency-rules.json").read_text(encoding="utf-8"))
+    metadata = json.loads(subprocess.check_output(
+        ["cargo", "metadata", "--no-deps", "--format-version", "1", "--locked"], cwd=ROOT, text=True))
+    packages = {package["name"]: package for package in metadata["packages"]}
+    if set(packages) != set(rules):
+        failures.append("Crate inventory differs from dependency policy")
+    for name, package in packages.items():
+        manifest = tomllib.loads(Path(package["manifest_path"]).read_text(encoding="utf-8"))
+        for field in ("version", "edition", "rust-version", "license", "publish"):
+            if manifest["package"].get(field) != {"workspace": True}:
+                failures.append(f"{name}: {field} must inherit workspace metadata")
+        if manifest.get("lints", {}).get("workspace") is not True:
+            failures.append(f"{name}: workspace lints required")
+        for dependency in package["dependencies"]:
+            if dependency["name"] not in rules.get(name, []):
+                failures.append(f"{name}: unapproved {dependency['name']}")
+    workspace = tomllib.loads((ROOT / "Cargo.toml").read_text(encoding="utf-8"))
+    for name in ("cod4x-protocol", "cod4x-observability"):
+        dependency = workspace["workspace"]["dependencies"][name]
+        if dependency.get("git") != "https://github.com/cod4xr/server.git" or len(dependency.get("rev", "")) != 40:
+            failures.append(f"{name}: explicit immutable shared revision required")
+    if failures:
+        raise SystemExit("\n".join(failures))
+    print(f"Checked {count} source files and {len(packages)} crate policies; largest {largest[0]} lines: {largest[1]}")
+
+
+if __name__ == "__main__":
+    main()

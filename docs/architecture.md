@@ -1,0 +1,42 @@
+# Client architecture
+
+CoD4XR has separate client and server repositories. Shared codec libraries are
+consumed from `cod4xr/server` at a complete immutable Git revision recorded in
+Cargo.toml and Cargo.lock. The client never depends on the server application,
+query responder, world ownership or runtime orchestration. A dependency update
+must explicitly review conformance and public Rust API changes.
+
+This supersedes the original server ADR's single-workspace direction for the
+client product. It retains one implementation of shared wire formats rather
+than copying protocol code into a second repository. Extracting a dedicated
+shared-core repository is a later ownership decision, not a prerequisite here.
+
+The deterministic core owns request encoding and checked borrowed metadata.
+It has no sockets, clocks, logging subscriber, filesystem access, renderer or
+process-global state. The application owns OS entropy, endpoint selection,
+deadlines, receive budgets, output and the logging lifetime. Rendering/input/audio
+and simulation boundaries will be added as implemented behavior warrants them;
+there are no placeholder engine crates or fabricated game states.
+
+Discovery uses the existing connectionless envelope and normal info-string profile.
+Requests contain a 128-bit random correlation value as 32 ASCII hex bytes. A reply
+must come from the connected endpoint and contain exactly one matching challenge.
+Unknown fields are preserved; no unknown field grants authority or activates code.
+The protocol advertisement is displayed without selecting a join dialect.
+
+One receive buffer admits a complete UDP datagram so truncation cannot turn an
+oversized packet into an accepted prefix. The parser independently enforces the
+normal-info bound. Receive work and elapsed time are both bounded. The client
+does not execute peer commands, automatically download content, launch an existing
+game executable or install hooks in this phase.
+
+The no-auth baseline is explicit. There is no credential flow or fallback that
+claims to satisfy an auth-required server. Optional future engine capabilities
+must be negotiated independently from baseline versions. Community/mod-specific
+behavior belongs above reusable engine interfaces. No extension bits, identifiers
+or handshake have been reserved without an implemented and reviewed requirement.
+
+Logging reuses the server's isolated bounded runtime. Libraries install no global
+subscriber; the application keeps workers alive through shutdown. Console logs
+are readable in debug builds, JSON in release, with an explicit format override.
+Raw remote metadata belongs only in escaped report output, not operational logs.

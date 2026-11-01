@@ -1,0 +1,43 @@
+name: CoD4XR client quality
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    env:
+      RUSTDOCFLAGS: -Dwarnings
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: rustup show
+      - run: python tools/check_repository.py
+      - run: cargo fmt --all -- --check
+      - run: cargo clippy --workspace --all-targets --locked -- -D warnings
+      - run: cargo test --workspace --locked
+      - run: cargo test --workspace --release --locked
+      - run: cargo doc --workspace --no-deps --locked
+
+  research-sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Verify immutable source evidence
+        run: |
+          git clone --no-checkout https://github.com/callofduty4x/CoD4x_Client_pub.git reference-client
+          git -C reference-client checkout --detach 17182c7bf04b859dea5c0db4acdb0b83c28d6dd2
+          git clone --no-checkout https://github.com/callofduty4x/CoD4x_Server.git reference-server
+          git -C reference-server checkout --detach ddd65fce1a1093017bad2dbb6840d75d11c0d56f
+          python tools/verify_upstream.py reference-client reference-server

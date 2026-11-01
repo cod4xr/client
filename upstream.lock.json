@@ -1,0 +1,26 @@
+{
+  "normalization": "CRLF to LF",
+  "sources": [
+    {
+      "name": "client-reference",
+      "repository": "https://github.com/callofduty4x/CoD4x_Client_pub.git",
+      "revision": "17182c7bf04b859dea5c0db4acdb0b83c28d6dd2",
+      "files": {
+        "README.md": "7c06a631b941a312358a62984f49838043af4e8052c3944012d40cd49843fe57",
+        "LICENSE.md": "fe9f0f312a4687787d19a4a2ee637c0a2afa080a87bc363c1788a339b58158f2",
+        "src/cl_main.c": "19a85e63172f20f09375052d15abbb6d38702db1609855fa688658e15fbcdfd9",
+        "src/q_shared.h": "8ea500cd1037cb542076f72a9aa8030dfe8c3f924cfafb00a291909211cead58",
+        "CMakeLists.txt": "7d2546a1e84cea7575a360a3caa3fcbef246c056be1b57667490a131d9559ba3"
+      }
+    },
+    {
+      "name": "server-reference",
+      "repository": "https://github.com/callofduty4x/CoD4x_Server.git",
+      "revision": "ddd65fce1a1093017bad2dbb6840d75d11c0d56f",
+      "files": {
+        "src/sv_main.c": "0c13e4b9b27b17f11cf3616abd24599aabbb5206724b6a3b22cb96f497aee06a",
+        "src/netchan.c": "5607790a3372198e4b4a5e470075874fd515a5f1ff6d4e979401f6429d3a7458"
+      }
+    }
+  ]
+}
