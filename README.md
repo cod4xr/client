@@ -16,13 +16,16 @@ connection. In particular, discovery protocol `6` is not a negotiated join versi
 
 The core also supplies a [bounded challenge state machine](docs/challenge-probe.md)
 with exact peer/nonce correlation, cumulative quotas, monotonic deadlines and
-controlled retries. The CLI exercises this state over real UDP. All 31 workspace
-tests pass in debug and release; gameplay connect/admission is the next step.
+controlled retries. The CLI exercises this state over real UDP; gameplay
+connect/admission remains the next step.
 
 [Connect request planning](docs/connect-plan.md) now builds owned no-auth frames
-from checked challenges and explicit protocol/version settings. Its eight new
-tests bring the workspace to 39 passing debug/release tests. The CLI still sends
+from checked challenges and explicit protocol/version settings. The CLI still sends
 only discovery/challenge probes; acknowledgement and gameplay admission follow.
+
+[Reply decoding](docs/connect-replies.md) keeps acknowledgements, refusals and
+notices distinct without granting path or command authority to server text.
+All 44 workspace tests pass locally in debug and release.
 
 ## Run
 
@@ -77,6 +80,6 @@ The Windows/Linux CI workflow is configured; local results are recorded separate
 from hosted CI and real stock-client/server interoperability.
 
 See [architecture](docs/architecture.md), [compatibility](docs/compatibility.md)
-and [roadmap](docs/roadmap.md). [Local validation](docs/validation.md) records 16
-passing debug/release tests and the cross-repository discovery check. Game files
+and [roadmap](docs/roadmap.md). [Local validation](docs/validation.md) records test
+checkpoints and the initial cross-repository discovery check. Game files
 and private configuration are not shipped.

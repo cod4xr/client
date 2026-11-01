@@ -1,4 +1,16 @@
-# Foundation validation
+# Validation evidence
+
+Latest local checkpoint: 44 tests pass in both debug and release on the pinned
+Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
+formatting and repository policy pass (42 source files, 2 crates, largest source
+238 lines). Discovery, challenge state/runtime, owned connect requests and bounded
+reply decoding are covered. Pending-connect state and ordinary gameplay remain open.
+
+The 39-test connect-plan checkpoint passed hosted Windows/Linux CI. Hosted
+validation for the latest reply checkpoint is pending. These later client changes
+edit only the client repository and consume the already published shared revision.
+
+## Initial foundation
 
 Date: 2026-11-01. Local host: Windows x86_64-pc-windows-msvc, Rust 1.95.0
 (`59807616e`, LLVM 22.1.2). The existing server Cargo target directory was reused;
