@@ -1,16 +1,16 @@
 # Validation evidence
 
-Latest local checkpoint: 71 tests pass in both debug and release on the pinned
+Latest local checkpoint: 79 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (70 source files, 3 crates, largest source
+formatting and repository policy pass (80 source files, 3 crates, largest source
 238 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
-covered, along with ordinary-channel integration. Message decoding, auxiliary
+covered, along with ordinary-channel integration and checked client-command history. Message decoding, auxiliary
 reliable transport, gamestate and ordinary gameplay remain open.
 
-The 60-test socket-ownership checkpoint passed hosted Windows/Linux CI in
-[run 41342126572](https://github.com/cod4xr/client/actions/runs/41342126572).
-Hosted validation for the latest ordinary-channel checkpoint is pending. These client changes
+The 71-test ordinary-channel checkpoint passed hosted Windows/Linux CI in
+[run 41342974859](https://github.com/cod4xr/client/actions/runs/41342974859).
+Hosted validation for the latest command-history checkpoint is pending. These client changes
 edit only the client repository and consume the already published shared revision.
 
 Eight new independent loopback tests exercise the reusable network crate: one
@@ -28,7 +28,15 @@ discard, auxiliary marker/qport checks, and expired waits without charged work.
 One compile-fail documentation test establishes that receive data cannot escape
 the scoped callback. Shared transport logic is consumed at the existing immutable
 revision, without source changes to the server repository. Two more client research
-files are hash-verified locally; hosted verification of the updated lock is pending.
+files were hash-verified locally and in that checkpoint's hosted source job.
+
+Eight command-history tests add native byte-cleaning/ownership/privacy checks,
+valid/invalid caller storage, exact command-length and pending-window boundaries,
+the full 128-entry baseline, check-before-commit acknowledgement, unsent/future/
+regressing numbers, repeated reuse across every 1–128-slot capacity, and exhaustion
+at the positive signed sequence bound. Three additional client source files are
+hash-verified locally; hosted verification of this updated lock is pending. No
+server source files or server worktrees were edited for these client checkpoints.
 
 ## Initial foundation
 

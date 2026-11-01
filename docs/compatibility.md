@@ -12,7 +12,7 @@ does not prove a playable connection.
 | Discovery response | Complete info validation, correlation, unknown bytes, bounds | Version-specific real peer matrix |
 | UDP runtime | Real loopback responder/process tests; noise, endpoint, size, timeout/budget checks | Ordinary CoD4X server trials |
 | No-auth connect | Owned challenge/connect/acknowledged socket transitions, retry stability, inert refusals and bounded state | Clean disconnect and ordinary peer traces |
-| Channel/snapshots | Shared ordinary-channel send/reassembly integrated on original socket; independent UDP tests | Message decoding, reliable transport/commands, gamestate, snapshots and input replay |
+| Channel/snapshots | Shared ordinary-channel send/reassembly, checked client-command history and independent UDP tests | Message encoding/decoding, auxiliary reliable transport, gamestate, snapshots and input replay |
 | Content/render/simulation | Not implemented | Stock/custom content and complete playable sessions |
 | Optional extensions | No wire behavior invented | Negotiated features and ordinary-server fallback |
 
@@ -35,6 +35,9 @@ Observed source paths:
 - Client `src/cl_netchan.c`: profile-specific payload-header offsets and message
   obfuscation depend on the original challenge; the ordinary channel retains that
   private context for the upcoming message layer without decoding gameplay yet.
+- Client `src/qcommon.h`, `src/msg.c` and `src/qshared.c`: 128-command history,
+  1024-byte slots and native reliable-command cleaning (0x92 to apostrophe, percent
+  to period). The rewrite preserves the acknowledged key separately from ring reuse.
 - Server `src/sv_main.c`: SVC_Info echoes the challenge, permits at most 128 bytes,
   advertises protocol 6 and sends `infoResponse` followed by normal info data.
 - Server `src/netchan.c`: NET_OutOfBandPrint sends the four-byte marker plus text,

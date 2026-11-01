@@ -34,6 +34,10 @@ now reuses shared sequencing and fragmentation on the acknowledged socket, with
 pacing under caller control. Reliable commands, message decoding, gamestate and the
 remaining gameplay lifecycle are required for live joins.
 
+[Client-command history](docs/client-command-history.md) separates queued,
+transmitted and validated acknowledgement positions, with caller-owned storage
+and a retained private key. It does not execute incoming server commands.
+
 ## Run
 
 Rust 1.95 is pinned. On this workstation, reuse the existing Cargo target:

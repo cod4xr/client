@@ -13,7 +13,10 @@
         "CMakeLists.txt": "7d2546a1e84cea7575a360a3caa3fcbef246c056be1b57667490a131d9559ba3",
         "src/net_chan.c": "fdc0e173350144a2470d0e87fbef0068587af9ea40827cc647ee3ab249e7bb7e",
         "src/client.h": "84fbd5a6f1170e33a77106f806bad18721bf133d2242597853abbfcd954b26f6",
-        "src/cl_netchan.c": "7889b9f49504739603d6e463ce01d3b06bdff192ca51de40dcffa5f741397bf9"
+        "src/cl_netchan.c": "7889b9f49504739603d6e463ce01d3b06bdff192ca51de40dcffa5f741397bf9",
+        "src/qcommon.h": "7d706a5a87ce23f8147b02f7a33b28316c5abac0c65645250fe7bf186aab527b",
+        "src/msg.c": "2502bef21b4ea49440678ba4bec3eed0974c6a79da20632809ea933095f1f74c",
+        "src/qshared.c": "3b15eaf610529e5d885e74a114a9c76c33e31ce3474e4999adc54f0e56d11833"
       }
     },
     {

@@ -31,6 +31,12 @@ without copying it into client code. Message bodies and auxiliary transports sta
 opaque until their separate checked layers are implemented; see
 [ordinary channel](ordinary-channel.md). Gamestate initialization remains open.
 
+The deterministic command history separates enqueue, host-admitted transmission,
+read-only acknowledgement checking and post-validation commit. One dedicated key
+slot survives pending-ring reuse. This named baseline has up to 128 pending
+commands; it does not constrain future engine strings or negotiated custom command
+profiles. Incoming server commands are not executed by this storage layer.
+
 Discovery uses the existing connectionless envelope and normal info-string profile.
 Requests contain a 128-bit random correlation value as 32 ASCII hex bytes. A reply
 must come from the connected endpoint and contain exactly one matching challenge.
