@@ -30,4 +30,7 @@ ring contents as keys. Private commands/keys never appear in Debug or fixed erro
 This is an explicit baseline resource profile, not an engine-wide scripting/string
 or custom-protocol limit. Larger future command windows need a negotiated profile
 and a separate storage/sequence contract. Message encoding, compression, obfuscation,
-server-command dispatch and a clean disconnect lifecycle remain subsequent steps.
+server-command dispatch and disconnect ownership remain outside the history layer.
+[Owned control frames](control-messages.md) now encode a fitting pending prefix;
+they leave transmission/acknowledgement positions unchanged until host I/O and
+complete inbound validation, respectively.

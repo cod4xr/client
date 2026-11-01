@@ -3,6 +3,7 @@ use std::{fmt, net::UdpSocket, time::Instant};
 
 use cod4x_protocol::MAX_PACKET_BYTES;
 use cod4x_transport::{SendChannel, Transmission};
+use cod4xr_client_core::control::ControlMessagePlan;
 
 use crate::{NetworkError, SendUsage, datagram};
 
@@ -11,9 +12,28 @@ pub struct ClientSender<'channel> {
     pub(crate) socket: &'channel UdpSocket,
     pub(crate) state: &'channel mut SendChannel,
     pub(crate) usage: &'channel mut SendUsage,
+    pub(crate) protocol: i32,
+    pub(crate) challenge: i32,
 }
 
 impl ClientSender<'_> {
+    /// Reserves a sequence for an owned control frame from this protocol/cookie context.
+    /// The caller must also supply the current validated game/header state when building
+    /// the plan. Mark its included command prefix transmitted only after complete I/O.
+    ///
+    /// # Errors
+    /// Context mismatch rejects before reserving a channel sequence or sending bytes.
+    /// Shared message size/sequence failures are also propagated.
+    pub fn begin_control<'sender, 'message>(
+        &'sender mut self,
+        plan: &'message ControlMessagePlan,
+    ) -> Result<OutboundMessage<'sender, 'message>, NetworkError> {
+        if plan.requested_protocol() != self.protocol || plan.server_challenge() != self.challenge {
+            return Err(NetworkError::ControlContext);
+        }
+        self.begin(plan.as_bytes())
+    }
+
     /// Reserves one sequence and borrows an already encoded message body.
     /// Dropping this transmission cancels it without reusing its sequence.
     ///

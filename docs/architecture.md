@@ -37,6 +37,13 @@ slot survives pending-ring reuse. This named baseline has up to 128 pending
 commands; it does not constrain future engine strings or negotiated custom command
 profiles. Incoming server commands are not executed by this storage layer.
 
+Owned control plans serialize a complete pending prefix under explicit 9/16-byte
+header profiles, then reuse shared compression/obfuscation. Logical and wire budgets
+are enforced independently; compression expansion rebuilds a shorter whole prefix.
+The network sender checks original protocol/challenge before reservation. A plan
+does not mark commands transmitted or commit acknowledgements; the host owns those
+transitions after complete I/O and validated inbound messages, respectively.
+
 Discovery uses the existing connectionless envelope and normal info-string profile.
 Requests contain a 128-bit random correlation value as 32 ASCII hex bytes. A reply
 must come from the connected endpoint and contain exactly one matching challenge.

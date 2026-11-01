@@ -7,6 +7,7 @@
 mod challenge;
 pub mod commands;
 pub mod connect;
+pub mod control;
 mod error;
 pub mod handshake;
 mod info_response;

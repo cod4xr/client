@@ -1,17 +1,18 @@
 # Validation evidence
 
-Latest local checkpoint: 79 tests pass in both debug and release on the pinned
+Latest local checkpoint: 88 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (80 source files, 3 crates, largest source
+formatting and repository policy pass (89 source files, 3 crates, largest source
 238 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
-covered, along with ordinary-channel integration and checked client-command history. Message decoding, auxiliary
-reliable transport, gamestate and ordinary gameplay remain open.
+covered, along with ordinary-channel integration, checked client-command history
+and owned control-frame encoding. Inbound decoding, auxiliary reliable transport,
+gamestate and ordinary gameplay remain open.
 
-The 71-test ordinary-channel checkpoint passed hosted Windows/Linux CI in
-[run 41342974859](https://github.com/cod4xr/client/actions/runs/41342974859).
-Hosted validation for the latest command-history checkpoint is pending. These client changes
-edit only the client repository and consume the already published shared revision.
+The 79-test command-history checkpoint passed hosted Windows/Linux CI in
+[run 41343668613](https://github.com/cod4xr/client/actions/runs/41343668613).
+Hosted validation for the latest control-frame checkpoint is pending. These
+changes edit only the client repository and consume the published shared revision.
 
 Eight new independent loopback tests exercise the reusable network crate: one
 source socket across challenge/connect/retries/handoff, exact cookie/protocol/qport
@@ -35,8 +36,16 @@ valid/invalid caller storage, exact command-length and pending-window boundaries
 the full 128-entry baseline, check-before-commit acknowledgement, unsent/future/
 regressing numbers, repeated reuse across every 1–128-slot capacity, and exhaustion
 at the positive signed sequence bound. Three additional client source files are
-hash-verified locally; hosted verification of this updated lock is pending. No
+hash-verified locally and in that checkpoint's hosted source job. No
 server source files or server worktrees were edited for these client checkpoints.
+
+Eight control-frame tests add independent idle/keyed wire vectors for both header
+profiles, source ownership, every insufficient output prefix, a complete 128-command
+window, retained-key/header boundaries, whole-prefix deferral and compression
+expansion without truncation. A further UDP integration test rejects wrong protocol/
+cookie contexts before sequence reservation and verifies a fragmented complete
+control frame on the original socket. Marking the included command prefix sent is
+separate from construction and from validated peer acknowledgement.
 
 ## Initial foundation
 

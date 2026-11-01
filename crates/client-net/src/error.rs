@@ -33,6 +33,8 @@ pub enum NetworkError {
     Channel(cod4x_transport::ChannelError),
     /// This outbound message previously failed and cannot skip/retry its fragment.
     TransmissionFailed,
+    /// An owned control frame belongs to another protocol/challenge context.
+    ControlContext,
 }
 
 impl fmt::Display for NetworkError {
@@ -50,6 +52,9 @@ impl fmt::Display for NetworkError {
             Self::ReplyCapacity => formatter.write_str("client terminal reply capacity exceeded"),
             Self::Channel(error) => error.fmt(formatter),
             Self::TransmissionFailed => formatter.write_str("client transmission already failed"),
+            Self::ControlContext => {
+                formatter.write_str("client control connection context mismatch")
+            }
         }
     }
 }

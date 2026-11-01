@@ -73,6 +73,8 @@ impl<'storage> ClientChannel<'storage> {
                 socket: &self.io.socket,
                 state: &mut self.send,
                 usage: &mut self.send_usage,
+                protocol: self.context.summary().requested_protocol(),
+                challenge: self.context.server_challenge(),
             },
             receiver: ClientReceiver {
                 socket: &self.io.socket,

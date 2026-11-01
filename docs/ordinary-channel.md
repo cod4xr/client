@@ -35,6 +35,12 @@ acknowledgements, profile-specific headers, obfuscation, compression, gamestate 
 snapshots need their own checked message layer. The challenge cookie is kept out
 of Debug/log output, but remains owned context for that future codec.
 
+[Control-message planning](control-messages.md) now supplies owned outgoing idle/
+command bodies for explicit legacy/modern headers. `begin_control` checks protocol
+and challenge before reservation; raw `begin` remains an explicit low-level entry
+for already encoded bodies. Incoming messages and auxiliary reliable payloads
+remain opaque at this channel boundary.
+
 No public-server join or playable session is claimed. Acceptance for this boundary
 uses independent UDP packets to establish original-socket handoff, signed-qport bits,
 sequence reservation, fragment lengths/terminators, receive ordering/capacity,
