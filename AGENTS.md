@@ -15,7 +15,7 @@ The independent server repository is https://github.com/cod4xr/server.
   lints and metadata, forbid unsafe, and run format/Clippy/tests/docs/policy gates.
 - Keep raw remote bytes out of logs. Human development logs and JSON production
   logs share stable event names and bounded counters. Never execute peer strings.
-- Current deliverable is discovery, not a playable client. Keep compatibility
+- Current deliverable is discovery/challenge probes, not a playable client. Keep compatibility
   profiles and demonstrated peers separate from product goals and advertisements.
 - No game executables/assets, credentials, private settings or operator configs
   in Git. Public upstream client source is research material, not a copied runtime.

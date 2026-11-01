@@ -3,7 +3,10 @@
 
 mod app;
 mod arguments;
+mod challenge;
+mod challenge_report;
 mod error;
+mod net_io;
 mod query;
 mod report;
 

@@ -5,8 +5,8 @@ the client runtime; [cod4xr/server](https://github.com/cod4xr/server) supplies s
 protocol libraries at an immutable revision. Mods and communities can use future
 features without defining the core product.
 
-**Current status: runnable server-discovery foundation.** The client sends real
-UDP `getinfo` queries and validates correlated replies. Rendering, assets,
+**Current status: runnable discovery and challenge probes.** The client sends real
+UDP `getinfo` queries and nonce-correlated `getchallenge` requests. Rendering, assets,
 movement, snapshots, GSC presentation and playable joins are not implemented.
 
 The compatibility target is existing CoD4/CoD4X servers accepting **no-auth
@@ -16,8 +16,8 @@ connection. In particular, discovery protocol `6` is not a negotiated join versi
 
 The core also supplies a [bounded challenge state machine](docs/challenge-probe.md)
 with exact peer/nonce correlation, cumulative quotas, monotonic deadlines and
-controlled retries. Its eight new tests bring the workspace to 24 passing debug
-and release tests. The CLI challenge adapter is the next step.
+controlled retries. The CLI exercises this state over real UDP. All 31 workspace
+tests pass in debug and release; gameplay connect/admission is the next step.
 
 ## Run
 
@@ -27,6 +27,7 @@ Rust 1.95 is pinned. On this workstation, reuse the existing Cargo target:
 .\tools\use-existing-target.ps1 -TargetPath C:\Users\Ethan\source\cod4x-rust\target
 cargo run -p cod4xr-client -- query 127.0.0.1:28960
 cargo run -p cod4xr-client -- query 127.0.0.1:28960 --log-format json
+cargo run -p cod4xr-client -- probe-challenge 127.0.0.1:28960 --retry-ms 500 --max-attempts 3
 ```
 
 Other workstations should supply their own **existing** target directory. The
@@ -39,6 +40,11 @@ The query command accepts IPv4 or bracketed IPv6 socket addresses, a deadline of
 reply endpoints through a connected socket, requires the unique echoed random
 token, rejects oversized/malformed replies and keeps one absolute deadline.
 OS entropy supplies correlation tokens; this is not authentication.
+
+`probe-challenge` uses the same deadline/datagram options plus a 1–30,000 ms retry
+interval and 1–16 total attempts. Its named profile is `0 xproto 18`. It publishes
+neither the cookie nor the nonce, and sends no connect request or player identity.
+Unknown reply profiles reject without selecting a gameplay version or fallback.
 
 Standard output contains one JSON metadata report. Human development logs use
 stderr; release logs default to JSON. Unknown remote bytes remain bytes in the

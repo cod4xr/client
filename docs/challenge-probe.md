@@ -30,9 +30,24 @@ Eight deterministic tests exercise pending/terminal transitions, unsolicited and
 wrong-peer traffic, nonce/profile rejection, retry timing and late replies,
 absolute expiry, every request-capacity prefix, monotonic-clock recovery, every
 small receive quota and wide arithmetic. These tests establish core behavior,
-not an ordinary-server gameplay join. The CLI challenge I/O adapter follows next.
+not an ordinary-server gameplay join.
 
 Local acceptance: all 24 client workspace tests pass in debug and release;
 all-target Clippy, denied-warning rustdoc, formatting and repository policy pass.
 The policy now checks main/feature branch naming and full hexadecimal dependency
 revisions. No server source files were edited for this client checkpoint.
+
+The CLI adapter now exposes `probe-challenge IP:PORT` with shared absolute-time
+socket I/O. It requests fresh OS entropy once, keeps the same connected socket
+and nonce across retries, and charges all accepted-source datagrams through the
+core. Query and challenge paths share complete-datagram buffers and deadline-bound
+sends/receives. Summary logs contain only aggregate counters and fixed rejection
+categories; stdout reports accepted return-path correlation, never identity,
+cookies, nonces or gameplay admission.
+
+Seven additional process/argument tests cover packet-loss retries, stale/unsupported
+responses, late replies after the attempt cap, wrong endpoints, exhausted receive
+work, unsupported-profile expiry and bounded mode-specific CLI settings. All 31
+workspace tests pass in debug and release; format/Clippy/docs/policy checks pass.
+The earlier 24-test core checkpoint also passed hosted Windows/Linux CI. Current
+CLI hosted CI and ordinary-game-server interoperability remain separate gates.

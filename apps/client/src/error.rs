@@ -12,6 +12,7 @@ pub(crate) enum ClientError {
     ReceiveBudget,
     InvalidResponse,
     Allocation,
+    Handshake(cod4xr_client_core::handshake::ChallengeFailure),
 }
 
 impl fmt::Display for ClientError {
@@ -26,6 +27,7 @@ impl fmt::Display for ClientError {
             Self::ReceiveBudget => formatter.write_str("query receive budget exhausted"),
             Self::InvalidResponse => formatter.write_str("invalid checked response state"),
             Self::Allocation => formatter.write_str("query receive buffer allocation failed"),
+            Self::Handshake(error) => error.fmt(formatter),
         }
     }
 }
@@ -37,6 +39,7 @@ impl Error for ClientError {
             Self::Random(error) => Some(error),
             Self::Logging(error) => Some(error),
             Self::Output(error) => Some(error),
+            Self::Handshake(error) => Some(error),
             _ => None,
         }
     }

@@ -11,7 +11,7 @@ does not prove a playable connection.
 | Discovery request | Exact OOB/getinfo byte vector; shared packet codec | Named ordinary server captures |
 | Discovery response | Complete info validation, correlation, unknown bytes, bounds | Version-specific real peer matrix |
 | UDP runtime | Real loopback responder/process tests; noise, endpoint, size, timeout/budget checks | Ordinary CoD4X server trials |
-| No-auth connect | Target selected; public source pinned | Challenge/connect state machine and peer traces |
+| No-auth connect | Bounded challenge core/real UDP probe; public source pinned | Connect/admission state and ordinary peer traces |
 | Channel/snapshots | Shared primitives available, not integrated | Reliable transport, gamestate, snapshots and input replay |
 | Content/render/simulation | Not implemented | Stock/custom content and complete playable sessions |
 | Optional extensions | No wire behavior invented | Negotiated features and ordinary-server fallback |
@@ -28,6 +28,8 @@ Observed source paths:
   CL_ServerInfoPacket read/discovery filtering.
 - Client `src/q_shared.h`: legacy protocol 6, update version 21.8 and join-protocol
   macro. These declarations do not certify a live server matrix.
+- Client `src/net_chan.c`: NET_OutOfBandData sends exactly the marker and supplied
+  bytes; its Huff_Compress call is commented out in this pinned profile.
 - Server `src/sv_main.c`: SVC_Info echoes the challenge, permits at most 128 bytes,
   advertises protocol 6 and sends `infoResponse` followed by normal info data.
 - Server `src/netchan.c`: NET_OutOfBandPrint sends the four-byte marker plus text,
