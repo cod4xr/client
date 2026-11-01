@@ -15,8 +15,8 @@ pub struct SelectiveAckRange {
 /// Owned bounded selective metadata. Construction validates representability only.
 #[derive(Clone, Copy, Default, Eq, PartialEq)]
 pub struct SelectiveAcks {
-    ranges: [SelectiveAckRange; MAX_SELECTIVE_ACK_RANGES],
-    length: u8,
+    pub(crate) ranges: [SelectiveAckRange; MAX_SELECTIVE_ACK_RANGES],
+    pub(crate) length: u8,
 }
 
 impl SelectiveAcks {

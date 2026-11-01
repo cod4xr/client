@@ -50,8 +50,9 @@ retention beyond the native 128 entries, full command text and preflighted updat
 that can be cancelled before commit.
 
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
-codec and checked UDP routing. Stateful ACK admission, stream assembly and
-retransmission remain open.
+codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add
+caller-funded fragment retention, selective metadata and bounded stream reads.
+Outgoing ACK admission, retransmission and application framing remain open.
 
 ## Run
 
@@ -88,7 +89,7 @@ core and use lossy UTF-8 only for display. Raw peer strings/tokens stay out of l
 
 - `crates/client-core`: deterministic discovery and connection state over shared codecs.
 - `crates/client-net`: owned sockets, bounded blocking I/O and phase transitions.
-- `crates/reliable`: dependency-free auxiliary reliable bodies, ready for transport state.
+- `crates/reliable`: dependency-free auxiliary reliable bodies and receive windows.
 - `apps/client`: arguments, logging and report output.
 - `docs`: architecture, source evidence, compatibility gates and remaining work.
 - `tools`: source/dependency checks, reference verification and local build setup.

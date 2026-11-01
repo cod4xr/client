@@ -15,6 +15,8 @@ mod limits;
 mod receive;
 #[path = "channel_cases/reliable_body.rs"]
 mod reliable_body;
+#[path = "channel_cases/reliable_receive.rs"]
+mod reliable_receive;
 #[path = "channel_cases/send.rs"]
 mod send;
 #[path = "channel_cases/server_payload.rs"]

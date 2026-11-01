@@ -9,6 +9,7 @@ mod encode;
 mod error;
 mod header;
 mod packet;
+pub mod receive;
 
 pub use acks::{SelectiveAckRange, SelectiveAcks};
 pub use error::ReliableError;

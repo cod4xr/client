@@ -33,6 +33,8 @@ original qport. `AuxiliaryMessage::reliable_packet` then parses only a reliable
 body. Other auxiliary families cannot be cast into this protocol. Malformed
 bodies are errors without channel sequence reservation or automatic responses.
 
-Receive/send windows, complete ACK admission, pacing, retransmission, stream
-assembly and application message framing remain to be implemented. No native
-reliable peer exchange, gamestate delivery or playable connection is claimed.
+[Receive windows](reliable-receive.md) now provide preflighted fragment retention,
+selective ACK metadata and bounded incremental stream reads. Outgoing windows,
+complete ACK admission, pacing, retransmission and application message framing
+remain to be implemented. No native reliable peer exchange, gamestate delivery
+or playable connection is claimed.

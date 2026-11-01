@@ -1,18 +1,19 @@
 # Validation evidence
 
-Latest local checkpoint: 127 tests pass in both debug and release on the pinned
+Latest local checkpoint: 138 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (129 source files, 4 crates, largest source
+formatting and repository policy pass (141 source files, 4 crates, largest source
 238 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
 owned control encoding, payload/service validation, configurable server-command
-retention and auxiliary reliable body decoding. Typed command delivery, auxiliary
-reliable state/streams, gamestate and ordinary gameplay remain open.
+retention, auxiliary reliable body decoding and bounded receive streams. Typed
+command delivery, outgoing ACKs/retransmission, application framing, gamestate
+and ordinary gameplay remain open.
 
-The 118-test retained-history checkpoint passed hosted Windows/Linux CI in
-[run 41349261171](https://github.com/cod4xr/client/actions/runs/41349261171).
-Hosted validation for the auxiliary-body work will follow its commit. These
+The 127-test auxiliary-body checkpoint passed hosted Windows/Linux CI in
+[run 41350388749](https://github.com/cod4xr/client/actions/runs/41350388749).
+Hosted validation for the receive-window work will follow its commit. These
 changes edit only the client repository and consume the published shared revision.
 
 Eight new independent loopback tests exercise the reusable network crate: one
@@ -83,6 +84,16 @@ reservation or window changes. The neutral crate has no dependencies. Thirteen
 pinned client-reference hashes pass locally, including both reliable source files;
 the historical server-reference entries were preserved without accessing server
 worktrees. Temporal ACK validation and complete stream transport are not yet covered.
+
+Ten receive-window tests cover transactional construction/preparation, caller
+budgets, dirty storage/privacy, independent streams under reverse arrival and
+repeated modulo reuse, full binary fragments, conflicting duplicates, gaps,
+incremental reads, empty-fragment work limits, selective ACK pagination, maximum
+signed-short geometry and signed sequence exhaustion without wrapping. A further
+UDP test parses exact bodies before retaining reordered data, rejects malformed
+lengths, ignores conflicting retransmissions and drains the original byte stream.
+Its outgoing queue is empty and admits only ACK zero with no selective ranges;
+it does not exercise a general outgoing ACK validator or retransmission runtime.
 
 ## Initial foundation
 
