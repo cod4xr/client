@@ -45,7 +45,7 @@ impl ChallengedSocket {
         budget: ConnectBudget,
     ) -> Result<PendingConnect, NetworkError> {
         let plan = NoAuthConnectPlan::new(self.receipt, settings).map_err(NetworkError::Plan)?;
-        PendingConnect::new(self.io, plan, budget)
+        PendingConnect::new(self.io, plan, budget, self.receipt.server_challenge())
     }
 }
 

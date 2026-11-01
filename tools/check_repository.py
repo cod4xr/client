@@ -50,10 +50,14 @@ def main() -> None:
             if dependency["name"] not in rules.get(name, []):
                 failures.append(f"{name}: unapproved {dependency['name']}")
     workspace = tomllib.loads((ROOT / "Cargo.toml").read_text(encoding="utf-8"))
-    for name in ("cod4x-protocol", "cod4x-observability"):
+    shared_revisions = set()
+    for name in ("cod4x-protocol", "cod4x-transport", "cod4x-observability"):
         dependency = workspace["workspace"]["dependencies"][name]
+        shared_revisions.add(dependency.get("rev"))
         if dependency.get("git") != "https://github.com/cod4xr/server.git" or not re.fullmatch(r"[0-9a-f]{40}", dependency.get("rev", "")):
             failures.append(f"{name}: explicit immutable shared revision required")
+    if len(shared_revisions) != 1:
+        failures.append("Shared libraries must use the same reviewed immutable revision")
     if failures:
         raise SystemExit("\n".join(failures))
     print(f"Checked {count} source files and {len(packages)} crate policies; largest {largest[0]} lines: {largest[1]}")

@@ -38,7 +38,13 @@ Acknowledged transport exposes an explicit `into_parts` handoff for channel
 ownership. The transferred socket is still blocking with finite timeouts; the new
 owner must set its own I/O policy. Receive scratch storage is released at this
 handoff. The original requested protocol/qport and inert mod-label bytes remain
-owned metadata. No state here claims a negotiated protocol or active gamestate.
+owned context, together with the original private challenge needed for message
+obfuscation. No state here claims a negotiated protocol or active gamestate.
+
+`into_channel(storage)` is the integrated ordinary-channel handoff. It retains the
+receive scratch allocation and borrows the caller's bounded reassembly storage.
+The channel reuses shared sequencing/fragmentation and can split into independently
+borrowed send/receive halves for pacing; see [ordinary channel](ordinary-channel.md).
 
 The standalone CLI challenge probe deliberately copies its receipt and closes its
 socket after reporting. Discovery uses the same datagram primitives but retains

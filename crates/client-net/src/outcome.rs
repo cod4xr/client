@@ -7,7 +7,7 @@ use std::{
 
 use cod4xr_client_core::connect::{ConnectObservation, ConnectReplyKind, ConnectUsage};
 
-use crate::{NetworkError, peer::PeerIo};
+use crate::{ChannelContext, ClientChannel, NetworkError, peer::PeerIo};
 
 /// Owned terminal metadata. Remote payloads have no command/filesystem authority.
 pub struct ConnectSummary {
@@ -92,24 +92,36 @@ impl fmt::Debug for ConnectSummary {
 /// Owns the acknowledged socket; channel and gamestate setup are still required.
 pub struct AcknowledgedSocket {
     io: PeerIo,
-    summary: ConnectSummary,
+    context: ChannelContext,
 }
 
 impl AcknowledgedSocket {
-    pub(crate) fn new(io: PeerIo, summary: ConnectSummary) -> Self {
-        Self { io, summary }
+    pub(crate) fn new(io: PeerIo, summary: ConnectSummary, challenge: i32) -> Self {
+        Self {
+            io,
+            context: ChannelContext::new(summary, challenge),
+        }
     }
     /// Borrows terminal metadata without releasing transport ownership.
     #[must_use]
     pub fn summary(&self) -> &ConnectSummary {
-        &self.summary
+        self.context.summary()
     }
     /// Transfers the original selected socket and metadata to a channel owner.
     /// The socket remains blocking with finite read/write timeouts; the new owner
     /// must configure its own I/O policy. This does not perform channel setup.
     #[must_use]
-    pub fn into_parts(self) -> (UdpSocket, ConnectSummary) {
-        (self.io.socket, self.summary)
+    pub fn into_parts(self) -> (UdpSocket, ChannelContext) {
+        (self.io.socket, self.context)
+    }
+
+    /// Consumes this socket into an ordinary channel using caller-owned reassembly storage.
+    /// Message payload codecs, auxiliary reliable transport and gameplay remain separate.
+    ///
+    /// # Errors
+    /// Rejects reassembly capacity above the shared logical-message profile.
+    pub fn into_channel(self, storage: &mut [u8]) -> Result<ClientChannel<'_>, NetworkError> {
+        ClientChannel::new(self.io, self.context, storage)
     }
 }
 
@@ -117,7 +129,7 @@ impl fmt::Debug for AcknowledgedSocket {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
         formatter
             .debug_struct("AcknowledgedSocket")
-            .field("summary", &self.summary)
+            .field("context", &self.context)
             .finish_non_exhaustive()
     }
 }

@@ -1,15 +1,16 @@
 # Validation evidence
 
-Latest local checkpoint: 60 tests pass in both debug and release on the pinned
+Latest local checkpoint: 71 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (59 source files, 3 crates, largest source
+formatting and repository policy pass (70 source files, 3 crates, largest source
 238 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
-covered. Channel initialization and ordinary gameplay remain open.
+covered, along with ordinary-channel integration. Message decoding, auxiliary
+reliable transport, gamestate and ordinary gameplay remain open.
 
-The 52-test pending-connect checkpoint passed hosted Windows/Linux CI in
-[run 41341395727](https://github.com/cod4xr/client/actions/runs/41341395727).
-Hosted validation for the latest socket-ownership checkpoint is pending. These client changes
+The 60-test socket-ownership checkpoint passed hosted Windows/Linux CI in
+[run 41342126572](https://github.com/cod4xr/client/actions/runs/41342126572).
+Hosted validation for the latest ordinary-channel checkpoint is pending. These client changes
 edit only the client repository and consume the already published shared revision.
 
 Eight new independent loopback tests exercise the reusable network crate: one
@@ -18,6 +19,16 @@ fields, inert owned refusal data with socket closure, oversized-datagram rejecti
 other-peer filtering, last-slot receive quotas, expiration before a delayed `run`,
 silent-peer expiry with retained work counters, and pre-I/O budget/endpoint rejection.
 No ordinary gameplay server or complete game channel was used for this checkpoint.
+
+Ten subsequent real UDP tests establish ordinary-channel handoff on the original
+socket, qport bits/direction, initial sequences, empty messages, paced fragments
+and exact-multiple terminators, interleaved receives, cancellation/I/O-failure
+reservation, malformed/stale/reordered traffic, reassembly capacity and explicit
+discard, auxiliary marker/qport checks, and expired waits without charged work.
+One compile-fail documentation test establishes that receive data cannot escape
+the scoped callback. Shared transport logic is consumed at the existing immutable
+revision, without source changes to the server repository. Two more client research
+files are hash-verified locally; hosted verification of the updated lock is pending.
 
 ## Initial foundation
 

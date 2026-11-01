@@ -29,7 +29,9 @@ notices distinct without granting path or command authority to server text.
 refusals and notices with exact peers, admitted requests, quotas and deadlines.
 [Network ownership](docs/owned-network-phases.md) retains one bound UDP socket
 through challenge, connect retries and acknowledgement, or closes it on refusal.
-The CLI continues to expose standalone probes. Channel initialization and the
+The CLI continues to expose standalone probes. The [ordinary channel](docs/ordinary-channel.md)
+now reuses shared sequencing and fragmentation on the acknowledged socket, with
+pacing under caller control. Reliable commands, message decoding, gamestate and the
 remaining gameplay lifecycle are required for live joins.
 
 ## Run

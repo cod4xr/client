@@ -11,8 +11,8 @@ does not prove a playable connection.
 | Discovery request | Exact OOB/getinfo byte vector; shared packet codec | Named ordinary server captures |
 | Discovery response | Complete info validation, correlation, unknown bytes, bounds | Version-specific real peer matrix |
 | UDP runtime | Real loopback responder/process tests; noise, endpoint, size, timeout/budget checks | Ordinary CoD4X server trials |
-| No-auth connect | Owned challenge/connect/acknowledged socket transitions, retry stability, inert refusals and bounded state | Channel initialization, clean disconnect and ordinary peer traces |
-| Channel/snapshots | Shared primitives available, not integrated | Reliable transport, gamestate, snapshots and input replay |
+| No-auth connect | Owned challenge/connect/acknowledged socket transitions, retry stability, inert refusals and bounded state | Clean disconnect and ordinary peer traces |
+| Channel/snapshots | Shared ordinary-channel send/reassembly integrated on original socket; independent UDP tests | Message decoding, reliable transport/commands, gamestate, snapshots and input replay |
 | Content/render/simulation | Not implemented | Stock/custom content and complete playable sessions |
 | Optional extensions | No wire behavior invented | Negotiated features and ordinary-server fallback |
 
@@ -30,6 +30,11 @@ Observed source paths:
   macro. These declarations do not certify a live server matrix.
 - Client `src/net_chan.c`: NET_OutOfBandData sends exactly the marker and supplied
   bytes; its Huff_Compress call is commented out in this pinned profile.
+- Client `src/net_chan.c` and `src/client.h`: ordinary sequence initialization,
+  qport direction, 1300-byte fragments, zero-length terminators and 128 KiB receive storage.
+- Client `src/cl_netchan.c`: profile-specific payload-header offsets and message
+  obfuscation depend on the original challenge; the ordinary channel retains that
+  private context for the upcoming message layer without decoding gameplay yet.
 - Server `src/sv_main.c`: SVC_Info echoes the challenge, permits at most 128 bytes,
   advertises protocol 6 and sends `infoResponse` followed by normal info data.
 - Server `src/netchan.c`: NET_OutOfBandPrint sends the four-byte marker plus text,

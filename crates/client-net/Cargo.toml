@@ -9,10 +9,9 @@ publish.workspace = true
 
 [dependencies]
 cod4xr-client-core.workspace = true
-getrandom.workspace = true
-
-[dev-dependencies]
 cod4x-protocol.workspace = true
+cod4x-transport.workspace = true
+getrandom.workspace = true
 
 [lints]
 workspace = true

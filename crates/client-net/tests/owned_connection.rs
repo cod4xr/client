@@ -78,9 +78,11 @@ fn one_socket_survives_challenge_connect_retries_and_explicit_channel_handoff() 
     assert_eq!(summary.payload(), b"mods/PrivateMod");
     assert_eq!(summary.usage(), run.usage);
     assert!(summary.elapsed() < Duration::from_secs(2));
-    let (socket, summary) = acknowledged.into_parts();
+    let (socket, context) = acknowledged.into_parts();
     assert_eq!(socket.peer_addr().expect("Retained peer"), peer);
-    assert_eq!(summary.payload(), b"mods/PrivateMod");
+    assert_eq!(context.summary().payload(), b"mods/PrivateMod");
+    assert_eq!(context.server_challenge(), -2_147_481_234);
+    assert!(!format!("{context:?}").contains("2147481234"));
     datagram::send(
         &socket,
         b"test-only-owner-handoff",

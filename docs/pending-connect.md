@@ -32,8 +32,8 @@ session: channel, stats/gamestate, content and simulation initialization remain.
 
 Eight new tests cover pending/peer correlation, identical retries and last-attempt
 replies, notice/refusal separation, absolute expiry under traffic, every output
-prefix, complete receive quotas and clock/budget boundaries. All 52 client tests
-pass locally in debug and release. Denied-warning Clippy/docs, formatting and
-repository policy pass (50 source files, 2 crates, maximum source 238 lines).
-The earlier 44-test reply checkpoint passed hosted Windows/Linux CI; ordinary
-peer joins and this checkpoint's hosted validation remain separate gates.
+prefix, complete receive quotas and clock/budget boundaries. This checkpoint passed
+52 tests in debug/release plus denied-warning Clippy/docs, formatting and repository
+policy. It also passed hosted Windows/Linux CI. Subsequent socket/channel work and
+the latest test counts are recorded in [validation](validation.md); ordinary peer
+joins remain a separate gate.

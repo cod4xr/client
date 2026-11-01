@@ -24,6 +24,7 @@ pub struct PendingConnect {
     io: PeerIo,
     attempt: NoAuthConnectAttempt,
     deadline: Instant,
+    challenge: i32,
 }
 
 enum TerminalReply {
@@ -36,6 +37,7 @@ impl PendingConnect {
         io: PeerIo,
         plan: NoAuthConnectPlan,
         budget: ConnectBudget,
+        challenge: i32,
     ) -> Result<Self, NetworkError> {
         let now = io.started.elapsed();
         let attempt =
@@ -47,6 +49,7 @@ impl PendingConnect {
             io,
             attempt,
             deadline,
+            challenge,
         })
     }
 
@@ -58,9 +61,9 @@ impl PendingConnect {
         let result = self.drive();
         let usage = self.attempt.usage();
         let outcome = result.map(|reply| match reply {
-            TerminalReply::Acknowledged(summary) => {
-                ConnectOutcome::Acknowledged(AcknowledgedSocket::new(self.io, summary))
-            }
+            TerminalReply::Acknowledged(summary) => ConnectOutcome::Acknowledged(
+                AcknowledgedSocket::new(self.io, summary, self.challenge),
+            ),
             TerminalReply::Refused(summary) => ConnectOutcome::Refused(summary),
         });
         ConnectRun { outcome, usage }

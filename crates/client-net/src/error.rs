@@ -29,6 +29,10 @@ pub enum NetworkError {
     Plan(ConnectPlanError),
     /// A terminal payload exceeded the prepaid storage contract.
     ReplyCapacity,
+    /// Shared ordinary-channel setup or encoding failed.
+    Channel(cod4x_transport::ChannelError),
+    /// This outbound message previously failed and cannot skip/retry its fragment.
+    TransmissionFailed,
 }
 
 impl fmt::Display for NetworkError {
@@ -44,6 +48,8 @@ impl fmt::Display for NetworkError {
             Self::Connect(error) => error.fmt(formatter),
             Self::Plan(error) => error.fmt(formatter),
             Self::ReplyCapacity => formatter.write_str("client terminal reply capacity exceeded"),
+            Self::Channel(error) => error.fmt(formatter),
+            Self::TransmissionFailed => formatter.write_str("client transmission already failed"),
         }
     }
 }
@@ -56,6 +62,7 @@ impl Error for NetworkError {
             Self::Challenge(error) => Some(error),
             Self::Connect(error) => Some(error),
             Self::Plan(error) => Some(error),
+            Self::Channel(error) => Some(error),
             _ => None,
         }
     }

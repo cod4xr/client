@@ -11,7 +11,9 @@
         "src/cl_main.c": "19a85e63172f20f09375052d15abbb6d38702db1609855fa688658e15fbcdfd9",
         "src/q_shared.h": "8ea500cd1037cb542076f72a9aa8030dfe8c3f924cfafb00a291909211cead58",
         "CMakeLists.txt": "7d2546a1e84cea7575a360a3caa3fcbef246c056be1b57667490a131d9559ba3",
-        "src/net_chan.c": "fdc0e173350144a2470d0e87fbef0068587af9ea40827cc647ee3ab249e7bb7e"
+        "src/net_chan.c": "fdc0e173350144a2470d0e87fbef0068587af9ea40827cc647ee3ab249e7bb7e",
+        "src/client.h": "84fbd5a6f1170e33a77106f806bad18721bf133d2242597853abbfcd954b26f6",
+        "src/cl_netchan.c": "7889b9f49504739603d6e463ce01d3b06bdff192ca51de40dcffa5f741397bf9"
       }
     },
     {

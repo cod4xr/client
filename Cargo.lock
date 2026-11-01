@@ -33,6 +33,14 @@ version = "0.1.0"
 source = "git+https://github.com/cod4xr/server.git?rev=c3bd151068465a40e11e3db9d616789fdffa146f#c3bd151068465a40e11e3db9d616789fdffa146f"
 
 [[package]]
+name = "cod4x-transport"
+version = "0.1.0"
+source = "git+https://github.com/cod4xr/server.git?rev=c3bd151068465a40e11e3db9d616789fdffa146f#c3bd151068465a40e11e3db9d616789fdffa146f"
+dependencies = [
+ "cod4x-protocol",
+]
+
+[[package]]
 name = "cod4xr-client"
 version = "0.1.0"
 dependencies = [
@@ -56,6 +64,7 @@ name = "cod4xr-client-net"
 version = "0.1.0"
 dependencies = [
  "cod4x-protocol",
+ "cod4x-transport",
  "cod4xr-client-core",
  "getrandom",
 ]

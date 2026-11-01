@@ -24,7 +24,12 @@ Challenge, pending-connect and acknowledged transport have consuming ownership
 transitions on one bound socket. Refusal and failure close it. The network API is
 blocking and intended for an I/O worker; no library installs a runtime or log
 subscriber. See [network ownership](owned-network-phases.md) for the public phase
-contract. Acknowledgement still precedes channel/gamestate initialization.
+contract. Acknowledgement can be consumed into an ordinary channel using caller-
+owned reassembly storage. Disjoint borrowed send/receive halves permit host pacing
+and receive work between fragments. Shared sequencing/fragmentation is reused
+without copying it into client code. Message bodies and auxiliary transports stay
+opaque until their separate checked layers are implemented; see
+[ordinary channel](ordinary-channel.md). Gamestate initialization remains open.
 
 Discovery uses the existing connectionless envelope and normal info-string profile.
 Requests contain a 128-bit random correlation value as 32 ASCII hex bytes. A reply
