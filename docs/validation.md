@@ -1,15 +1,23 @@
 # Validation evidence
 
-Latest local checkpoint: 52 tests pass in both debug and release on the pinned
+Latest local checkpoint: 60 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (50 source files, 2 crates, largest source
+formatting and repository policy pass (59 source files, 3 crates, largest source
 238 lines). Discovery, challenge state/runtime, owned connect requests and bounded
-reply decoding and bounded pending-connect state are covered. Persistent socket/
-channel initialization and ordinary gameplay remain open.
+reply decoding, bounded pending-connect state and owned UDP phase transitions are
+covered. Channel initialization and ordinary gameplay remain open.
 
-The 44-test reply checkpoint passed hosted Windows/Linux CI. Hosted
-validation for the latest pending-connect checkpoint is pending. These client changes
+The 52-test pending-connect checkpoint passed hosted Windows/Linux CI in
+[run 41341395727](https://github.com/cod4xr/client/actions/runs/41341395727).
+Hosted validation for the latest socket-ownership checkpoint is pending. These client changes
 edit only the client repository and consume the already published shared revision.
+
+Eight new independent loopback tests exercise the reusable network crate: one
+source socket across challenge/connect/retries/handoff, exact cookie/protocol/qport
+fields, inert owned refusal data with socket closure, oversized-datagram rejection,
+other-peer filtering, last-slot receive quotas, expiration before a delayed `run`,
+silent-peer expiry with retained work counters, and pre-I/O budget/endpoint rejection.
+No ordinary gameplay server or complete game channel was used for this checkpoint.
 
 ## Initial foundation
 

@@ -27,8 +27,10 @@ only discovery/challenge probes; acknowledgement and gameplay admission follow.
 notices distinct without granting path or command authority to server text.
 [Pending-connect state](docs/pending-connect.md) now correlates acknowledgements,
 refusals and notices with exact peers, admitted requests, quotas and deadlines.
-All 52 workspace tests pass locally in debug and release. A persistent socket
-handoff and subsequent channel initialization remain required for live joins.
+[Network ownership](docs/owned-network-phases.md) retains one bound UDP socket
+through challenge, connect retries and acknowledgement, or closes it on refusal.
+The CLI continues to expose standalone probes. Channel initialization and the
+remaining gameplay lifecycle are required for live joins.
 
 ## Run
 
@@ -63,8 +65,9 @@ core and use lossy UTF-8 only for display. Raw peer strings/tokens stay out of l
 
 ## Structure and checks
 
-- `crates/client-core`: deterministic discovery over the shared wire codecs.
-- `apps/client`: arguments, socket deadlines/budgets, logging and report output.
+- `crates/client-core`: deterministic discovery and connection state over shared codecs.
+- `crates/client-net`: owned sockets, bounded blocking I/O and phase transitions.
+- `apps/client`: arguments, logging and report output.
 - `docs`: architecture, source evidence, compatibility gates and remaining work.
 - `tools`: source/dependency checks, reference verification and local build setup.
 

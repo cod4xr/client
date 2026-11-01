@@ -11,8 +11,7 @@ pub(crate) enum ClientError {
     Timeout,
     ReceiveBudget,
     InvalidResponse,
-    Allocation,
-    Handshake(cod4xr_client_core::handshake::ChallengeFailure),
+    Network(cod4xr_client_net::NetworkError),
 }
 
 impl fmt::Display for ClientError {
@@ -26,8 +25,7 @@ impl fmt::Display for ClientError {
             Self::Timeout => formatter.write_str("server query timed out"),
             Self::ReceiveBudget => formatter.write_str("query receive budget exhausted"),
             Self::InvalidResponse => formatter.write_str("invalid checked response state"),
-            Self::Allocation => formatter.write_str("query receive buffer allocation failed"),
-            Self::Handshake(error) => error.fmt(formatter),
+            Self::Network(error) => error.fmt(formatter),
         }
     }
 }
@@ -39,7 +37,7 @@ impl Error for ClientError {
             Self::Random(error) => Some(error),
             Self::Logging(error) => Some(error),
             Self::Output(error) => Some(error),
-            Self::Handshake(error) => Some(error),
+            Self::Network(error) => Some(error),
             _ => None,
         }
     }
@@ -48,5 +46,11 @@ impl Error for ClientError {
 impl From<io::Error> for ClientError {
     fn from(value: io::Error) -> Self {
         Self::Io(value)
+    }
+}
+
+impl From<cod4xr_client_net::NetworkError> for ClientError {
+    fn from(value: cod4xr_client_net::NetworkError) -> Self {
+        Self::Network(value)
     }
 }

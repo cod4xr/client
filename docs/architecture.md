@@ -13,10 +13,18 @@ shared-core repository is a later ownership decision, not a prerequisite here.
 
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
-process-global state. The application owns OS entropy, endpoint selection,
-deadlines, receive budgets, output and the logging lifetime. Rendering/input/audio
+process-global state. The network crate owns UDP resources, challenge entropy,
+complete receive buffers and monotonic I/O deadlines. Core state enforces phase
+quotas and elapsed time. The application owns endpoint/budget selection, discovery
+entropy, output and the logging lifetime. Rendering/input/audio
 and simulation boundaries will be added as implemented behavior warrants them;
 there are no placeholder engine crates or fabricated game states.
+
+Challenge, pending-connect and acknowledged transport have consuming ownership
+transitions on one bound socket. Refusal and failure close it. The network API is
+blocking and intended for an I/O worker; no library installs a runtime or log
+subscriber. See [network ownership](owned-network-phases.md) for the public phase
+contract. Acknowledgement still precedes channel/gamestate initialization.
 
 Discovery uses the existing connectionless envelope and normal info-string profile.
 Requests contain a 128-bit random correlation value as 32 ASCII hex bytes. A reply

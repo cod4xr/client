@@ -1,4 +1,5 @@
 {
   "cod4xr-client-core": ["cod4x-protocol"],
-  "cod4xr-client": ["cod4xr-client-core", "cod4x-observability", "getrandom", "tracing", "serde_json"]
+  "cod4xr-client-net": ["cod4xr-client-core", "getrandom", "cod4x-protocol"],
+  "cod4xr-client": ["cod4xr-client-core", "cod4xr-client-net", "cod4x-observability", "getrandom", "tracing", "serde_json"]
 }

@@ -6,10 +6,10 @@ mod arguments;
 mod challenge;
 mod challenge_report;
 mod error;
-mod net_io;
 mod query;
 mod report;
 
+use cod4xr_client_net::datagram as net_io;
 use std::process::ExitCode;
 
 fn main() -> ExitCode {

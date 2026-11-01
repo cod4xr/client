@@ -38,6 +38,7 @@ version = "0.1.0"
 dependencies = [
  "cod4x-observability",
  "cod4xr-client-core",
+ "cod4xr-client-net",
  "getrandom",
  "serde_json",
  "tracing",
@@ -48,6 +49,15 @@ name = "cod4xr-client-core"
 version = "0.1.0"
 dependencies = [
  "cod4x-protocol",
+]
+
+[[package]]
+name = "cod4xr-client-net"
+version = "0.1.0"
+dependencies = [
+ "cod4x-protocol",
+ "cod4xr-client-core",
+ "getrandom",
 ]
 
 [[package]]

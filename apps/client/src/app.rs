@@ -63,11 +63,8 @@ fn execute_query(options: &RuntimeOptions) -> Result<(), ClientError> {
 }
 
 fn execute_challenge(options: &RuntimeOptions, retry: RetryOptions) -> Result<(), ClientError> {
-    let mut entropy = [0; 4];
-    getrandom::fill(&mut entropy).map_err(ClientError::Random)?;
-    let nonce = i32::from_le_bytes(entropy);
     tracing::info!(event = "challenge.started", peer = %options.peer, timeout_ms = options.timeout.as_millis(), max_attempts = retry.attempts, "Probing server challenge");
-    let (result, usage) = challenge::run(options, retry, nonce);
+    let (result, usage) = challenge::run(options, retry);
     tracing::info!(event = "challenge.summary", attempts = usage.attempts, received = usage.received, rejected = usage.rejected, last_rejection = ?usage.last_rejection, "Challenge work summary");
     let receipt = result?;
     tracing::info!(
