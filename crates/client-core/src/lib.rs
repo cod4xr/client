@@ -14,6 +14,7 @@ mod info_response;
 mod profile;
 mod request;
 pub mod server_payload;
+pub mod service_controls;
 
 pub use challenge::QueryChallenge;
 pub use error::DiscoveryError;

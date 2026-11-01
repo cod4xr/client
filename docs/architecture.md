@@ -50,6 +50,13 @@ decompression into caller buffers. Decoded views retain a history borrow and exp
 untrusted service bytes, including native Huffman padding. They neither execute
 records nor commit acknowledgements before service validation through logical EOF.
 
+Service-control plans validate NOP/command/EOF streams before populating final
+normalized command output. They preserve full big-string records while deriving
+the shorter native obfuscation key separately. Unsupported services reject before
+partial output/application. Transport delivery sequence and host-validated message
+sequence are distinct; only a complete validated message can advance the latter.
+Command deduplication, typed execution, gamestate and session commit remain host work.
+
 Discovery uses the existing connectionless envelope and normal info-string profile.
 Requests contain a 128-bit random correlation value as 32 ASCII hex bytes. A reply
 must come from the connected endpoint and contain exactly one matching challenge.

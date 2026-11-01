@@ -1,17 +1,17 @@
 # Validation evidence
 
-Latest local checkpoint: 99 tests pass in both debug and release on the pinned
+Latest local checkpoint: 109 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (98 source files, 3 crates, largest source
+formatting and repository policy pass (107 source files, 3 crates, largest source
 238 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history
-owned control-frame encoding and ordinary server-payload decoding. Service
-validation, auxiliary reliable transport, gamestate and ordinary gameplay remain open.
+owned control encoding, server-payload decoding and whole service-control validation.
+Typed command delivery, auxiliary reliable transport, gamestate and ordinary gameplay remain open.
 
-The 88-test control-frame checkpoint passed hosted Windows/Linux CI in
-[run 41344796096](https://github.com/cod4xr/client/actions/runs/41344796096).
-Hosted validation for the latest server-payload checkpoint is pending. These
+The 99-test server-payload checkpoint passed hosted Windows/Linux CI in
+[run 41345969040](https://github.com/cod4xr/client/actions/runs/41345969040).
+Hosted validation for the latest service-control checkpoint is pending. These
 changes edit only the client repository and consume the published shared revision.
 
 Eight new independent loopback tests exercise the reusable network crate: one
@@ -55,6 +55,15 @@ tests establish original context use and rejection of unknown original protocols
 one compile-fail example prevents history release during decoded-view inspection.
 All caller decoded output and history remain unchanged on decoding errors; private
 scratch may be modified and is never consumed as a result on failure.
+
+Nine service-control tests cover logical EOF/padding, complete normalized records,
+duplicates/order/empty values, maximum big strings with shorter retained keys, plan
+ownership without automatic commit, a complete 128-command window, every record
+truncation, scratch/output capacities, quotas, invalid sequences and oversized strings.
+A UDP round trip sends a real control frame, rejects a malformed acknowledged service
+stream without freeing client history or exposing partial command output, then
+validates the next complete message and explicitly commits its acknowledgement.
+Transport receipt and host-validated message sequence remain distinct in that test.
 
 ## Initial foundation
 

@@ -39,3 +39,7 @@ oversized inputs, sequence bounds and reserved Huffman symbols. Two independent 
 tests establish original cookie/profile use after socket handoff and unknown-profile
 rejection without fallback. A compile-fail documentation example checks the history
 borrow during decoded-view inspection. No ordinary gameplay peer was executed.
+
+[Service-control plans](service-controls.md) now validate supported ordinary NOP/
+command/EOF streams after this decoder. Unsupported service types still require
+their own parser and prevent acknowledgement commit through this boundary.

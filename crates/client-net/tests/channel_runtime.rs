@@ -15,4 +15,6 @@ mod receive;
 mod send;
 #[path = "channel_cases/server_payload.rs"]
 mod server_payload;
+#[path = "channel_cases/services.rs"]
+mod services;
 mod support;
