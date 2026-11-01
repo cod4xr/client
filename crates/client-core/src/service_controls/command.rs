@@ -11,6 +11,9 @@ pub struct ServerCommand<'commands> {
 }
 
 impl<'commands> ServerCommand<'commands> {
+    pub(crate) fn from_stored(sequence: u32, bytes: &'commands [u8]) -> Self {
+        Self { sequence, bytes }
+    }
     /// Returns the positive baseline command sequence.
     #[must_use]
     pub fn sequence(&self) -> u32 {

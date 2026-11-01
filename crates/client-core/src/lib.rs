@@ -13,6 +13,7 @@ pub mod handshake;
 mod info_response;
 mod profile;
 mod request;
+pub mod server_commands;
 pub mod server_payload;
 pub mod service_controls;
 

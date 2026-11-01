@@ -45,6 +45,9 @@ command keys before shared transformation/decompression.
 [Service-control plans](docs/service-controls.md) now validate complete NOP/command/
 EOF streams before exposing normalized records. Command dispatch, gamestate and
 the remaining gameplay lifecycle are still required for live sessions.
+[Server-command history](docs/server-command-history.md) now supports configurable
+retention beyond the native 128 entries, full command text and preflighted updates
+that can be cancelled before commit.
 
 ## Run
 

@@ -1,17 +1,17 @@
 # Validation evidence
 
-Latest local checkpoint: 109 tests pass in both debug and release on the pinned
+Latest local checkpoint: 118 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (107 source files, 3 crates, largest source
+formatting and repository policy pass (118 source files, 3 crates, largest source
 238 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
-covered, along with ordinary-channel integration, checked client-command history
-owned control encoding, server-payload decoding and whole service-control validation.
+covered, along with ordinary-channel integration, checked client-command history,
+owned control encoding, payload/service validation and configurable server-command retention.
 Typed command delivery, auxiliary reliable transport, gamestate and ordinary gameplay remain open.
 
-The 99-test server-payload checkpoint passed hosted Windows/Linux CI in
-[run 41345969040](https://github.com/cod4xr/client/actions/runs/41345969040).
-Hosted validation for the latest service-control checkpoint is pending. These
+The 109-test service-control checkpoint passed hosted Windows/Linux CI in
+[run 41347783014](https://github.com/cod4xr/client/actions/runs/41347783014).
+Hosted validation for the latest retained-history checkpoint is pending. These
 changes edit only the client repository and consume the published shared revision.
 
 Eight new independent loopback tests exercise the reusable network crate: one
@@ -64,6 +64,15 @@ A UDP round trip sends a real control frame, rejects a malformed acknowledged se
 stream without freeing client history or exposing partial command output, then
 validates the next complete message and explicitly commits its acknowledgement.
 Transport receipt and host-validated message sequence remain distinct in that test.
+
+Eight retained-history tests cover exact/dirty storage geometry, cancellation,
+non-power-of-two slot reuse, retention more than 128 entries back, full big strings
+with shorter keys, duplicate/older records, gaps, profile/message order, outgoing
+acknowledgement failure cancellation and NOP-only message advancement. A further
+UDP round trip stores a normalized server command and uses its exact key/sequence
+plus the validated message acknowledgement to produce the next decodable client
+control frame. Core preparation does not mutate state; its commit is infallible
+under the exclusive preflighted borrows.
 
 ## Initial foundation
 

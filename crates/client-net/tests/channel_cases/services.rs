@@ -19,7 +19,7 @@ use crate::{
     support::{receive, server},
 };
 
-fn response(socket: &UdpSocket, client: SocketAddr, sequence: u32, source: &[u8]) {
+pub(super) fn response(socket: &UdpSocket, client: SocketAddr, sequence: u32, source: &[u8]) {
     let mut body = [0; 2048];
     body[..4].copy_from_slice(&1_u32.to_le_bytes());
     let length = compression::compress(source, &mut body[4..]).expect("Fixture compression");
@@ -50,7 +50,10 @@ fn serve(socket: &UdpSocket, proceed: &Receiver<()>) {
     response(socket, client, 8, b"\x04\x03\0\0\0PrivateValid%\0\x07");
 }
 
-fn send_control(channel: &mut ClientChannel<'_>, history: &mut LegacyClientCommands<'_>) {
+pub(super) fn send_control(
+    channel: &mut ClientChannel<'_>,
+    history: &mut LegacyClientCommands<'_>,
+) {
     let header = ClientControlHeader::Cod4x21 {
         server_id: 0,
         message_acknowledge: 0,

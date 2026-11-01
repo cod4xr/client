@@ -55,7 +55,14 @@ normalized command output. They preserve full big-string records while deriving
 the shorter native obfuscation key separately. Unsupported services reject before
 partial output/application. Transport delivery sequence and host-validated message
 sequence are distinct; only a complete validated message can advance the latter.
-Command deduplication, typed execution, gamestate and session commit remain host work.
+Typed execution, gamestate and session policy remain host work.
+
+Server-command history retains full normalized records in caller-selected slots,
+including capacities above 128. Exact sequence tags protect reused slots. Preparation
+checks profile/message order and selects newer records without mutation; an exclusive
+prepared update has an infallible commit. The host can commit its already checked
+outgoing acknowledgement first, then incoming storage, or cancel the prepared update
+on failure. Summary counters expose work without logging private command/key bytes.
 
 Discovery uses the existing connectionless envelope and normal info-string profile.
 Requests contain a 128-bit random correlation value as 32 ASCII hex bytes. A reply

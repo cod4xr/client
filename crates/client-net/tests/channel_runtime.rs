@@ -5,6 +5,8 @@
     reason = "Bounded loopback tests join independent responders."
 )]
 mod channel_support;
+#[path = "channel_cases/command_history.rs"]
+mod command_history;
 #[path = "channel_cases/control.rs"]
 mod control;
 #[path = "channel_cases/limits.rs"]

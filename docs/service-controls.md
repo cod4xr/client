@@ -37,3 +37,7 @@ normalized command output. Raw transport sequence 7 is distinguished from the ho
 still-zero validated message sequence. Complete EOF on the following sequence 8
 allows explicit host acknowledgement commit. No command execution or ordinary
 gameplay-server session was tested.
+
+[Server-command history](server-command-history.md) now supplies the retention and
+monotonic duplicate handling for these plans, with prepared updates that can be
+cancelled before state changes. Typed execution and gamestate remain separate.
