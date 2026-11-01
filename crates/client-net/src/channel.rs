@@ -3,6 +3,7 @@ use std::fmt;
 
 use cod4x_protocol::Route;
 use cod4x_transport::{ReceiveChannel, SendChannel};
+use cod4xr_client_core::{BaselineProtocol, server_payload::ServerPayloadDecoder};
 
 use crate::{
     ChannelContext, ClientReceiver, ClientSender, NetworkError, ReceiveUsage, SendUsage,
@@ -53,6 +54,19 @@ impl<'storage> ClientChannel<'storage> {
     #[must_use]
     pub fn context(&self) -> &ChannelContext {
         &self.context
+    }
+    /// Creates a decoder with this connection's original protocol and private cookie.
+    /// It does not validate service opcodes, commit acknowledgements or read the socket.
+    ///
+    /// # Errors
+    /// An unreviewed originally requested message protocol rejects without fallback.
+    pub fn server_decoder(&self) -> Result<ServerPayloadDecoder, NetworkError> {
+        let profile = BaselineProtocol::from_number(self.context.summary().requested_protocol())
+            .ok_or(NetworkError::UnsupportedProtocol)?;
+        Ok(ServerPayloadDecoder::new(
+            profile,
+            self.context.server_challenge(),
+        ))
     }
     /// Returns cumulative outgoing work without payloads/routing identifiers.
     #[must_use]

@@ -44,6 +44,12 @@ The network sender checks original protocol/challenge before reservation. A plan
 does not mark commands transmitted or commit acknowledgements; the host owns those
 transitions after complete I/O and validated inbound messages, respectively.
 
+Inbound ordinary payload decoding obtains its profile/cookie from original socket
+context, checks the retained transmitted command key and uses shared transforms/
+decompression into caller buffers. Decoded views retain a history borrow and expose
+untrusted service bytes, including native Huffman padding. They neither execute
+records nor commit acknowledgements before service validation through logical EOF.
+
 Discovery uses the existing connectionless envelope and normal info-string profile.
 Requests contain a 128-bit random correlation value as 32 ASCII hex bytes. A reply
 must come from the connected endpoint and contain exactly one matching challenge.

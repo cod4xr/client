@@ -35,6 +35,8 @@ pub enum NetworkError {
     TransmissionFailed,
     /// An owned control frame belongs to another protocol/challenge context.
     ControlContext,
+    /// The original connect protocol has no reviewed message profile here.
+    UnsupportedProtocol,
 }
 
 impl fmt::Display for NetworkError {
@@ -54,6 +56,9 @@ impl fmt::Display for NetworkError {
             Self::TransmissionFailed => formatter.write_str("client transmission already failed"),
             Self::ControlContext => {
                 formatter.write_str("client control connection context mismatch")
+            }
+            Self::UnsupportedProtocol => {
+                formatter.write_str("unsupported original client message protocol")
             }
         }
     }

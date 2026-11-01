@@ -31,7 +31,7 @@ refusals and notices with exact peers, admitted requests, quotas and deadlines.
 through challenge, connect retries and acknowledgement, or closes it on refusal.
 The CLI continues to expose standalone probes. The [ordinary channel](docs/ordinary-channel.md)
 now reuses shared sequencing and fragmentation on the acknowledged socket, with
-pacing under caller control. Reliable delivery, inbound message decoding, gamestate and the
+pacing under caller control. Reliable delivery, service-message validation, gamestate and the
 remaining gameplay lifecycle are required for live joins.
 
 [Client-command history](docs/client-command-history.md) separates queued,
@@ -40,6 +40,9 @@ and a retained private key. It does not execute incoming server commands.
 [Owned control messages](docs/control-messages.md) now serialize a fitting pending
 prefix under explicit legacy/CoD4X headers, with shared compression/obfuscation and
 connection-context checks before channel reservation.
+[Server-payload decoding](docs/server-payloads.md) now checks retained transmitted
+command keys before shared transformation/decompression. Service validation,
+acknowledgement commit and gameplay initialization remain separate work.
 
 ## Run
 

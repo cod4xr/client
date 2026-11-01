@@ -1,17 +1,17 @@
 # Validation evidence
 
-Latest local checkpoint: 88 tests pass in both debug and release on the pinned
+Latest local checkpoint: 99 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (89 source files, 3 crates, largest source
+formatting and repository policy pass (98 source files, 3 crates, largest source
 238 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history
-and owned control-frame encoding. Inbound decoding, auxiliary reliable transport,
-gamestate and ordinary gameplay remain open.
+owned control-frame encoding and ordinary server-payload decoding. Service
+validation, auxiliary reliable transport, gamestate and ordinary gameplay remain open.
 
-The 79-test command-history checkpoint passed hosted Windows/Linux CI in
-[run 41343668613](https://github.com/cod4xr/client/actions/runs/41343668613).
-Hosted validation for the latest control-frame checkpoint is pending. These
+The 88-test control-frame checkpoint passed hosted Windows/Linux CI in
+[run 41344796096](https://github.com/cod4xr/client/actions/runs/41344796096).
+Hosted validation for the latest server-payload checkpoint is pending. These
 changes edit only the client repository and consume the published shared revision.
 
 Eight new independent loopback tests exercise the reusable network crate: one
@@ -46,6 +46,15 @@ expansion without truncation. A further UDP integration test rejects wrong proto
 cookie contexts before sequence reservation and verifies a fragmented complete
 control frame on the original socket. Marking the included command prefix sent is
 separate from construction and from validated peer acknowledgement.
+
+Eight payload tests add explicit profile mapping, independent initial/keyed server
+vectors, native padding, key selection without commit, decoded-byte opacity,
+unsent/future/regressing numbers, every short scratch/output prefix, incomplete/
+empty/oversized input, sequence bounds and reserved compression symbols. Two UDP
+tests establish original context use and rejection of unknown original protocols;
+one compile-fail example prevents history release during decoded-view inspection.
+All caller decoded output and history remain unchanged on decoding errors; private
+scratch may be modified and is never consumed as a result on failure.
 
 ## Initial foundation
 

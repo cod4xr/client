@@ -11,9 +11,12 @@ pub mod control;
 mod error;
 pub mod handshake;
 mod info_response;
+mod profile;
 mod request;
+pub mod server_payload;
 
 pub use challenge::QueryChallenge;
 pub use error::DiscoveryError;
 pub use info_response::{InfoResponse, MAX_INFO_DATAGRAM_BYTES};
+pub use profile::BaselineProtocol;
 pub use request::INFO_REQUEST_BYTES;

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 use std::fmt;
 
+use crate::BaselineProtocol;
 use cod4x_protocol::{MessageError, MessageWriter};
 
 use super::ServerCommandKey;
@@ -34,9 +35,14 @@ impl ClientControlHeader<'_> {
     /// Returns the explicitly chosen wire protocol, not an inferred negotiation.
     #[must_use]
     pub fn requested_protocol(&self) -> i32 {
+        self.baseline_protocol().number()
+    }
+    /// Returns the explicit reviewed profile, without consulting remote hints.
+    #[must_use]
+    pub fn baseline_protocol(&self) -> BaselineProtocol {
         match self {
-            Self::Legacy6 { .. } => 6,
-            Self::Cod4x21 { .. } => 21,
+            Self::Legacy6 { .. } => BaselineProtocol::Legacy6,
+            Self::Cod4x21 { .. } => BaselineProtocol::Cod4x21,
         }
     }
     /// Returns the complete plaintext header size.
