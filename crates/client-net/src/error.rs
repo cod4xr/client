@@ -37,6 +37,10 @@ pub enum NetworkError {
     ControlContext,
     /// The original connect protocol has no reviewed message profile here.
     UnsupportedProtocol,
+    /// An auxiliary packet belongs to another envelope family.
+    AuxiliaryKind,
+    /// A checked reliable body could not be parsed.
+    Reliable(cod4xr_reliable::ReliableError),
 }
 
 impl fmt::Display for NetworkError {
@@ -60,6 +64,8 @@ impl fmt::Display for NetworkError {
             Self::UnsupportedProtocol => {
                 formatter.write_str("unsupported original client message protocol")
             }
+            Self::AuxiliaryKind => formatter.write_str("unexpected auxiliary envelope family"),
+            Self::Reliable(error) => error.fmt(formatter),
         }
     }
 }
@@ -73,6 +79,7 @@ impl Error for NetworkError {
             Self::Connect(error) => Some(error),
             Self::Plan(error) => Some(error),
             Self::Channel(error) => Some(error),
+            Self::Reliable(error) => Some(error),
             _ => None,
         }
     }

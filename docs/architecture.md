@@ -11,6 +11,12 @@ client product. It retains one implementation of shared wire formats rather
 than copying protocol code into a second repository. Extracting a dedicated
 shared-core repository is a later ownership decision, not a prerequisite here.
 
+The new auxiliary reliable body format lives in `cod4xr-reliable`, a neutral
+dependency-free crate within this repository. It implements a previously absent
+body codec, retaining the shared outer envelope rather than duplicating it. This
+boundary permits later reuse without depending on client OS or game ownership;
+no server source or published shared revision changes are required.
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

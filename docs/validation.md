@@ -1,17 +1,18 @@
 # Validation evidence
 
-Latest local checkpoint: 118 tests pass in both debug and release on the pinned
+Latest local checkpoint: 127 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (118 source files, 3 crates, largest source
+formatting and repository policy pass (129 source files, 4 crates, largest source
 238 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
-owned control encoding, payload/service validation and configurable server-command retention.
-Typed command delivery, auxiliary reliable transport, gamestate and ordinary gameplay remain open.
+owned control encoding, payload/service validation, configurable server-command
+retention and auxiliary reliable body decoding. Typed command delivery, auxiliary
+reliable state/streams, gamestate and ordinary gameplay remain open.
 
-The 109-test service-control checkpoint passed hosted Windows/Linux CI in
-[run 41347783014](https://github.com/cod4xr/client/actions/runs/41347783014).
-Hosted validation for the latest retained-history checkpoint is pending. These
+The 118-test retained-history checkpoint passed hosted Windows/Linux CI in
+[run 41349261171](https://github.com/cod4xr/client/actions/runs/41349261171).
+Hosted validation for the auxiliary-body work will follow its commit. These
 changes edit only the client repository and consume the published shared revision.
 
 Eight new independent loopback tests exercise the reusable network crate: one
@@ -73,6 +74,15 @@ UDP round trip stores a normalized server command and uses its exact key/sequenc
 plus the validated message acknowledgement to produce the next decodable client
 control frame. Core preparation does not mutate state; its commit is infallible
 under the exclusive preflighted borrows.
+
+Eight auxiliary-body tests add independent native-shaped ACK/data vectors, exact
+maximum size, every short output capacity, payload privacy, all flag/window-hint
+bits, range counts/domains, truncation and exact suffix validation. A UDP test
+checks qport/family admission before parsing without automatic ACKs, channel
+reservation or window changes. The neutral crate has no dependencies. Thirteen
+pinned client-reference hashes pass locally, including both reliable source files;
+the historical server-reference entries were preserved without accessing server
+worktrees. Temporal ACK validation and complete stream transport are not yet covered.
 
 ## Initial foundation
 

@@ -16,7 +16,9 @@
         "src/cl_netchan.c": "7889b9f49504739603d6e463ce01d3b06bdff192ca51de40dcffa5f741397bf9",
         "src/qcommon.h": "7d706a5a87ce23f8147b02f7a33b28316c5abac0c65645250fe7bf186aab527b",
         "src/msg.c": "2502bef21b4ea49440678ba4bec3eed0974c6a79da20632809ea933095f1f74c",
-        "src/qshared.c": "3b15eaf610529e5d885e74a114a9c76c33e31ce3474e4999adc54f0e56d11833"
+        "src/qshared.c": "3b15eaf610529e5d885e74a114a9c76c33e31ce3474e4999adc54f0e56d11833",
+        "src/net_reliabletransport.c": "f7834e7c56fd61aa68ebea5b74bded6f395d603493e5cc4069bc200657f2a8b6",
+        "src/net_reliabletransport.h": "dcdeedb50f2ea96f5c759063fced4afa096c25e142eaf1292c2213f94816e3db"
       }
     },
     {

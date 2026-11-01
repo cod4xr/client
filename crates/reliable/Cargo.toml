@@ -1,0 +1,11 @@
+[package]
+name = "cod4xr-reliable"
+description = "Socket-free CoD4XR auxiliary reliable transport primitives"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true

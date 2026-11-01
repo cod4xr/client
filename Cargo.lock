@@ -66,8 +66,13 @@ dependencies = [
  "cod4x-protocol",
  "cod4x-transport",
  "cod4xr-client-core",
+ "cod4xr-reliable",
  "getrandom",
 ]
+
+[[package]]
+name = "cod4xr-reliable"
+version = "0.1.0"
 
 [[package]]
 name = "crossbeam-channel"

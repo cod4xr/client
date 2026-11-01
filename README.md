@@ -49,6 +49,10 @@ the remaining gameplay lifecycle are still required for live sessions.
 retention beyond the native 128 entries, full command text and preflighted updates
 that can be cancelled before commit.
 
+[Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
+codec and checked UDP routing. Stateful ACK admission, stream assembly and
+retransmission remain open.
+
 ## Run
 
 Rust 1.95 is pinned. On this workstation, reuse the existing Cargo target:
@@ -84,6 +88,7 @@ core and use lossy UTF-8 only for display. Raw peer strings/tokens stay out of l
 
 - `crates/client-core`: deterministic discovery and connection state over shared codecs.
 - `crates/client-net`: owned sockets, bounded blocking I/O and phase transitions.
+- `crates/reliable`: dependency-free auxiliary reliable bodies, ready for transport state.
 - `apps/client`: arguments, logging and report output.
 - `docs`: architecture, source evidence, compatibility gates and remaining work.
 - `tools`: source/dependency checks, reference verification and local build setup.

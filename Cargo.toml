@@ -1,5 +1,5 @@
 [workspace]
-members = ["apps/client", "crates/client-core", "crates/client-net"]
+members = ["apps/client", "crates/client-core", "crates/client-net", "crates/reliable"]
 resolver = "3"
 
 [workspace.package]
@@ -12,6 +12,7 @@ publish = false
 [workspace.dependencies]
 cod4xr-client-core = { path = "crates/client-core" }
 cod4xr-client-net = { path = "crates/client-net" }
+cod4xr-reliable = { path = "crates/reliable" }
 cod4x-protocol = { git = "https://github.com/cod4xr/server.git", rev = "c3bd151068465a40e11e3db9d616789fdffa146f" }
 cod4x-transport = { git = "https://github.com/cod4xr/server.git", rev = "c3bd151068465a40e11e3db9d616789fdffa146f" }
 cod4x-observability = { git = "https://github.com/cod4xr/server.git", rev = "c3bd151068465a40e11e3db9d616789fdffa146f" }

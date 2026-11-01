@@ -45,6 +45,19 @@ impl<'packet> AuxiliaryMessage<'packet> {
     pub fn body(&self) -> &'packet [u8] {
         self.body
     }
+    /// Parses a reliable body only after its envelope family and qport were checked.
+    /// This does not apply ACKs, allocate windows, execute payloads or send a reply.
+    ///
+    /// # Errors
+    /// Rejects another auxiliary family and malformed/unrepresentable reliable bodies.
+    pub fn reliable_packet(
+        &self,
+    ) -> Result<cod4xr_reliable::ReliablePacket<'packet>, crate::NetworkError> {
+        if self.kind != AuxiliaryKind::Reliable {
+            return Err(crate::NetworkError::AuxiliaryKind);
+        }
+        cod4xr_reliable::ReliablePacket::parse(self.body).map_err(crate::NetworkError::Reliable)
+    }
 }
 
 impl fmt::Debug for AuxiliaryMessage<'_> {
