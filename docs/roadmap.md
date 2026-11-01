@@ -14,10 +14,12 @@ scaffolding and a successful query are not substitutes for a playable client.
 | Scripting/mods | Client-side presentation and expanded engine features | Named stock modes and existing mods run correctly |
 | Release | Full sessions, version matrix, soak/performance/security | Supported ordinary no-auth servers play through complete sessions |
 
-Next is the source-grounded no-auth connection lifecycle. Do not use discovery's
-protocol-6 field alone to choose its gameplay dialect. Reuse message/channel
-primitives while keeping challenge state and retry ownership in the client.
-Capture the first compatible peer traces before claiming broad interoperability.
+Connection libraries now own challenge/connect/ack transitions and ordinary
+fragment transport. Auxiliary receive windows and application framing are covered
+by deterministic and loopback tests. Next are outgoing auxiliary ACK admission,
+pacing/retransmission, typed message dispatch and complete gamestate handling.
+Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
+Capture compatible ordinary-peer traces before claiming broad interoperability.
 
 Features that remove asset/model/image/entity/configstring limits need both
 internal storage/resource design and a negotiated extended wire/content profile.

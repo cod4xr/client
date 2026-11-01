@@ -15,7 +15,7 @@ use crate::{
     support::server,
 };
 
-fn datagram(sequence: u32, declared: i16, payload: &[u8]) -> Vec<u8> {
+pub(super) fn datagram(sequence: u32, declared: i16, payload: &[u8]) -> Vec<u8> {
     let mut bytes = ordinary(0xffff_fff0, &40_000_u16.to_le_bytes());
     bytes.extend_from_slice(&sequence.to_le_bytes());
     bytes.extend_from_slice(&0_i32.to_le_bytes());

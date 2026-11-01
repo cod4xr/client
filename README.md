@@ -16,12 +16,12 @@ connection. In particular, discovery protocol `6` is not a negotiated join versi
 
 The core also supplies a [bounded challenge state machine](docs/challenge-probe.md)
 with exact peer/nonce correlation, cumulative quotas, monotonic deadlines and
-controlled retries. The CLI exercises this state over real UDP; gameplay
-connect/admission remains the next step.
+controlled retries. The CLI exercises this state over real UDP. Libraries also own
+the connect/acknowledged transport described below; playable game state remains open.
 
 [Connect request planning](docs/connect-plan.md) now builds owned no-auth frames
 from checked challenges and explicit protocol/version settings. The CLI still sends
-only discovery/challenge probes; acknowledgement and gameplay admission follow.
+only discovery/challenge probes; library acknowledgement ownership is described below.
 
 [Reply decoding](docs/connect-replies.md) keeps acknowledgements, refusals and
 notices distinct without granting path or command authority to server text.
@@ -52,7 +52,9 @@ that can be cancelled before commit.
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add
 caller-funded fragment retention, selective metadata and bounded stream reads.
-Outgoing ACK admission, retransmission and application framing remain open.
+[Application framing](docs/reliable-framing.md) now assembles complete messages
+across partial length headers without peer-selected allocations. Outgoing ACK
+admission, retransmission and typed application dispatch remain open.
 
 ## Run
 

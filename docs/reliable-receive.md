@@ -49,4 +49,7 @@ sequence/range boundaries. A real UDP test validates exact body framing before
 admitting reordered bytes, rejects a malformed body and ignores a conflicting
 duplicate. Its outgoing side is empty, with ACK-zero/no-SACK admission checked
 explicitly. A general outgoing ACK validator, retransmission runtime, application
-framing and native-peer interoperability remain separate acceptance gates.
+dispatch and native-peer interoperability remain separate acceptance gates.
+
+[Application framing](reliable-framing.md) now consumes incrementally drained
+stream bytes with fixed caller storage, complete-frame borrows and no execution.

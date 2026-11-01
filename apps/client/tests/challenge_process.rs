@@ -7,6 +7,7 @@
 use std::{
     net::UdpSocket,
     process::{Command, Output},
+    sync::mpsc,
     thread,
     time::Duration,
 };
@@ -14,7 +15,7 @@ use std::{
 fn server() -> UdpSocket {
     let socket = UdpSocket::bind("127.0.0.1:0").expect("Loopback peer");
     socket
-        .set_read_timeout(Some(Duration::from_secs(4)))
+        .set_read_timeout(Some(Duration::from_secs(10)))
         .expect("Deadline");
     socket
 }
@@ -204,6 +205,7 @@ fn receive_budget_failure_reports_counts_and_exits_without_a_success_report() {
 fn unsupported_profile_times_out_without_a_legacy_or_gameplay_fallback() {
     let socket = server();
     let peer = socket.local_addr().expect("Peer").to_string();
+    let (finished, completion) = mpsc::sync_channel(0);
     let responder = thread::spawn(move || {
         let mut request = [0; 128];
         let (length, client) = socket.recv_from(&mut request).expect("Query");
@@ -216,19 +218,22 @@ fn unsupported_profile_times_out_without_a_legacy_or_gameplay_fallback() {
             .as_bytes(),
         );
         socket.send_to(&reply, client).expect("Unsupported profile");
-        thread::sleep(Duration::from_millis(200));
+        completion
+            .recv_timeout(Duration::from_secs(10))
+            .expect("Client completion");
     });
     let output = run(
         &peer,
         &[
             "--timeout-ms",
-            "60",
+            "1000",
             "--max-attempts",
             "1",
             "--log-format",
             "json",
         ],
     );
+    finished.send(()).expect("Release responder");
     responder.join().expect("Responder");
     assert!(!output.status.success());
     assert!(output.stdout.is_empty());

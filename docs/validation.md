@@ -1,19 +1,19 @@
 # Validation evidence
 
-Latest local checkpoint: 138 tests pass in both debug and release on the pinned
+Latest local checkpoint: 148 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (141 source files, 4 crates, largest source
-238 lines). Discovery, challenge state/runtime, owned connect requests and bounded
+formatting and repository policy pass (150 source files, 4 crates, largest source
+243 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
 owned control encoding, payload/service validation, configurable server-command
-retention, auxiliary reliable body decoding and bounded receive streams. Typed
-command delivery, outgoing ACKs/retransmission, application framing, gamestate
+retention, auxiliary reliable bodies, bounded receive streams and application
+framing. Typed command delivery, outgoing ACKs/retransmission, gamestate
 and ordinary gameplay remain open.
 
-The 127-test auxiliary-body checkpoint passed hosted Windows/Linux CI in
-[run 41350388749](https://github.com/cod4xr/client/actions/runs/41350388749).
-Hosted validation for the receive-window work will follow its commit. These
+The 138-test receive-window checkpoint passed hosted Windows/Linux CI in
+[run 41351582168](https://github.com/cod4xr/client/actions/runs/41351582168).
+Hosted validation for the message-framing work will follow its commit. These
 changes edit only the client repository and consume the published shared revision.
 
 Eight new independent loopback tests exercise the reusable network crate: one
@@ -94,6 +94,19 @@ UDP test parses exact bodies before retaining reordered data, rejects malformed
 lengths, ignores conflicting retransmissions and drains the original byte stream.
 Its outgoing queue is empty and admits only ACK zero with no selective ranges;
 it does not exercise a general outgoing ACK validator or retransmission runtime.
+
+Eight application-framing tests add independent exact length/body vectors, output
+atomicity, every three-chunk partition including partial length headers, retained
+frame borrows, concatenation with one-frame consumption, zero-body framing,
+dirty-storage reuse/privacy and terminal rejection of negative/over-budget lengths.
+A native-size 1 MiB message drains incrementally through three reordered slots,
+without requiring the receive window to hold the whole message. A compile-fail
+example prevents body-buffer reuse during complete-frame inspection. Another real
+UDP test assembles a complete application body after out-of-order one-to-three-byte
+length-header pieces. Neither framing nor this fixture executes an application opcode.
+The process-test responder now waits for explicit child completion rather than a
+fixed sleep. Its unsupported-profile probe uses a practical one-second deadline;
+deterministic core tests continue to check exact retry/expiry boundaries.
 
 ## Initial foundation
 
