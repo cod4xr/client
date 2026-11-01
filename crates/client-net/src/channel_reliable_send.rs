@@ -6,6 +6,7 @@ use cod4xr_client_core::BaselineProtocol;
 use cod4xr_reliable::{
     MAX_RELIABLE_BODY_BYTES, ReliablePacket,
     receive::ReceiveAcknowledgement,
+    schedule::ScheduledDatagram,
     send::{PreparedTransmission, SendWindow, SentFragment},
 };
 
@@ -21,6 +22,26 @@ pub struct SentReliableDatagram {
 }
 
 impl ClientSender<'_> {
+    /// Sends one scheduler-held body and commits both pacing and fragment admission
+    /// only after complete successful OS I/O. Failure drops both leases unchanged.
+    /// The lease retains its selected original fragment, preventing stale selection.
+    ///
+    /// # Errors
+    /// Rejects an unsupported original profile before the callback, and propagates
+    /// body/envelope/deadline/socket errors without advancing either held state.
+    pub fn send_scheduled_reliable(
+        &mut self,
+        scheduled: ScheduledDatagram<'_, '_, '_>,
+        deadline: Instant,
+    ) -> Result<SentReliableDatagram, NetworkError> {
+        self.check_reliable_profile()?;
+        let sent = scheduled.send_with(|packet| self.send_reliable_packet(packet, deadline))?;
+        Ok(SentReliableDatagram {
+            fragment: sent.fragment,
+            bytes: sent.bytes,
+        })
+    }
+
     /// Sends at most one original reliable fragment on the acknowledged socket.
     /// Only complete successful OS I/O marks it transmitted. Errors drop preparation
     /// unmarked, preserving the original fragment for an explicitly paced retry.

@@ -2,6 +2,7 @@
 mod acknowledgements;
 mod data;
 mod limits;
+mod schedule;
 
 use std::{
     io,

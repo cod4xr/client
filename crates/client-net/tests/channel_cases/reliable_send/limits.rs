@@ -5,10 +5,41 @@ use cod4xr_client_net::{NetworkError, SendUsage};
 use cod4xr_reliable::{
     ReliableError, ReliablePacket, SelectiveAcks,
     receive::{ReceiveAcknowledgement, ReceiveSlot, ReceiveWindow},
+    schedule::{ReliableScheduler, ScheduleConfig, SchedulePoll},
     send::{SendError, SendWindow},
 };
 
 use super::{quiet_peer, storage, wire};
+
+fn reject_scheduled(
+    sender: &mut cod4xr_client_net::ClientSender<'_>,
+    outgoing: &mut SendWindow<'_>,
+    deadline: Instant,
+) {
+    let mut bytes = [0; 1200];
+    let mut slots = [ReceiveSlot::default(); 1];
+    let incoming = ReceiveWindow::new(&mut bytes, &mut slots).expect("Incoming");
+    let mut scheduler =
+        ReliableScheduler::new(Duration::ZERO, ScheduleConfig::default()).expect("Scheduler");
+    let plan = match scheduler
+        .poll(Duration::ZERO, outgoing, &incoming)
+        .expect("Poll")
+    {
+        SchedulePoll::Send(plan) => Some(plan),
+        SchedulePoll::WaitUntil(_) => None,
+    }
+    .expect("Candidate");
+    assert!(matches!(
+        sender.send_scheduled_reliable(plan, deadline),
+        Err(NetworkError::AuxiliaryProfile)
+    ));
+    assert!(matches!(
+        scheduler
+            .poll(Duration::ZERO, outgoing, &incoming)
+            .expect("No pacing admission"),
+        SchedulePoll::Send(_)
+    ));
+}
 use crate::{channel_support::acknowledged_for, support::server};
 
 #[test]
@@ -43,6 +74,7 @@ fn legacy_and_unknown_original_profiles_reject_auxiliary_sends_before_any_io_or_
                 Err(NetworkError::AuxiliaryProfile)
             ));
             assert_eq!(sender.next_sequence(), 1);
+            reject_scheduled(&mut sender, &mut outgoing, deadline);
         }
         assert_eq!(channel.send_usage(), SendUsage::default());
         let ack = wire(-1, 1, &[], 4, b"");

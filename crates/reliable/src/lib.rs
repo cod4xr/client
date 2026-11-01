@@ -11,6 +11,7 @@ pub mod framing;
 mod header;
 mod packet;
 pub mod receive;
+pub mod schedule;
 pub mod send;
 
 pub use acks::{SelectiveAckRange, SelectiveAcks};

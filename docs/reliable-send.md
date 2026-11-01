@@ -52,5 +52,6 @@ metadata geometry. An independent 50,000-byte model introduces first-attempt los
 reorder and duplicates while repeatedly reusing seven outgoing slots; the reconstructed
 byte stream must match exactly. This is deterministic model evidence.
 [Auxiliary UDP I/O](reliable-udp.md) now couples successful OS sends to fragment
-admission. Pacing/retransmission orchestration and ordinary-peer traces are still
-required before claiming a complete transport session.
+admission. [Scheduling](reliable-schedule.md) now paces original retries and ACKs.
+Continuous session orchestration and ordinary-peer traces are still required
+before claiming a complete transport session.

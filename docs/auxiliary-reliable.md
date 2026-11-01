@@ -36,8 +36,8 @@ bodies are errors without channel sequence reservation or automatic responses.
 [Receive windows](reliable-receive.md) now provide preflighted fragment retention,
 selective ACK metadata and bounded incremental stream reads. [Send windows](reliable-send.md)
 now provide queue ownership and complete ACK admission. [UDP sends](reliable-udp.md)
-reuse the original socket and shared envelope. Pacing and retransmission/session
-orchestration remain to be implemented.
+reuse the original socket and shared envelope. [Scheduling](reliable-schedule.md)
+now paces original retransmissions and ACKs. Continuous session orchestration remains open.
 [Application framing](reliable-framing.md) now assembles complete messages without
 executing their bodies. No native reliable peer exchange, gamestate delivery
 or playable connection is claimed.

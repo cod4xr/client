@@ -36,13 +36,14 @@ admission metadata. Send usage counts ordinary and auxiliary datagrams/bytes in
 the totals, with reliable sent/failed subset counters. Protocol and encoding errors
 before I/O charge no datagram attempt. Deadline/socket failures charge failed I/O
 without marking a fragment sent. Debug values and errors exclude payloads,
-qports, cookies and user strings.
+qports, cookies and user strings. [Scheduled sends](reliable-schedule.md) additionally
+hold the selected fragment and pacing lease until complete I/O, then commit both.
 
 Four real UDP tests check exact independent data/ACK vectors, original socket and
 qport, deadline failure followed by stable retransmission, transmit admission only
 after successful I/O, validated peer consumption, selective ACKs for a partial
 fragment, host window hints, unsupported original profiles and invalid receive
 metadata before I/O. Incoming and outgoing updates are preflighted before either
-commit in these fixtures. No ordinary gameplay peer was used. Pacing, retry/ACK
-timers, complete session orchestration and typed gamestate/application dispatch
-remain separate acceptance gates.
+commit in these fixtures. No ordinary gameplay peer was used. The scheduler now
+supplies retry/ACK timing; continuous session orchestration and typed
+gamestate/application dispatch remain separate acceptance gates.

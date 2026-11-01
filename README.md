@@ -56,8 +56,10 @@ caller-funded fragment retention, selective metadata and bounded stream reads.
 across partial length headers without peer-selected allocations. [Send windows](docs/reliable-send.md)
 retain original outgoing bytes and preflight whole ACK updates against admitted sends.
 [Auxiliary UDP sending](docs/reliable-udp.md) now admits transmission only after
-complete OS sends, with explicit ACK-only sends and profile checks. Paced retries,
-session orchestration and typed application dispatch remain open.
+complete OS sends, with explicit ACK-only sends and profile checks.
+[Reliable scheduling](docs/reliable-schedule.md) now paces original retries and
+periodic/forced ACKs, committing timers and data only after successful I/O.
+Session orchestration and typed application dispatch remain open.
 
 ## Run
 

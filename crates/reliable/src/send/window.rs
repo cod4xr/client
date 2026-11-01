@@ -98,6 +98,28 @@ impl<'buffers> SendWindow<'buffers> {
         self.base..self.base + (self.next - self.base).min(u32::from(self.span))
     }
 
+    /// Selects an eligible active ID in round-robin order without copying payloads.
+    /// Missing/out-of-span cursors restart at the current cumulative base.
+    /// Selectively acknowledged data is skipped, including a wholly suppressed span.
+    ///
+    /// # Errors
+    /// Propagates invalid retained-ID/host-index conversion instead of aliasing another slot.
+    pub fn next_transmission_sequence(&self, cursor: u32) -> Result<Option<u32>, SendError> {
+        let active = self.active_sequences();
+        let start = if active.contains(&cursor) {
+            cursor
+        } else {
+            active.start
+        };
+        for sequence in (start..active.end).chain(active.start..start) {
+            let index = self.index(sequence)?;
+            if !self.slots[index].selective {
+                return Ok(Some(sequence));
+            }
+        }
+        Ok(None)
+    }
+
     pub(super) fn index(&self, sequence: u32) -> Result<usize, SendError> {
         let distance = sequence.checked_sub(self.base).ok_or(SendError::Missing)?;
         let distance = usize::try_from(distance).map_err(|_| SendError::Missing)?;
