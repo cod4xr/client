@@ -16,6 +16,8 @@ const FRAMING_BYTES: usize = 10; // connect, space and two quote delimiters.
 /// The caller still owns retransmission, expiry and acceptance-state policy.
 pub struct NoAuthConnectPlan {
     peer: SocketAddr,
+    protocol: i32,
+    qport: u16,
     packet: [u8; MAX_CONNECT_PACKET_BYTES],
     length: usize,
 }
@@ -72,6 +74,8 @@ impl NoAuthConnectPlan {
             .map_err(|_| ConnectPlanError::Encoding)?;
         Ok(Self {
             peer: receipt.peer(),
+            protocol: settings.protocol,
+            qport: settings.qport,
             packet,
             length,
         })
@@ -81,6 +85,18 @@ impl NoAuthConnectPlan {
     #[must_use]
     pub fn peer(&self) -> SocketAddr {
         self.peer
+    }
+
+    /// Returns the explicit requested protocol, not an independently negotiated value.
+    #[must_use]
+    pub fn requested_protocol(&self) -> i32 {
+        self.protocol
+    }
+
+    /// Returns the configured 16-bit routing value for subsequent channel setup.
+    #[must_use]
+    pub fn qport(&self) -> u16 {
+        self.qport
     }
 
     /// Returns complete wire size without exposing private bytes.

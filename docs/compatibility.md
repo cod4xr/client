@@ -11,7 +11,7 @@ does not prove a playable connection.
 | Discovery request | Exact OOB/getinfo byte vector; shared packet codec | Named ordinary server captures |
 | Discovery response | Complete info validation, correlation, unknown bytes, bounds | Version-specific real peer matrix |
 | UDP runtime | Real loopback responder/process tests; noise, endpoint, size, timeout/budget checks | Ordinary CoD4X server trials |
-| No-auth connect | Challenge probe, owned request plans and bounded reply decoding | Pending-connect correlation/admission state and ordinary peer traces |
+| No-auth connect | Challenge probe, owned requests, reply decoding and pending-state correlation | Persistent socket/channel handoff and ordinary peer traces |
 | Channel/snapshots | Shared primitives available, not integrated | Reliable transport, gamestate, snapshots and input replay |
 | Content/render/simulation | Not implemented | Stock/custom content and complete playable sessions |
 | Optional extensions | No wire behavior invented | Negotiated features and ordinary-server fallback |

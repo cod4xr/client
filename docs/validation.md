@@ -1,13 +1,14 @@
 # Validation evidence
 
-Latest local checkpoint: 44 tests pass in both debug and release on the pinned
+Latest local checkpoint: 52 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (42 source files, 2 crates, largest source
+formatting and repository policy pass (50 source files, 2 crates, largest source
 238 lines). Discovery, challenge state/runtime, owned connect requests and bounded
-reply decoding are covered. Pending-connect state and ordinary gameplay remain open.
+reply decoding and bounded pending-connect state are covered. Persistent socket/
+channel initialization and ordinary gameplay remain open.
 
-The 39-test connect-plan checkpoint passed hosted Windows/Linux CI. Hosted
-validation for the latest reply checkpoint is pending. These later client changes
+The 44-test reply checkpoint passed hosted Windows/Linux CI. Hosted
+validation for the latest pending-connect checkpoint is pending. These client changes
 edit only the client repository and consume the already published shared revision.
 
 ## Initial foundation

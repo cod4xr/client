@@ -25,7 +25,10 @@ only discovery/challenge probes; acknowledgement and gameplay admission follow.
 
 [Reply decoding](docs/connect-replies.md) keeps acknowledgements, refusals and
 notices distinct without granting path or command authority to server text.
-All 44 workspace tests pass locally in debug and release.
+[Pending-connect state](docs/pending-connect.md) now correlates acknowledgements,
+refusals and notices with exact peers, admitted requests, quotas and deadlines.
+All 52 workspace tests pass locally in debug and release. A persistent socket
+handoff and subsequent channel initialization remain required for live joins.
 
 ## Run
 
