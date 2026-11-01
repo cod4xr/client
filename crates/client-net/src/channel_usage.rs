@@ -2,7 +2,7 @@
 /// Saturating lifetime send counters without payloads or routing identifiers.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct SendUsage {
-    /// Sequences reserved, including messages later cancelled or failed.
+    /// Ordinary sequences reserved, including messages later cancelled or failed.
     pub messages_reserved: u64,
     /// Complete UDP datagrams accepted by the OS, not acknowledged by a peer.
     pub datagrams_sent: u64,
@@ -10,6 +10,10 @@ pub struct SendUsage {
     pub bytes_sent: u64,
     /// Failed datagram I/O operations, including deadline expiry.
     pub failed_datagrams: u64,
+    /// Auxiliary reliable datagrams accepted by the OS, included in total datagrams.
+    pub reliable_datagrams_sent: u64,
+    /// Failed auxiliary reliable sends, included in total failed datagrams.
+    pub reliable_failed_datagrams: u64,
 }
 
 /// Saturating lifetime receive counters; each receive call inspects at most one packet.

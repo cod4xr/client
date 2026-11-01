@@ -1,19 +1,19 @@
 # Validation evidence
 
-Latest local checkpoint: 160 tests pass in both debug and release on the pinned
+Latest local checkpoint: 164 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (163 source files, 4 crates, largest source
+formatting and repository policy pass (168 source files, 4 crates, largest source
 243 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
 owned control encoding, payload/service validation, configurable server-command
-retention, auxiliary reliable bodies, receive/send windows, whole ACK admission
-and application framing. Typed command delivery, auxiliary UDP sending/paced retries, gamestate
+retention, auxiliary reliable bodies, receive/send windows, whole ACK admission,
+application framing and explicit auxiliary UDP sends. Typed command delivery, paced retries, gamestate
 and ordinary gameplay remain open.
 
-The 148-test message-framing checkpoint passed hosted Windows/Linux CI in
-[run 41352357346](https://github.com/cod4xr/client/actions/runs/41352357346).
-Hosted validation for the outgoing-window work will follow its commit. These
+The 160-test outgoing-window checkpoint passed hosted Windows/Linux CI in
+[run 41353239522](https://github.com/cod4xr/client/actions/runs/41353239522).
+Hosted validation for the auxiliary UDP-send work will follow its commit. These
 changes edit only the client repository and consume the published shared revision.
 
 Eight new independent loopback tests exercise the reusable network crate: one
@@ -114,8 +114,17 @@ actual-send admission, cancellation, stable retransmissions, unsent ACK holes,
 late-invalid selective ranges, overlap/duplicate counting, retained selective bytes,
 paired receive/ACK cancellation, maximum signed fields and sequence exhaustion.
 An independent 50,000-byte loss/reorder/duplicate model repeatedly reuses seven
-outgoing slots and must reconstruct the exact stream. This is model evidence;
-real auxiliary sending and paced retry orchestration are not implemented yet.
+outgoing slots and must reconstruct the exact stream. This establishes model
+state behavior; the following tests extend the evidence to actual UDP I/O.
+
+Four auxiliary UDP-send tests add exact independent data/ACK vectors on the
+original socket/qport, successful-I/O-only admission, expired sends without sent
+authority, stable retries followed by validated peer consumption, partial-fragment
+selective ACKs, host-controlled window hints, and profile/metadata rejection before
+I/O. Original protocols 6 and 22 cannot emit this reviewed auxiliary profile merely
+because a challenge advertises protocol 18. Saturating send totals/subset counters
+are checked; no ordinary sequence is reserved. These are explicit individual sends,
+without a paced retry/ACK scheduler or ordinary-server interoperability claim.
 
 ## Initial foundation
 

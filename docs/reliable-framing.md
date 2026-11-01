@@ -40,5 +40,5 @@ atomicity and a complete native-size message through three reordered slots.
 
 This implements framing, not typed application dispatch or a complete auxiliary
 transport session. [Send windows](reliable-send.md) now provide outgoing ACK
-admission. Auxiliary UDP sending, pacing/retransmission, gamestate and ordinary-peer
-interoperability remain separate gates.
+admission, and [auxiliary UDP sends](reliable-udp.md) now record complete OS I/O.
+Pacing/retransmission, gamestate and ordinary-peer interoperability remain separate gates.

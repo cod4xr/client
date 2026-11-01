@@ -19,6 +19,8 @@ mod reliable_body;
 mod reliable_framing;
 #[path = "channel_cases/reliable_receive.rs"]
 mod reliable_receive;
+#[path = "channel_cases/reliable_send/mod.rs"]
+mod reliable_send;
 #[path = "channel_cases/send.rs"]
 mod send;
 #[path = "channel_cases/server_payload.rs"]

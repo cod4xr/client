@@ -50,6 +50,7 @@ the distinct queue/flight spans, unsent claims, regressions, whole-update atomic
 overlapping ranges, retained selective bytes, sequence exhaustion and maximum signed
 metadata geometry. An independent 50,000-byte model introduces first-attempt loss,
 reorder and duplicates while repeatedly reusing seven outgoing slots; the reconstructed
-byte stream must match exactly. This is deterministic model evidence. Real outgoing
-auxiliary UDP I/O, pacing/retransmission orchestration and ordinary-peer traces are
-still required before claiming a complete transport session.
+byte stream must match exactly. This is deterministic model evidence.
+[Auxiliary UDP I/O](reliable-udp.md) now couples successful OS sends to fragment
+admission. Pacing/retransmission orchestration and ordinary-peer traces are still
+required before claiming a complete transport session.

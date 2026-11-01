@@ -39,8 +39,12 @@ pub enum NetworkError {
     UnsupportedProtocol,
     /// An auxiliary packet belongs to another envelope family.
     AuxiliaryKind,
-    /// A checked reliable body could not be parsed.
+    /// A checked reliable body could not be encoded or parsed.
     Reliable(cod4xr_reliable::ReliableError),
+    /// Shared outer-envelope encoding failed before datagram I/O.
+    Envelope(cod4x_protocol::PacketError),
+    /// The original message profile does not support this reviewed auxiliary transport.
+    AuxiliaryProfile,
 }
 
 impl fmt::Display for NetworkError {
@@ -66,6 +70,10 @@ impl fmt::Display for NetworkError {
             }
             Self::AuxiliaryKind => formatter.write_str("unexpected auxiliary envelope family"),
             Self::Reliable(error) => error.fmt(formatter),
+            Self::Envelope(error) => error.fmt(formatter),
+            Self::AuxiliaryProfile => {
+                formatter.write_str("original profile does not support auxiliary reliable sending")
+            }
         }
     }
 }
@@ -80,6 +88,7 @@ impl Error for NetworkError {
             Self::Plan(error) => Some(error),
             Self::Channel(error) => Some(error),
             Self::Reliable(error) => Some(error),
+            Self::Envelope(error) => Some(error),
             _ => None,
         }
     }

@@ -23,7 +23,7 @@ pub struct ClientChannel<'storage> {
 
 /// Disjoint borrowed channel halves permit receive work between outbound fragments.
 pub struct ChannelParts<'channel, 'storage> {
-    /// Sender for complete already encoded ordinary-message bodies.
+    /// Serialized sender for ordinary messages and explicit reliable data/ACK datagrams.
     pub sender: ClientSender<'channel>,
     /// Receiver for scoped inspection of undecoded messages and auxiliary envelopes.
     pub receiver: ClientReceiver<'channel, 'storage>,
@@ -89,6 +89,7 @@ impl<'storage> ClientChannel<'storage> {
                 usage: &mut self.send_usage,
                 protocol: self.context.summary().requested_protocol(),
                 challenge: self.context.server_challenge(),
+                qport: self.context.summary().qport(),
             },
             receiver: ClientReceiver {
                 socket: &self.io.socket,

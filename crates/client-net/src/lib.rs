@@ -7,6 +7,7 @@ mod channel;
 mod channel_context;
 mod channel_event;
 mod channel_receive;
+mod channel_reliable_send;
 mod channel_send;
 mod channel_usage;
 mod connect;
@@ -22,6 +23,7 @@ pub use channel_event::{
     AuxiliaryKind, AuxiliaryMessage, ChannelDrop, ChannelEvent, ChannelMessage,
 };
 pub use channel_receive::ClientReceiver;
+pub use channel_reliable_send::SentReliableDatagram;
 pub use channel_send::{ClientSender, OutboundMessage, SentDatagram};
 pub use channel_usage::{ReceiveUsage, SendUsage};
 pub use connect::{ConnectRun, PendingConnect};

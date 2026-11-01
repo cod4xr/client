@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 use std::{
-    net::SocketAddr,
     thread,
     time::{Duration, Instant},
 };
@@ -9,28 +8,12 @@ use cod4xr_client_core::{
     BaselineProtocol,
     commands::{LEGACY_COMMAND_SLOT_BYTES, LegacyClientCommands},
 };
-use cod4xr_client_net::{AcknowledgedSocket, ChannelEvent, ConnectOutcome, NetworkError};
+use cod4xr_client_net::{ChannelEvent, NetworkError};
 
 use crate::{
-    channel_support::{accept, ordinary},
-    support::{budget, challenged, server, settings},
+    channel_support::{accept, acknowledged_for, ordinary},
+    support::server,
 };
-
-fn acknowledged_for(peer: SocketAddr, protocol: i32) -> AcknowledgedSocket {
-    let mut selected = settings();
-    selected.protocol = protocol;
-    match challenged(peer)
-        .into_pending(selected, budget())
-        .expect("Pending")
-        .run()
-        .outcome
-        .expect("Terminal outcome")
-    {
-        ConnectOutcome::Acknowledged(socket) => Some(socket),
-        ConnectOutcome::Refused(_) => None,
-    }
-    .expect("Acknowledged")
-}
 
 #[test]
 fn received_payload_uses_original_cookie_and_explicit_connect_profile_on_the_same_socket() {

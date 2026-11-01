@@ -55,7 +55,9 @@ caller-funded fragment retention, selective metadata and bounded stream reads.
 [Application framing](docs/reliable-framing.md) now assembles complete messages
 across partial length headers without peer-selected allocations. [Send windows](docs/reliable-send.md)
 retain original outgoing bytes and preflight whole ACK updates against admitted sends.
-Auxiliary UDP sending, paced retransmission and typed application dispatch remain open.
+[Auxiliary UDP sending](docs/reliable-udp.md) now admits transmission only after
+complete OS sends, with explicit ACK-only sends and profile checks. Paced retries,
+session orchestration and typed application dispatch remain open.
 
 ## Run
 

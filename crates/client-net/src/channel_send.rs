@@ -14,6 +14,7 @@ pub struct ClientSender<'channel> {
     pub(crate) usage: &'channel mut SendUsage,
     pub(crate) protocol: i32,
     pub(crate) challenge: i32,
+    pub(crate) qport: u16,
 }
 
 impl ClientSender<'_> {

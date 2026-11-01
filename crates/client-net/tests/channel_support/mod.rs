@@ -22,8 +22,14 @@ pub fn accept(socket: &UdpSocket) -> SocketAddr {
 }
 
 pub fn acknowledged(peer: SocketAddr) -> AcknowledgedSocket {
+    acknowledged_for(peer, 21)
+}
+
+pub fn acknowledged_for(peer: SocketAddr, protocol: i32) -> AcknowledgedSocket {
+    let mut selected = support::settings();
+    selected.protocol = protocol;
     match support::challenged(peer)
-        .into_pending(support::settings(), support::budget())
+        .into_pending(selected, support::budget())
         .expect("Pending")
         .run()
         .outcome

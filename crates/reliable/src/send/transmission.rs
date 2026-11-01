@@ -2,6 +2,7 @@
 use std::fmt;
 
 use super::{SendError, SendWindow};
+use crate::receive::ReceiveAcknowledgement;
 use crate::{
     MAX_RELIABLE_PAYLOAD_BYTES, ReliableError, ReliableHeader, ReliablePacket, SelectiveAcks,
 };
@@ -27,6 +28,27 @@ pub struct PreparedTransmission<'window, 'buffers> {
 }
 
 impl<'buffers> SendWindow<'buffers> {
+    /// Builds an ACK-only body using this validated host span and supplied receive snapshot.
+    /// This neither marks outgoing data nor sends a packet or changes receive state.
+    ///
+    /// # Errors
+    /// Rejects an unrepresentable supplied cumulative ACK before any state change.
+    pub fn acknowledgement_packet(
+        &self,
+        receive: ReceiveAcknowledgement,
+    ) -> Result<ReliablePacket<'static>, ReliableError> {
+        ReliablePacket::try_new(
+            ReliableHeader {
+                sequence: None,
+                acknowledge: receive.cumulative,
+                flags: 0,
+                selective: receive.selective,
+                sender_window: self.hint,
+            },
+            b"",
+        )
+    }
+
     /// Borrows one current in-flight original fragment without marking it transmitted.
     /// Successful I/O admission is separate from preparation and peer acknowledgement.
     ///
