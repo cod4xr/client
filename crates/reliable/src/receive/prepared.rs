@@ -2,7 +2,7 @@
 use std::fmt;
 
 use super::{ReceiveError, ReceiveSlot, ReceiveWindow};
-use crate::{MAX_RELIABLE_PAYLOAD_BYTES, ReliablePacket};
+use crate::{MAX_RELIABLE_ACKNOWLEDGEMENT, MAX_RELIABLE_PAYLOAD_BYTES, ReliablePacket};
 
 /// Incoming fragment disposition after receive-only preflight.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -53,7 +53,7 @@ impl<'buffers> ReceiveWindow<'buffers> {
         let summary = match packet.header().sequence {
             None => ReceiveDisposition::AckOnly,
             Some(sequence) => {
-                if sequence == 0x7fff_ffff {
+                if sequence == MAX_RELIABLE_ACKNOWLEDGEMENT {
                     return Err(ReceiveError::SequenceExhausted);
                 }
                 if sequence < self.base {

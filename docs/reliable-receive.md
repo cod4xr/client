@@ -48,8 +48,9 @@ cancellation, dirty storage, explicit work quotas, selective pagination and sign
 sequence/range boundaries. A real UDP test validates exact body framing before
 admitting reordered bytes, rejects a malformed body and ignores a conflicting
 duplicate. Its outgoing side is empty, with ACK-zero/no-SACK admission checked
-explicitly. A general outgoing ACK validator, retransmission runtime, application
-dispatch and native-peer interoperability remain separate acceptance gates.
+explicitly. A retransmission runtime, application dispatch and native-peer
+interoperability remain separate acceptance gates. [Send windows](reliable-send.md)
+now provide whole outgoing ACK preflight for combined receive/send transactions.
 
 [Application framing](reliable-framing.md) now consumes incrementally drained
 stream bytes with fixed caller storage, complete-frame borrows and no execution.

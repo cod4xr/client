@@ -1,19 +1,19 @@
 # Validation evidence
 
-Latest local checkpoint: 148 tests pass in both debug and release on the pinned
+Latest local checkpoint: 160 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (150 source files, 4 crates, largest source
+formatting and repository policy pass (163 source files, 4 crates, largest source
 243 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
 owned control encoding, payload/service validation, configurable server-command
-retention, auxiliary reliable bodies, bounded receive streams and application
-framing. Typed command delivery, outgoing ACKs/retransmission, gamestate
+retention, auxiliary reliable bodies, receive/send windows, whole ACK admission
+and application framing. Typed command delivery, auxiliary UDP sending/paced retries, gamestate
 and ordinary gameplay remain open.
 
-The 138-test receive-window checkpoint passed hosted Windows/Linux CI in
-[run 41351582168](https://github.com/cod4xr/client/actions/runs/41351582168).
-Hosted validation for the message-framing work will follow its commit. These
+The 148-test message-framing checkpoint passed hosted Windows/Linux CI in
+[run 41352357346](https://github.com/cod4xr/client/actions/runs/41352357346).
+Hosted validation for the outgoing-window work will follow its commit. These
 changes edit only the client repository and consume the published shared revision.
 
 Eight new independent loopback tests exercise the reusable network crate: one
@@ -107,6 +107,15 @@ length-header pieces. Neither framing nor this fixture executes an application o
 The process-test responder now waits for explicit child completion rather than a
 fixed sleep. Its unsupported-profile probe uses a practical one-second deadline;
 deterministic core tests continue to check exact retry/expiry boundaries.
+
+Twelve outgoing-window tests cover transactional storage and enqueue geometry,
+exact binary fragment sizes without empty terminators, separate queue/flight spans,
+actual-send admission, cancellation, stable retransmissions, unsent ACK holes,
+late-invalid selective ranges, overlap/duplicate counting, retained selective bytes,
+paired receive/ACK cancellation, maximum signed fields and sequence exhaustion.
+An independent 50,000-byte loss/reorder/duplicate model repeatedly reuses seven
+outgoing slots and must reconstruct the exact stream. This is model evidence;
+real auxiliary sending and paced retry orchestration are not implemented yet.
 
 ## Initial foundation
 

@@ -53,8 +53,9 @@ that can be cancelled before commit.
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add
 caller-funded fragment retention, selective metadata and bounded stream reads.
 [Application framing](docs/reliable-framing.md) now assembles complete messages
-across partial length headers without peer-selected allocations. Outgoing ACK
-admission, retransmission and typed application dispatch remain open.
+across partial length headers without peer-selected allocations. [Send windows](docs/reliable-send.md)
+retain original outgoing bytes and preflight whole ACK updates against admitted sends.
+Auxiliary UDP sending, paced retransmission and typed application dispatch remain open.
 
 ## Run
 

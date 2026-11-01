@@ -16,8 +16,9 @@ scaffolding and a successful query are not substitutes for a playable client.
 
 Connection libraries now own challenge/connect/ack transitions and ordinary
 fragment transport. Auxiliary receive windows and application framing are covered
-by deterministic and loopback tests. Next are outgoing auxiliary ACK admission,
-pacing/retransmission, typed message dispatch and complete gamestate handling.
+by deterministic and loopback tests. Outgoing queues and whole ACK admission now
+have model tests. Next are auxiliary UDP sending, pacing/retransmission, typed
+message dispatch and complete gamestate handling.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 

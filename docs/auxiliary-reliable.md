@@ -34,8 +34,9 @@ body. Other auxiliary families cannot be cast into this protocol. Malformed
 bodies are errors without channel sequence reservation or automatic responses.
 
 [Receive windows](reliable-receive.md) now provide preflighted fragment retention,
-selective ACK metadata and bounded incremental stream reads. Outgoing windows,
-complete ACK admission, pacing and retransmission remain to be implemented.
+selective ACK metadata and bounded incremental stream reads. [Send windows](reliable-send.md)
+now provide queue ownership and complete ACK admission. Auxiliary UDP sending,
+pacing and retransmission orchestration remain to be implemented.
 [Application framing](reliable-framing.md) now assembles complete messages without
 executing their bodies. No native reliable peer exchange, gamestate delivery
 or playable connection is claimed.
