@@ -19,6 +19,11 @@ with exact peer/nonce correlation, cumulative quotas, monotonic deadlines and
 controlled retries. The CLI exercises this state over real UDP. All 31 workspace
 tests pass in debug and release; gameplay connect/admission is the next step.
 
+[Connect request planning](docs/connect-plan.md) now builds owned no-auth frames
+from checked challenges and explicit protocol/version settings. Its eight new
+tests bring the workspace to 39 passing debug/release tests. The CLI still sends
+only discovery/challenge probes; acknowledgement and gameplay admission follow.
+
 ## Run
 
 Rust 1.95 is pinned. On this workstation, reuse the existing Cargo target:

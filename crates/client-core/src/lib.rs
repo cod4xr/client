@@ -5,6 +5,7 @@
 //! authenticated identity or negotiated extension support.
 
 mod challenge;
+pub mod connect;
 mod error;
 pub mod handshake;
 mod info_response;

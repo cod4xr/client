@@ -49,5 +49,5 @@ Seven additional process/argument tests cover packet-loss retries, stale/unsuppo
 responses, late replies after the attempt cap, wrong endpoints, exhausted receive
 work, unsupported-profile expiry and bounded mode-specific CLI settings. All 31
 workspace tests pass in debug and release; format/Clippy/docs/policy checks pass.
-The earlier 24-test core checkpoint also passed hosted Windows/Linux CI. Current
-CLI hosted CI and ordinary-game-server interoperability remain separate gates.
+Both the 24-test core and 31-test CLI checkpoints passed hosted Windows/Linux CI.
+Ordinary-game-server interoperability remains a separate gate.
