@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 230 tests pass in both debug and release on the pinned
+Latest local checkpoint: 236 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (261 source files, 4 crates; all checked source
+formatting and repository policy pass (265 source files, 4 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -10,12 +10,13 @@ owned control encoding, payload/service validation, configurable server-command
 retention, auxiliary reliable bodies, receive/send windows, whole ACK admission,
 application framing, paced auxiliary UDP sends and socket/clock/endpoint ownership.
 Complete protocol-21 gamestate constituents now have transactional coverage.
-Outer-message admission, the ongoing game loop, typed command delivery,
+Reliable gamestate bodies now have whole-frame admission coverage. Other message
+admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 221-test entity-baseline checkpoint passed hosted Windows/Linux CI in
-[run 41397294582](https://github.com/cod4xr/client/actions/runs/41397294582), including
-source-table reproduction. Hosted validation for gamestate plans will follow their commit. These
+The 230-test gamestate-plan checkpoint passed hosted Windows/Linux CI in
+[run 41398476604](https://github.com/cod4xr/client/actions/runs/41398476604), including
+source-table reproduction. Hosted validation for reliable gamestate bodies will follow their commit. These
 changes edit only the client repository and consume the published shared revision.
 
 Ten configstring-block tests add independent legacy packed-index and protocol-21
@@ -50,6 +51,16 @@ every fixture truncation, invalid nested/opcode/trailer records, unsupported pro
 dirty-output and cached-bit rollback, short capacities and exact host-budget bounds.
 Enclosing-message admission, default importing, engine application and native peer
 captures remain outside this constituent-level validation.
+
+Five reliable-wrapper tests add independent complete body bytes, opaque tail bits,
+source-independent plans, native unused-bit padding, every fixture truncation,
+invalid commands/opcodes, every appended byte value, whole-body/host/storage budgets
+and late extra-byte rejection above 128 KiB. A real UDP test reorders complete frames,
+rejects a malformed earlier body without changing gamestate output, explicitly
+discards it, admits the next valid body and retains the cooked plan after network
+frame release. Transport byte ACKs remain separate from application validity. An
+additional immutable public writer file is hash-locked from read-only remote evidence;
+local server source/worktrees were not read or edited for that verification.
 
 Eight new independent loopback tests exercise the reusable network crate: one
 source socket across challenge/connect/retries/handoff, exact cookie/protocol/qport

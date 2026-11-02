@@ -72,8 +72,9 @@ and sequenced service records without applying engine or sequence state.
 [Entity baselines](docs/entity-baselines.md) now decode all eighteen protocol-21
 field layouts from zero references, with transactional index/message cursors.
 [Gamestate plans](docs/gamestate-plans.md) now validate complete protocol-21
-constituents before publishing any caller output. Outer-message admission,
-engine/content application, the game loop and typed dispatch remain open.
+constituents before publishing any caller output. [Reliable gamestate bodies](docs/reliable-gamestate.md)
+now validate the complete auxiliary wrapper and trailing fields before publication.
+Other message admission, engine/content application, the game loop and typed dispatch remain open.
 
 ## Run
 

@@ -8,5 +8,5 @@ pub mod entity_baselines;
 mod message;
 pub use message::{
     ClientDataSlot, EntityBaselineSlot, GameStateBudget, GameStateError, GameStatePlan,
-    GameStateStorage,
+    GameStateStorage, ReliableGameStateError, ReliableGameStatePlan,
 };

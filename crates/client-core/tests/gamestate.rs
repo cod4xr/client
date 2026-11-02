@@ -9,6 +9,8 @@
 mod budgets;
 #[path = "gamestate_cases/failures.rs"]
 mod failures;
+#[path = "gamestate_cases/reliable.rs"]
+mod reliable;
 #[path = "gamestate_cases/vectors.rs"]
 mod vectors;
 

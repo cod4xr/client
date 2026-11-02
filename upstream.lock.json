@@ -27,7 +27,8 @@
       "revision": "ddd65fce1a1093017bad2dbb6840d75d11c0d56f",
       "files": {
         "src/sv_main.c": "0c13e4b9b27b17f11cf3616abd24599aabbb5206724b6a3b22cb96f497aee06a",
-        "src/netchan.c": "5607790a3372198e4b4a5e470075874fd515a5f1ff6d4e979401f6429d3a7458"
+        "src/netchan.c": "5607790a3372198e4b4a5e470075874fd515a5f1ff6d4e979401f6429d3a7458",
+        "src/sv_client.c": "49ef45af60b095dbbc5b3f14b08a78fb8af4161815728cefbb3b8c5d13c9a034"
       }
     }
   ]

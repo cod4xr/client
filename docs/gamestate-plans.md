@@ -9,7 +9,8 @@ index and checksum-feed bits. The schema follows locked `src/cl_main.c`,
 Protocol 6 remains explicitly unsupported here pending its map-center coordinates.
 
 This is a constituent of an ordinary service message or reliable application
-command. The enclosing stream/envelope still needs complete admission before
+command. `ReliableGameStatePlan` now validates the complete reviewed auxiliary
+wrapper; other enclosing service streams still need complete admission before
 session acknowledgement or engine application. Parsing stops exactly after the
 trailer, preserving following service bytes and cached bits. Sequence/checksum
 words retain all 32 wire bits and grant no ordering, authentication or file authority.

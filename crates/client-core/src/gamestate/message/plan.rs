@@ -42,7 +42,7 @@ impl<'storage> GameStatePlan<'storage> {
         profile: BaselineProtocol,
         budget: GameStateBudget,
         scratch: &mut [u8],
-        mut storage: GameStateStorage<'storage>,
+        storage: GameStateStorage<'storage>,
     ) -> Result<Self, GameStateError> {
         if profile != BaselineProtocol::Cod4x21 {
             return Err(GameStateError::UnsupportedProfile);
@@ -57,21 +57,33 @@ impl<'storage> GameStatePlan<'storage> {
             scratch,
             &mut Noop,
         )?;
+        let plan = Self::publish(reader, profile, budget, scratch, storage, layout)?;
+        *reader = validated;
+        Ok(plan)
+    }
+
+    pub(super) fn publish(
+        start: &BodyReader<'_>,
+        profile: BaselineProtocol,
+        budget: GameStateBudget,
+        scratch: &mut [u8],
+        mut storage: GameStateStorage<'storage>,
+        layout: Layout,
+    ) -> Result<Self, GameStateError> {
         // The same private walker sees identical immutable input, starting cursors,
         // capacities, budgets and scratch length. All reads and writes were proven.
-        let mut replay = reader.clone();
+        let mut replay = start.clone();
         walk::walk(
             &mut replay,
             profile,
             budget,
-            capacities,
+            storage.capacities(),
             scratch,
             &mut Writer {
                 storage: &mut storage,
                 written: Counts::default(),
             },
         )?;
-        *reader = validated;
         Ok(Self {
             profile,
             bytes: &storage.configstring_bytes[..layout.counts.text_bytes],

@@ -27,7 +27,9 @@ now validate both baseline formats with caller-funded storage and whole-block
 rollback. Protocol-21 initial entity baselines now decode all eighteen native
 layouts, with shared index handling and owned semantic words. Complete protocol-21
 gamestate constituents now validate all records/trailers before output publication.
-Next are default importing/merging, outer-message admission, legacy coordinates, application dispatch
+Complete reliable gamestate bodies now validate their wrapper/tail before output,
+with real UDP coverage across reordered frames and explicit application rejection.
+Next are default importing/merging, other message admission, legacy coordinates, application dispatch
 and the engine's ongoing game loop. Snapshot deltas remain separate.
 Owned protocol-21 client identity records now cover gamestate and ordinary sequenced
 forms; config-data sequence admission remains part of the upcoming session work.

@@ -1,12 +1,16 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 mod error;
 mod plan;
+mod reliable;
+mod reliable_error;
 mod sink;
 mod storage;
 mod walk;
 
 pub use error::GameStateError;
 pub use plan::GameStatePlan;
+pub use reliable::ReliableGameStatePlan;
+pub use reliable_error::ReliableGameStateError;
 pub use storage::{ClientDataSlot, EntityBaselineSlot, GameStateStorage};
 
 /// Explicit host work/retention budgets for a complete gamestate constituent.
