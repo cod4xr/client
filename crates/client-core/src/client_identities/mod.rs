@@ -2,6 +2,7 @@
 //! Transactional protocol-21 identity state after complete message validation.
 //! Names remain inert data; peer binding, engine application and ACKs belong to the host.
 mod baseline;
+mod batch;
 mod error;
 mod prepared;
 mod slot;

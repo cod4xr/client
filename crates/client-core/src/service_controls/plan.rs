@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-use cod4x_protocol::{MessageReader, MessageStringLimit};
 use std::fmt;
 
 use super::{
-    ServerCommand, ServiceControlBudget, ServiceControlError,
+    ClientDataUpdateSlot, ServerCommand, ServiceControlBudget, ServiceControlError,
+    client_scan::Clients,
+    publish,
     scan::{self, Layout},
 };
+use crate::client_data::ClientDataUpdate;
 use crate::{BaselineProtocol, server_payload::DecodedServerPayload};
 
 /// Complete normalized baseline control records, before host deduplication/application.
@@ -16,6 +18,7 @@ pub struct LegacyServicePlan<'commands> {
     client_acknowledge: u32,
     layout: Layout,
     bytes: &'commands [u8],
+    client_updates: &'commands [ClientDataUpdateSlot],
 }
 
 impl<'commands> LegacyServicePlan<'commands> {
@@ -34,27 +37,26 @@ impl<'commands> LegacyServicePlan<'commands> {
         output: &'commands mut [u8],
     ) -> Result<Self, ServiceControlError> {
         let body = payload.body();
-        let layout = scan::scan(body, budget, scratch, output.len())?;
-        for descriptor in &layout.commands[..layout.command_count] {
-            // Immutable input, exact field extents and all output slices were preflighted.
-            // Reuse the shared string codec instead of duplicating normalization rules.
-            let source = &body[descriptor.source..=descriptor.source + descriptor.length];
-            let target =
-                &mut output[descriptor.destination..descriptor.destination + descriptor.length];
-            let mut reader =
-                MessageReader::try_new(source).map_err(ServiceControlError::Message)?;
-            reader
-                .read_legacy_string(target, MessageStringLimit::Big)
-                .map_err(ServiceControlError::Message)?;
-        }
+        let layout = scan::scan(body, budget, scratch, output.len(), &mut Clients::Reject)?;
+        publish::commands(body, &layout, output)?;
+        Ok(Self::from_layout(payload, layout, output, &[]))
+    }
+
+    pub(super) fn from_layout(
+        payload: &DecodedServerPayload<'_, '_>,
+        layout: Layout,
+        output: &'commands [u8],
+        client_updates: &'commands [ClientDataUpdateSlot],
+    ) -> Self {
         let bytes = &output[..layout.byte_count];
-        Ok(Self {
+        Self {
             profile: payload.profile(),
             message_sequence: payload.sequence(),
             client_acknowledge: payload.client_command_acknowledge(),
             layout,
             bytes,
-        })
+            client_updates,
+        }
     }
 
     /// Returns the reviewed original message profile.
@@ -93,6 +95,19 @@ impl<'commands> LegacyServicePlan<'commands> {
     pub fn command_bytes(&self) -> usize {
         self.layout.byte_count
     }
+    /// Returns complete identity updates from the opt-in mixed-control parser.
+    /// The legacy commands-only entry point always exposes zero updates.
+    #[must_use]
+    pub fn client_update_count(&self) -> usize {
+        self.client_updates.len()
+    }
+    /// Borrows owned normalized updates only after the whole service stream validated.
+    /// Input payload, private scratch and command history may already be released.
+    pub fn client_updates(&self) -> impl Iterator<Item = &ClientDataUpdate> {
+        self.client_updates
+            .iter()
+            .filter_map(|slot| slot.0.as_ref())
+    }
     /// Borrows one initialized command; out-of-range indices expose no backing bytes.
     #[must_use]
     pub fn command(&self, index: usize) -> Option<ServerCommand<'_>> {
@@ -127,6 +142,7 @@ impl fmt::Debug for LegacyServicePlan<'_> {
             .field("client_acknowledgement", &self.client_acknowledge)
             .field("records", &self.layout.record_count)
             .field("commands", &self.layout.command_count)
+            .field("client_updates", &self.client_updates.len())
             .field("bytes", &self.layout.byte_count)
             .finish_non_exhaustive()
     }

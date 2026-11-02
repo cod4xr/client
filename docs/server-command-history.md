@@ -43,3 +43,9 @@ next complete command and EOF using that exact context.
 Updates return bounded counters for host logging without command text. No typed
 execution, gamestate seeding/reset, separate reliable transport or ordinary gameplay
 session is implemented by this storage owner.
+
+The same preparation API accepts [mixed service plans](mixed-service-controls.md).
+One UDP test stages commands and identities from the same complete plan, then
+commits the checked outgoing acknowledgement and both owners. Its next frame proves
+all three accepted sequence values and the new command obfuscation key. No peer
+command text is executed by that path.

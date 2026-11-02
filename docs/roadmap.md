@@ -42,8 +42,9 @@ the engine's ongoing game loop. Snapshot deltas remain separate.
 Owned protocol-21 client identity records now cover gamestate and ordinary sequenced
 forms. Identity state now stages gamestate replacements and exact-next update batches
 with atomic sequence/table publication. A joint lease commits the retained network
-frame and identity baseline together. Ordinary-message identity dispatch, sibling
-session resources and engine application remain open.
+frame and identity baseline together. Whole mixed ordinary messages now stage both
+commands and identity batches, with next-frame UDP acknowledgement coverage. Sibling
+session resources, typed execution and engine application remain open.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 

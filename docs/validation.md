@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 415 tests pass in both debug and release on the pinned
+Latest local checkpoint: 428 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (450 source files, 6 crates; all checked source
+formatting and repository policy pass (461 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,22 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 398-test zone-directory checkpoint passed hosted Windows/Linux CI in
-[run 41459174563](https://github.com/cod4xr/client/actions/runs/41459174563), including
-locked sources and table reproduction. Hosted identity-state validation will
+The 415-test identity-state checkpoint passed hosted Windows/Linux CI in
+[run 41464846806](https://github.com/cod4xr/client/actions/runs/41464846806), including
+locked sources and table reproduction. Hosted mixed-service validation will
 follow its commit. These changes edit only the client repository and consume the
 published shared revision.
+
+Twelve mixed-service core tests add complete protocol-21 command/identity/NOP/EOF
+streams, independent identity counts beyond the command window, source/workspace
+release, strict legacy/profile entry points, every truncation, late unsupported or
+malformed identities, independent budgets/capacities, unchanged final tails, logical
+padding isolation and joint command/identity preflight cancellation. One actual UDP
+test rejects a late bad service without releasing a pending client command, then
+admits a valid mixed stream. Its peer decodes the next client datagram with message
+ACK 8, command ACK 3, config-data ACK 11 and the new retained key. Ordinary wire
+limits stay unchanged; typed execution, other services and native gameplay peers
+remain open. See [mixed controls](mixed-service-controls.md).
 
 Ten configstring-block tests add independent legacy packed-index and protocol-21
 32-bit vectors; normalized/raw/empty strings; cooked-only plan lifetimes; both full
@@ -32,8 +43,9 @@ Six client-data tests add owned protocol-21 gamestate and ordinary sequenced
 identity vectors, maximum/empty names and tags, raw bytes and percent normalization,
 source-independent ownership, large reader offsets, unsupported profiles, every
 truncation, strict field/identifier bounds, sequence high-bit preservation, cached
-bit rollback and private debug output. Sequence admission, engine updates and
-complete gamestate/service dispatch remain separate unimplemented gates.
+bit rollback and private debug output. The newer identity-state and mixed control
+tests cover sequence admission and complete supported carriers separately; engine
+updates and remaining services stay open.
 
 Ten entity-baseline tests add independent physical field/header vectors, all eighteen
 full protocol-21 layouts plus unknown-type fallback, unconditional-field positions,

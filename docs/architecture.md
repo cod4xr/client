@@ -129,8 +129,9 @@ retains raw normalized text and sequence bits. A separate caller-owned identity
 state stages complete gamestate replacements and exact-next update batches before
 atomic commit. A combined network-frame/identity lease commits both owners together
 or cancels both, with local baseline generations and no source-buffer retention.
-Whole ordinary-message dispatch and sibling session/content admission remain
-separate. Neither logs nor debug formatting contains that text.
+Whole mixed ordinary-message plans now feed the same identity staging rules and
+server-command history. Sibling session/content admission remains separate.
+Neither logs nor debug formatting contains that text.
 
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
@@ -171,8 +172,10 @@ decompression into caller buffers. Decoded views retain a history borrow and exp
 untrusted service bytes, including native Huffman padding. They neither execute
 records nor commit acknowledgements before service validation through logical EOF.
 
-Service-control plans validate NOP/command/EOF streams before populating final
-normalized command output. They preserve full big-string records while deriving
+Service-control plans validate NOP/command/EOF streams and opt-in protocol-21
+identity updates before populating final normalized command bytes and owned client
+cells. Caller-selected update budgets and private/final cell storage are independent
+of the command window. They preserve full big-string records while deriving
 the shorter native obfuscation key separately. Unsupported services reject before
 partial output/application. Transport delivery sequence and host-validated message
 sequence are distinct; only a complete validated message can advance the latter.

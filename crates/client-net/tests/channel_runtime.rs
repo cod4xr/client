@@ -11,6 +11,8 @@ mod command_history;
 mod control;
 #[path = "channel_cases/limits.rs"]
 mod limits;
+#[path = "channel_cases/mixed_services/mod.rs"]
+mod mixed_services;
 #[path = "channel_cases/receive.rs"]
 mod receive;
 #[path = "channel_cases/reliable_body.rs"]

@@ -60,9 +60,12 @@ and joint cancellation leave the correct owners unchanged. Joint commit releases
 one accepted frame and retains the normalized identity after all source/work buffers
 are cleared. These are loopback/ownership checks, not a native gameplay peer claim.
 
-Ordinary complete-message dispatch of client-data records remains an upcoming gate.
-Callers of `prepare_updates` must validate the whole enclosing message before using
-its parsed batch, and preflight sibling changes before commit. This table does not
+`prepare_service_plan` stages all updates from a complete validated
+[mixed ordinary-message plan](mixed-service-controls.md), checking the original
+profile before applying the same exact-next rules. It retains no plan/input borrow
+after staging. The host preflights command history and other sibling changes before
+committing acknowledgement and the prepared owners. Callers of `prepare_updates`
+still validate the whole enclosing message themselves. This table does not
 configure remote CVars, apply entities/snapshots, authorize content or mark the
 client playable. Legacy identities carried by configstrings need their own adapter.
 

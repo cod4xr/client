@@ -43,7 +43,8 @@ connection-context checks before channel reservation.
 [Server-payload decoding](docs/server-payloads.md) now checks retained transmitted
 command keys before shared transformation/decompression.
 [Service-control plans](docs/service-controls.md) now validate complete NOP/command/
-EOF streams before exposing normalized records. Command dispatch, gamestate application and
+EOF streams, with opt-in protocol-21 identity updates, before exposing normalized
+records. Command dispatch, gamestate application and
 the remaining gameplay lifecycle are still required for live sessions.
 [Server-command history](docs/server-command-history.md) now supports configurable
 retention beyond the native 128 entries, full command text and preflighted updates
@@ -111,6 +112,9 @@ targets remain separate from this metadata layer.
 [Client identity state](docs/client-identity-state.md) now stages gamestate replacements
 and exact-next update batches atomically. A joint network transaction commits the
 retained gamestate frame and identity baseline together after host preflight.
+[Mixed service controls](docs/mixed-service-controls.md) feed a whole validated
+ordinary message into command history and identity staging before acknowledgement
+commit. The next UDP frame uses the accepted command and identity sequences.
 
 ## Run
 

@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 use super::{
-    ClientIdentityBudget, ClientIdentityChange, ClientIdentityError, ClientIdentitySlot,
-    ClientIdentityState, PreparedClientIdentities, stage,
+    ClientIdentityBudget, ClientIdentityError, ClientIdentitySlot, ClientIdentityState,
+    PreparedClientIdentities,
 };
 use crate::client_data::ClientDataUpdate;
+use crate::service_controls::LegacyServicePlan;
 
 impl<'storage> ClientIdentityState<'storage> {
     /// Prepares one complete caller-decoded batch without mutating retained identities.
@@ -37,46 +38,30 @@ impl<'storage> ClientIdentityState<'storage> {
         budget: ClientIdentityBudget,
         scratch: &'scratch mut [ClientIdentitySlot],
     ) -> Result<PreparedClientIdentities<'owner, 'storage, 'scratch>, ClientIdentityError> {
-        let (Some(sequence), Some(own_client_index)) = (self.sequence, self.own_client) else {
-            return Err(ClientIdentityError::MissingBaseline);
-        };
-        stage::inspect(updates.len(), budget)?;
-        if self.used > budget.max_clients {
-            return Err(ClientIdentityError::ClientBudget);
+        self.prepare_batch(updates.len(), updates.iter(), budget, scratch)
+    }
+    /// Stages updates only from a complete validated service plan of the same profile.
+    /// The whole stream, including every command/identity and logical EOF, has already
+    /// validated. Commands and outgoing acknowledgement remain separate sibling
+    /// transactions for host preflight; nothing executes or commits here.
+    ///
+    /// # Errors
+    /// Rejects a different profile and every error from [`Self::prepare_updates`].
+    /// Late failures preserve the entire owner; private scratch is unspecified.
+    pub fn prepare_service_plan<'owner, 'scratch>(
+        &'owner mut self,
+        plan: &LegacyServicePlan<'_>,
+        budget: ClientIdentityBudget,
+        scratch: &'scratch mut [ClientIdentitySlot],
+    ) -> Result<PreparedClientIdentities<'owner, 'storage, 'scratch>, ClientIdentityError> {
+        if plan.profile() != self.profile {
+            return Err(ClientIdentityError::Profile);
         }
-        if scratch.len() < self.used {
-            return Err(ClientIdentityError::ScratchCapacity);
-        }
-        scratch[..self.used].clone_from_slice(&self.slots[..self.used]);
-        let mut summary = ClientIdentityChange {
-            generation: self.generation,
-            baseline_replaced: false,
-            records: updates.len(),
-            accepted_records: 0,
-            ignored_records: 0,
-            clients: self.used,
-            sequence,
-            own_client_index,
-        };
-        for update in updates {
-            if update.sequence() != summary.sequence.wrapping_add(1) {
-                summary.ignored_records += 1;
-                continue;
-            }
-            stage::upsert(
-                scratch,
-                &mut summary.clients,
-                update.data(),
-                budget,
-                self.slots.len(),
-            )?;
-            summary.sequence = update.sequence();
-            summary.accepted_records += 1;
-        }
-        Ok(PreparedClientIdentities {
-            owner: self,
-            slots: &scratch[..summary.clients],
-            summary,
-        })
+        self.prepare_batch(
+            plan.client_update_count(),
+            plan.client_updates(),
+            budget,
+            scratch,
+        )
     }
 }
