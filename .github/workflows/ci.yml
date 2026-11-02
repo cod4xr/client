@@ -45,3 +45,5 @@ jobs:
         run: python tools/import_entity_baseline_tables.py reference-client
       - name: Verify immutable image format references
         run: python tools/verify_iwi_sources.py
+      - name: Reproduce wavelet codeword catalogs
+        run: python tools/import_iwi_wavelet_tables.py

@@ -8,12 +8,14 @@ mod header;
 mod image;
 mod mip;
 mod read;
+mod wavelet;
 
 pub use error::Iwi6Error;
 pub use format::Iwi6Format;
 pub use header::{Iwi6Dimensions, Iwi6Header, Iwi6Shape};
 pub use image::Iwi6DirectImage;
 pub use mip::Iwi6Mip;
+pub use wavelet::{Iwi6WaveletBudget, Iwi6WaveletImage, Iwi6WaveletRequirements, WaveletError};
 
 /// Explicit host input/geometry budgets; none limit the engine's image count.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

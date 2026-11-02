@@ -96,7 +96,9 @@ and lookup without retaining source ZIP buffers, before host file ownership or a
 [Owned archive I/O](docs/archive-host.md) now binds copied lookup metadata to retained
 original file handles, bounded reads and checked payloads in a separate host crate.
 [IWI6 image layouts](docs/iwi6-images.md) now validate texture metadata and complete
-bitmap/BC mip spans; selected-image inspection reports wavelet support separately.
+bitmap/BC mip spans. The [wavelet decoder](docs/iwi6-wavelets.md) reconstructs all five
+wavelet formats into caller-owned pixels; selected-image inspection reports actual
+decoded counts and aggregate pixel fingerprints.
 
 ## Run
 

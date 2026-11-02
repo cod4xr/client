@@ -29,6 +29,7 @@ pub(super) fn payloads(
     let mut compressed = Vec::new();
     let mut scratch = Vec::new();
     let mut output = Vec::new();
+    let mut image_work = images::Workspace::default();
     let mut summary = Summary {
         entries: 0,
         bytes: 0,
@@ -63,7 +64,7 @@ pub(super) fn payloads(
             &mut output,
         )?;
         if let Some(images) = &mut summary.images {
-            images.inspect(checked.bytes())?;
+            images.inspect(checked.bytes(), &mut image_work)?;
         }
         summary.entries += 1;
         summary.bytes = summary

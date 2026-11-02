@@ -14,6 +14,8 @@ fn pixels(version: u8, format: u8) -> Vec<u8> {
     bytes[10..12].copy_from_slice(&1_u16.to_le_bytes());
     if format == 11 {
         bytes.extend_from_slice(b"Private!");
+    } else if format == 6 {
+        bytes.extend_from_slice(b"Hide");
     }
     let size = u32::try_from(bytes.len()).expect("Small image");
     bytes[12..16].copy_from_slice(&size.to_le_bytes());
@@ -21,7 +23,7 @@ fn pixels(version: u8, format: u8) -> Vec<u8> {
 }
 
 #[test]
-fn selected_images_report_direct_layouts_and_wavelet_headers_without_claiming_wavelet_pixels() {
+fn selected_images_report_complete_direct_layouts_and_reconstructed_wavelet_pixels() {
     let direct = pixels(6, 11);
     let wavelet = pixels(6, 6);
     // CRC values were independently computed with Python zlib over these synthetic bytes.
@@ -32,7 +34,7 @@ fn selected_images_report_direct_layouts_and_wavelet_headers_without_claiming_wa
                 ..zip_fixture::Spec::stored(b"PrivateImage.IWI", &direct)
             },
             zip_fixture::Spec {
-                crc: 0xdc44_d60d,
+                crc: 0x4db9_2771,
                 ..zip_fixture::Spec::stored(b"PrivateWavelet.iwi", &wavelet)
             },
             zip_fixture::Spec {
@@ -57,7 +59,18 @@ fn selected_images_report_direct_layouts_and_wavelet_headers_without_claiming_wa
         assert_eq!(report["image_headers"], 2);
         assert_eq!(report["direct_image_layouts"], 1);
         assert_eq!(report["wavelet_headers"], 1);
-        assert_eq!(report["wavelet_pixel_decoding_implemented"], false);
+        assert_eq!(report["wavelet_pixel_decoding_implemented"], true);
+        assert_eq!(report["wavelet_decoded_images"], 1);
+        assert_eq!(report["wavelet_decoded_bytes"], 4);
+        assert_eq!(report["wavelet_consumed_bits"], 32);
+        assert_eq!(report["wavelet_encoded_bytes"], 4);
+        assert_eq!(
+            report["wavelet_pixel_sha256"],
+            serde_json::json!([
+                172, 32, 165, 123, 253, 224, 187, 196, 11, 254, 112, 137, 94, 177, 207, 172, 201,
+                68, 170, 255, 6, 202, 120, 64, 83, 98, 60, 86, 155, 62, 27, 61
+            ])
+        );
         assert_eq!(report["image_texels"], 17);
         assert_eq!(report["largest_image_dimension"], 4);
         let text = format!(
@@ -66,7 +79,32 @@ fn selected_images_report_direct_layouts_and_wavelet_headers_without_claiming_wa
             String::from_utf8_lossy(&output.stderr)
         );
         assert!(!text.contains("Private"));
+        assert!(!text.contains("Hide"));
     }
+}
+
+#[test]
+fn crc_valid_wavelet_header_without_pixels_fails_without_publishing_a_report() {
+    let mut invalid = pixels(6, 6);
+    invalid.truncate(28);
+    invalid[12..16].copy_from_slice(&28_u32.to_le_bytes());
+    let source = zip_fixture::build(
+        &[zip_fixture::Spec {
+            crc: 0xdc44_d60d,
+            ..zip_fixture::Spec::stored(b"PrivateMissingPixels.iwi", &invalid)
+        }],
+        &[],
+        &[],
+    );
+    let fixture = Fixture::new(false);
+    fs::write(&fixture.0, &source.bytes).expect("Header-only wavelet");
+    let output = run_mode(&fixture, "json", "--inspect-images");
+    assert!(!output.status.success());
+    assert!(output.stdout.is_empty());
+    let stderr = String::from_utf8(output.stderr).expect("JSON logs");
+    assert!(stderr.contains("wavelet stream incomplete"));
+    assert!(!stderr.contains("Private"));
+    assert!(!stderr.contains("content.inspect.completed"));
 }
 
 #[test]

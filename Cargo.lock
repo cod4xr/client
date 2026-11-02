@@ -66,6 +66,7 @@ dependencies = [
  "cod4xr-content",
  "getrandom",
  "serde_json",
+ "sha2",
  "tracing",
 ]
 

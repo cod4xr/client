@@ -101,7 +101,11 @@ crate. Byte/mip/texel budgets precede payload views; active picmip extents and e
 exhaustion validate before complete layouts are exposed. Mip views borrow cooked
 image bytes and assign no GPU authority. Header recognition includes wavelets while
 direct interpretation rejects them. The inspector CRC-checks selected source entries
-through owned I/O before separate header/direct-layout analysis.
+through owned I/O before separate header/direct-layout analysis. A separate pure
+wavelet codec checks topology, budgets and caller capacities before reconstructing
+in private scratch; complete pixels publish only after every mip/face succeeds.
+Numerical codebooks reproduce from immutable public sources with retained licensing.
+The inspector host owns reusable pixel/work buffers and aggregate pixel hashes.
 
 Client identity records have one owned representation shared by gamestate patches
 and ordinary sequenced updates. Their small arrays are explicit native field

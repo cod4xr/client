@@ -27,7 +27,7 @@ does not prove a playable connection.
 | Virtual file keys | ASCII case/slash equivalence, raw bytes, wide host-funded names, atomic output and mutation checks | Native request sanitation, host mount ownership and physical asset resolution |
 | Copied mount index | Explicit priority, native duplicate precedence, sparse IDs, model traces and catalog-to-payload integration without source ZIP retention | Native search order, pure policy and actual asset loading |
 | Owned archive host | Original retained handles, process-unique epochs, real file mutation/rename tests, bounded reads and copied-index-to-payload integration | Native search order, pure policy, asset-format interpretation and engine lifecycle |
-| IWI6 images | Checked metadata/direct mip layouts, explicit bitmap channel order, cube/volume vectors, private image inspection and installed-corpus counts | Wavelet pixel decoding, GPU upload/rendering and real gameplay presentation |
+| IWI6 images | Checked direct layouts, bounded five-format wavelet reconstruction, explicit channel order, synthetic cube/volume vectors, private image inspection and installed pixel hashes | Wavelet volume/non-power-of-two support, GPU upload/rendering and real gameplay presentation |
 | Content/render/simulation | Checked defaults/IWD data and copied lookup; engine map/model loading, rendering and simulation remain open | Stock/custom asset loading and complete playable sessions |
 | Optional extensions | No wire behavior invented | Negotiated features and ordinary-server fallback |
 

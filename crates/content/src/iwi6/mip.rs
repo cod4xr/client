@@ -8,7 +8,8 @@ pub(super) struct MipSlot {
     pub face_bytes: usize,
     pub dimensions: Iwi6Dimensions,
 }
-/// One complete encoded bitmap/BC mip with all its contiguous faces.
+/// One complete direct bitmap/BC mip with all its contiguous faces.
+/// Wavelet decoding returns these same views over reconstructed dense pixels.
 /// Pixel conversion, cube axis orientation and backend uploads are separate operations.
 #[derive(Clone, Copy)]
 pub struct Iwi6Mip<'pixels> {

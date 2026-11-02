@@ -9,8 +9,8 @@ is not proof of complete pixel data.
 The format has a 28-byte little-endian header. Bitmap color channels are explicitly
 BGR/BGRA, with separate luminance, luminance/alpha and alpha encodings. Direct block
 formats are BC1, BC2, BC3 and BC5. The five wavelet encodings are recognized in header
-metadata and explicitly reject direct-mip interpretation; wavelet pixel decoding
-remains unimplemented.
+metadata and explicitly reject direct-mip interpretation. The separate
+[wavelet codec](iwi6-wavelets.md) reconstructs their dense pixels.
 
 Effective depth is one for 2D/cube images and the stored depth for volumes. Cube
 takes precedence over the volume bit as in the reviewed loader. Mip dimensions
@@ -40,7 +40,8 @@ It selects `.iwi` names without UTF-8 coercion, checks complete selected ZIP pay
 lengths/CRCs through the original retained file handle, then interprets image headers
 and direct layouts. The source ZIP image and catalog work arrays are released before
 payload reads. JSON stdout separates image headers, direct layouts and wavelet
-headers, explicitly marks wavelet decoding unfinished, and leaves gameplay unverified.
+headers, reconstructs wavelet pixels with explicit counts/fingerprints, and leaves
+gameplay unverified.
 Unselected files are not advertised as CRC-checked. Human/JSON stderr logs retain
 counts and fixed failures without file names, paths or pixel data.
 
@@ -60,10 +61,11 @@ maximum stored/effective dimension 2048. Selected image payloads totaled
 contains no asset names, pixels or binaries. This is data-format evidence, not
 rendering or gameplay evidence.
 
-Format study uses immutable public OpenAssetTools references, with five hashes in
+Format study uses immutable public OpenAssetTools references, with seven hashes in
 [source evidence](iwi-format-sources.json) and bounded local/CI verification through
 `tools/verify_iwi_sources.py`. The Rust reader is a fresh checked implementation;
-no upstream C++ runtime or game payload is included. Primary format/geometry sources:
+Generated wavelet catalogs retain their upstream license and attribution. No upstream
+C++ runtime or game payload is included. Primary format/geometry sources:
 [types](https://github.com/Laupetin/OpenAssetTools/blob/63e6d57b9c1866ba0ac8b3e7b134d0652c2be44c/src/ObjImage/Image/IwiTypes.h),
 [reader](https://github.com/Laupetin/OpenAssetTools/blob/63e6d57b9c1866ba0ac8b3e7b134d0652c2be44c/src/ObjImage/Image/IwiLoader.cpp),
 [writer](https://github.com/Laupetin/OpenAssetTools/blob/63e6d57b9c1866ba0ac8b3e7b134d0652c2be44c/src/ObjImage/Image/IwiWriter6.cpp),

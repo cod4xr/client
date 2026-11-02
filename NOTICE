@@ -23,3 +23,15 @@ Revision: ddd65fce1a1093017bad2dbb6840d75d11c0d56f
 The shared server project records its AGPL source notices and compatibility work.
 
 CoD4XR is independent of the official CoD4X project and of Activision.
+
+Wavelet numerical codeword catalogs in crates/content/src/iwi6/wavelet/tables/
+are derived from the OpenAssetTools contributors' published catalogs:
+https://github.com/Laupetin/OpenAssetTools
+Revision: 63e6d57b9c1866ba0ac8b3e7b134d0652c2be44c
+Source: src/ObjImage/Image/IwiWaveletDecoder.cpp
+Those generated catalog files retain GPL-3.0-only; its full text is included in
+LICENSES/GPL-3.0-only.txt. The combined work is distributed under the applicable
+GPLv3/AGPLv3 combination terms. The Rust cursor, admission, reconstruction,
+ownership and error handling are independently written, not an imported C++ runtime.
+tools/import_iwi_wavelet_tables.py reproduces only the numerical catalogs from the
+locked source hash. No game pixels or commercial assets are included.

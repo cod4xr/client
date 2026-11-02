@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 mod archive;
+mod archive_report;
 mod arguments;
 mod error;
 mod file;

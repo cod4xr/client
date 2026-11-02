@@ -3,12 +3,14 @@
   "revision": "63e6d57b9c1866ba0ac8b3e7b134d0652c2be44c",
   "normalization": "CRLF to LF",
   "license": "GPL-3.0",
-  "purpose": "Public format/geometry evidence; no upstream runtime implementation or game payload is included",
+  "purpose": "Public format/geometry evidence and reproducible GPL numerical wavelet catalogs; no upstream runtime or game payload is included",
   "sources": {
     "src/ObjImage/Image/IwiTypes.h": "6993697258f1a0b14476ed71ace31ae936a4487ffeb82e29a5648960724b050b",
     "src/ObjImage/Image/IwiLoader.cpp": "ea210567ac56f6959f7ff17521cfc3bcf749de1f9e57f3d4657e9ef5db7c5281",
     "src/ObjImage/Image/IwiWriter6.cpp": "1dec21f5823c05a70a12d79fa152e623e0b179abe29348b62759ba557fd19de1",
     "src/ObjImage/Image/Texture.cpp": "cac9273564c8e7836e723c14fc7927b19526d7d10474787fb01c9fa9b55bb631",
-    "src/ObjImage/Image/ImageFormat.cpp": "6dd500d4ecfa8325811ae962152112863b06dfb85c8587faed91311e7d3853b4"
+    "src/ObjImage/Image/ImageFormat.cpp": "6dd500d4ecfa8325811ae962152112863b06dfb85c8587faed91311e7d3853b4",
+    "src/ObjImage/Image/IwiWaveletDecoder.cpp": "5845f7474bb2b578b929d80cbc658f14255e9bfa353ca8cfee264971fd328454",
+    "src/ObjImage/Image/IwiWaveletDecoder.h": "b3a2059865289add6acc71d6da359163b435e20c0c3acdb266843f7744bb4db2"
   }
 }
