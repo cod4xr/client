@@ -15,6 +15,7 @@ pub(crate) enum InspectError {
     Archive(Zip32Error),
     Payload(ZipPayloadError),
     Capacity,
+    HostArchive(cod4xr_client_content::ArchiveError),
     Report(serde_json::Error),
 }
 impl fmt::Display for InspectError {
@@ -29,6 +30,7 @@ impl fmt::Display for InspectError {
             Self::Archive(error) => error.fmt(formatter),
             Self::Payload(error) => error.fmt(formatter),
             Self::Capacity => formatter.write_str("inspection memory reservation failed"),
+            Self::HostArchive(error) => error.fmt(formatter),
             Self::Report(error) => write!(formatter, "inspection report failed: {error}"),
         }
     }
@@ -41,6 +43,7 @@ impl Error for InspectError {
             Self::Import(error) => Some(error),
             Self::Archive(error) => Some(error),
             Self::Payload(error) => Some(error),
+            Self::HostArchive(error) => Some(error),
             Self::Report(error) => Some(error),
             _ => None,
         }
@@ -49,5 +52,13 @@ impl Error for InspectError {
 impl From<io::Error> for InspectError {
     fn from(value: io::Error) -> Self {
         Self::Io(value)
+    }
+}
+impl From<cod4xr_client_content::ArchiveError> for InspectError {
+    fn from(value: cod4xr_client_content::ArchiveError) -> Self {
+        match value {
+            cod4xr_client_content::ArchiveError::FileBudget => Self::FileBudget,
+            other => Self::HostArchive(other),
+        }
     }
 }

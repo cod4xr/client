@@ -2,6 +2,7 @@
   "cod4xr-client-core": ["cod4x-protocol"],
   "cod4xr-reliable": [],
   "cod4xr-content": ["sha2", "miniz_oxide", "crc32fast"],
+  "cod4xr-client-content": ["cod4xr-content"],
   "cod4xr-client-net": ["cod4xr-client-core", "cod4xr-reliable", "getrandom", "cod4x-protocol", "cod4x-transport"],
-  "cod4xr-client": ["cod4xr-client-core", "cod4xr-client-net", "cod4xr-content", "cod4x-observability", "getrandom", "tracing", "serde_json"]
+  "cod4xr-client": ["cod4xr-client-core", "cod4xr-client-net", "cod4xr-content", "cod4xr-client-content", "cod4x-observability", "getrandom", "tracing", "serde_json"]
 }

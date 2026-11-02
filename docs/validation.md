@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 328 tests pass in both debug and release on the pinned
+Latest local checkpoint: 339 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (361 source files, 5 crates; all checked source
+formatting and repository policy pass (371 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,9 +14,9 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 321-test copied-metadata checkpoint passed hosted Windows/Linux CI in
-[run 41412078616](https://github.com/cod4xr/client/actions/runs/41412078616), including
-locked sources and table reproduction. Hosted mount-index validation will
+The 328-test mount-index checkpoint passed hosted Windows/Linux CI in
+[run 41413695696](https://github.com/cod4xr/client/actions/runs/41413695696), including
+locked sources and table reproduction. Hosted archive-host validation will
 follow its commit. These changes edit only the client repository and consume the
 published shared revision.
 
@@ -154,6 +154,20 @@ independent ordered map checks 256 traces; a catalog-to-payload integration rele
 all original ZIP/key/candidate buffers before looking up and CRC-checking the last
 duplicate. Actual file-provider ownership, archive search order, pure policy and
 engine asset loading remain open.
+
+Eleven owned-host tests add process epoch exhaustion without reuse, exact resource
+budgets, safe missing/nonregular errors, global uniqueness, stale/foreign IDs,
+every short image/payload capacity, work limits and out-of-file spans. Real temporary
+files cover in-place changes and original handles after pathname replacement.
+CRC failures preserve final output and admitted counters. A copied-index-to-owned-file
+integration releases all original catalog/key/index storage, reads through its
+original epoch and retains checked output after handle closure. Existing inspector
+process tests now exercise this six-crate filesystem/codec ownership boundary.
+Release verification through the new owner checked all 21 installed main IWDs /
+24,243 entries / 3,999,040,612 decoded bytes. The 6,058,270,418 admitted source bytes
+match the catalog images plus compressed spans exactly; [owned-I/O evidence](owned-iwd-payload-evidence.json)
+records only aggregate metadata. The debug owner separately checked the smallest
+archive's seven entries / 844,144 decoded bytes.
 
 Eight new independent loopback tests exercise the reusable network crate: one
 source socket across challenge/connect/retries/handoff, exact cookie/protocol/qport

@@ -55,7 +55,11 @@ Copied numeric entry metadata and separate-source decoding now allow later paylo
 reads without retaining whole ZIP buffers. Host handle/epoch ownership remains open.
 Copied virtual indexes now preserve caller-specified archive priority and native
 last-entry duplicate precedence, with model and catalog-to-payload integration.
-Actual archive search-order discovery, file ownership and pure policy remain open.
+Actual archive search-order discovery and pure policy remain open.
+An owned archive registry now retains original file handles with process-unique
+epochs and bounded checked reads. Inspector verification releases whole ZIP input
+before reading individual payloads through that owner. Full engine search order,
+pure checksums, asset formats and playable rendering/simulation remain open.
 
 Features that remove asset/model/image/entity/configstring limits need both
 internal storage/resource design and a negotiated extended wire/content profile.

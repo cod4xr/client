@@ -43,7 +43,7 @@ returned plan retains no socket/input-frame borrow or engine-update authority.
 
 The new `cod4xr-content` crate owns deterministic file-data validation, beginning
 with checked PE32 byte views and hash-reviewed native configstring defaults. It
-has no filesystem/process/engine ownership and depends only on pinned SHA-256.
+has no filesystem/process/engine ownership and uses pinned SHA-256, Deflate and CRC libraries.
 Host-side inspection opens an explicit user-selected file under a byte quota,
 imports into prefunded buffers and reports metadata through the shared logger.
 Game binaries and default values are not distributed. Native default importing
@@ -87,6 +87,14 @@ candidates. Last input wins each duplicate group; complete retention/storage
 preflight precedes final key/metadata copying. The result borrows no source ZIP,
 candidate or scratch data. Binary lookup returns copied routing/declarations;
 archive IDs never imply priority, ownership or allocation by identifier magnitude.
+
+The separate `cod4xr-client-content` host crate owns original file handles and
+process-unique epochs. It preflights resources/ranges, checks observable file stamps
+and feeds exact source bytes into deterministic decoding. No path is retained in
+diagnostics. Stale/foreign epochs reject; copied lookup and final payloads retain
+no source image or registry borrow. The inspector uses this actual owner and frees
+the complete catalog image before per-entry reads. Search-order/pure/engine policy
+remains separate from this filesystem ownership boundary.
 
 Client identity records have one owned representation shared by gamestate patches
 and ordinary sequenced updates. Their small arrays are explicit native field

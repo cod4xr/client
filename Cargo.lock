@@ -60,12 +60,20 @@ name = "cod4xr-client"
 version = "0.1.0"
 dependencies = [
  "cod4x-observability",
+ "cod4xr-client-content",
  "cod4xr-client-core",
  "cod4xr-client-net",
  "cod4xr-content",
  "getrandom",
  "serde_json",
  "tracing",
+]
+
+[[package]]
+name = "cod4xr-client-content"
+version = "0.1.0"
+dependencies = [
+ "cod4xr-content",
 ]
 
 [[package]]

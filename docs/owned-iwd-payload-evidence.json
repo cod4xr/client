@@ -1,0 +1,12 @@
+{
+  "mode": "release",
+  "io_owner": "cod4xr-client-content retained original handles",
+  "source_images_released_before_payload_reads": true,
+  "payload_integrity": "crc32_verified",
+  "writes_extracted_files": false,
+  "gameplay_compatibility": "unverified",
+  "archives": 21,
+  "verified_entries": 24243,
+  "verified_uncompressed_bytes": 3999040612,
+  "host_admitted_source_bytes": 6058270418
+}

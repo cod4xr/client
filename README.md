@@ -93,6 +93,8 @@ names with explicit budgets and atomic validation, before mount or filesystem po
 payload reads without retaining the original whole-archive buffer.
 [Copied virtual indexes](docs/mount-index.md) now provide ordered duplicate handling
 and lookup without retaining source ZIP buffers, before host file ownership or asset loading.
+[Owned archive I/O](docs/archive-host.md) now binds copied lookup metadata to retained
+original file handles, bounded reads and checked payloads in a separate host crate.
 
 ## Run
 
@@ -130,6 +132,7 @@ core and use lossy UTF-8 only for display. Raw peer strings/tokens stay out of l
 
 - `crates/client-core`: deterministic discovery and connection state over shared codecs.
 - `crates/client-net`: owned sockets, bounded blocking I/O and phase transitions.
+- `crates/client-content`: retained archive handle epochs and bounded filesystem I/O.
 - `crates/reliable`: dependency-free auxiliary reliable bodies and receive windows.
 - `crates/content`: deterministic checked imports from caller-provided game data.
 - `apps/client`: arguments, logging and report output.

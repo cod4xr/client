@@ -36,8 +36,10 @@ The existing inspector adds explicit verification:
 cargo run --bin cod4xr-client-inspect -- --verify-archive 'D:\Game\main\iw_00.iwd'
 ```
 
-The command checks all entries in memory and writes no extracted files. Its two
-payload buffers are reused and grow only to the largest admitted entry. Command
+The command checks all entries in memory and writes no extracted files. Its three
+payload buffers are reused and grow only to the largest admitted entry. It uses
+the [owned archive host](archive-host.md), frees the complete ZIP image after
+cataloging, then reads exact compressed spans from the original retained handle. Command
 policy permits up to 128 MiB compressed and 64 MiB decoded per entry; these are
 host inspection budgets, not engine limits. File/descriptor/payload reservations
 are fallible. Reports contain aggregate counts and `crc32_verified` only after

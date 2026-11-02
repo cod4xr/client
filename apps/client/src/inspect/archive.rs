@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 use super::{InspectError, file, report, verify};
+use cod4xr_client_content::{ArchiveBudget, ArchiveRegistry};
 use cod4xr_content::zip32::{Zip32Budget, Zip32Compression, Zip32Directory, Zip32EntrySlot};
 use std::{path::Path, time::Instant};
 
@@ -15,30 +16,56 @@ pub(super) fn execute(path: &Path, verify_payloads: bool) -> Result<(), InspectE
         max_entry_uncompressed_bytes: 1024 * 1024 * 1024,
         max_total_uncompressed_bytes: 64 * 1024 * 1024 * 1024,
     };
-    let input = file::read(path, budget.max_archive_bytes)?;
+    let mut registry = ArchiveRegistry::new(ArchiveBudget {
+        max_open_archives: 1,
+        max_archive_bytes: u64::try_from(budget.max_archive_bytes)
+            .map_err(|_| InspectError::FileBudget)?,
+    });
+    let info = registry.open_local_file(path)?;
+    let mut input = Vec::new();
+    file::resize(
+        &mut input,
+        usize::try_from(info.bytes()).map_err(|_| InspectError::FileBudget)?,
+        0,
+    )?;
+    registry.read_image(info.id(), &mut input)?;
     let mut scratch = Vec::new();
     let mut output = Vec::new();
     file::resize(&mut scratch, budget.max_entries, Zip32EntrySlot::default())?;
     file::resize(&mut output, budget.max_entries, Zip32EntrySlot::default())?;
-    let archive = Zip32Directory::parse(&input, budget, &mut scratch, &mut output)
-        .map_err(InspectError::Archive)?;
-    let stats = archive.stats();
+    let (stats, stored, directories, metadata) = {
+        let archive = Zip32Directory::parse(&input, budget, &mut scratch, &mut output)
+            .map_err(InspectError::Archive)?;
+        let stats = archive.stats();
+        let stored = archive
+            .entries()
+            .filter(|entry| entry.compression() == Zip32Compression::Stored)
+            .count();
+        let directories = archive
+            .entries()
+            .filter(cod4xr_content::zip32::Zip32Entry::has_directory_marker)
+            .count();
+        let mut metadata = Vec::new();
+        if verify_payloads {
+            metadata
+                .try_reserve_exact(stats.entries)
+                .map_err(|_| InspectError::Capacity)?;
+            metadata.extend(archive.entries().map(|entry| entry.metadata()));
+        }
+        (stats, stored, directories, metadata)
+    };
+    // Verification retains only copied declarations and the original file handle.
+    // Release the whole image before bounded per-entry reads and payload allocations.
+    drop(input);
     let verification = verify_payloads
-        .then(|| verify::payloads(&archive))
+        .then(|| verify::payloads(&mut registry, info.id(), &metadata))
         .transpose()?;
-    let stored = archive
-        .entries()
-        .filter(|entry| entry.compression() == Zip32Compression::Stored)
-        .count();
-    let directories = archive
-        .entries()
-        .filter(cod4xr_content::zip32::Zip32Entry::has_directory_marker)
-        .count();
     tracing::info!(
         event = "content.inspect.completed",
         archive_bytes = stats.archive_bytes,
         entries = stats.entries,
         payloads_verified = verify_payloads,
+        admitted_source_bytes = registry.usage().admitted_source_bytes,
         elapsed_micros = started.elapsed().as_micros(),
         "Classic archive inspection completed"
     );
@@ -50,6 +77,7 @@ pub(super) fn execute(path: &Path, verify_payloads: bool) -> Result<(), InspectE
         "declared_uncompressed_bytes": stats.declared_uncompressed_bytes,
         "stored_entries": stored, "deflate_entries": stats.entries - stored,
         "directory_markers": directories,
+        "host_admitted_source_bytes": registry.usage().admitted_source_bytes,
         "payload_integrity": if verify_payloads { "crc32_verified" } else { "unverified" },
         "verified_entries": verification.map(|summary| summary.entries),
         "verified_uncompressed_bytes": verification.map(|summary| summary.bytes),

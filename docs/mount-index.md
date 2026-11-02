@@ -28,7 +28,7 @@ allocating an ID-sized array. Debug/errors exclude names, payloads and checksums
 
 An `ArchiveId` is a host routing identifier, not an owned file handle. This layer
 opens no files, binds no epochs, applies no pure policy and loads no engine assets.
-The host must retain correct original handles and issue bounded reads; the payload
+The [archive host](archive-host.md) now retains original handles and issues bounded reads; the payload
 decoder then checks source length, complete stream, decoded size and CRC. Native
 request sanitation, actual archive search-order discovery and physical filesystem
 resolution remain separate work. Candidate ordering is explicit, not inferred
