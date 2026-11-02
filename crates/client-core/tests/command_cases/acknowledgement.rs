@@ -3,7 +3,7 @@ use cod4xr_client_core::commands::{
     ClientCommandError, LEGACY_COMMAND_SLOT_BYTES, LegacyClientCommands,
 };
 
-use crate::snapshot;
+use super::snapshot;
 
 #[test]
 fn checking_acknowledgement_is_read_only_until_complete_message_validation_commits_it() {

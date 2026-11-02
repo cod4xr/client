@@ -11,6 +11,35 @@ import tomllib
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def check_core_tests(packages: dict, failures: list) -> None:
+    """Keep the consolidated harness complete as component test files are added."""
+    package = packages.get("cod4xr-client-core")
+    if package is None:
+        return
+    manifest = tomllib.loads(Path(package["manifest_path"]).read_text(encoding="utf-8"))
+    directory = ROOT / "crates/client-core/tests"
+    harness = directory / "core.rs"
+    if not harness.is_file():
+        failures.append("Core integration harness is missing")
+        return
+    text = harness.read_text(encoding="utf-8")
+    modules = re.findall(r"^mod ([a-z][a-z0-9_]*);$", text, re.M)
+    if any(line.strip() and not line.startswith("//")
+           and re.fullmatch(r"mod [a-z][a-z0-9_]*;", line) is None
+           for line in text.splitlines()):
+        failures.append("Core test harness may contain only unconditional component modules")
+    expected = {path.stem for path in directory.glob("*.rs") if path != harness}
+    expected.update(path.parent.name for path in directory.glob("*_support/mod.rs"))
+    if len(modules) != len(set(modules)) or set(modules) != expected:
+        failures.append("Core harness must register every component and shared fixture exactly once")
+    if list(directory.glob("*/main.rs")):
+        failures.append("Core component tests must use registered top-level Rust modules")
+    targets = [target for target in package["targets"] if "test" in target["kind"]]
+    if (manifest["package"].get("autotests") is not False or len(targets) != 1
+            or targets[0]["name"] != "core" or Path(targets[0]["src_path"]) != harness):
+        failures.append("Core tests must share the single explicitly registered integration harness")
+
+
 def main() -> None:
     failures = []
     branch = subprocess.run(["git", "symbolic-ref", "--quiet", "--short", "HEAD"],
@@ -39,6 +68,7 @@ def main() -> None:
     packages = {package["name"]: package for package in metadata["packages"]}
     if set(packages) != set(rules):
         failures.append("Crate inventory differs from dependency policy")
+    check_core_tests(packages, failures)
     for name, package in packages.items():
         manifest = tomllib.loads(Path(package["manifest_path"]).read_text(encoding="utf-8"))
         for field in ("version", "edition", "rust-version", "license", "publish"):

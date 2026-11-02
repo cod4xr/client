@@ -195,6 +195,9 @@ python tools/check_repository.py
 
 Handwritten source aims for 250 lines and cannot exceed 400. Workspace metadata,
 strict Rust/Clippy lints, unsafe prohibition and dependency boundaries are checked.
+[Core integration tests](docs/testing.md) share one executable while keeping
+component/case files separate. Repository policy checks complete test registration;
+namespace filters select individual components without separate test binaries.
 The Windows/Linux CI workflow is configured; local results are recorded separately
 from hosted CI and real stock-client/server interoperability.
 

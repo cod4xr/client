@@ -8,7 +8,7 @@
 mod context;
 #[path = "legacy_entity_cases/failures.rs"]
 mod failures;
-mod legacy_entity_support;
+use crate::legacy_entity_support;
 #[path = "legacy_entity_cases/vectors.rs"]
 mod vectors;
 use legacy_entity_support::{Coordinate, coordinate, decoder, fixture, header, position};

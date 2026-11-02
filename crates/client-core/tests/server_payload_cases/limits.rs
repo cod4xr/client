@@ -5,7 +5,7 @@ use cod4xr_client_core::{
     server_payload::ServerPayloadError,
 };
 
-use crate::{INITIAL, KEYED, decoder};
+use super::{INITIAL, KEYED, decoder};
 
 #[test]
 fn unsent_future_negative_and_regressing_acknowledgements_reject_before_buffer_writes() {

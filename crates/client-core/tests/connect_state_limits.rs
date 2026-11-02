@@ -4,8 +4,7 @@
     clippy::expect_used,
     reason = "Finite boundary fixtures own valid checked request plans."
 )]
-mod connect_state_support;
-mod connect_support;
+use crate::connect_state_support;
 use cod4xr_client_core::connect::{
     ConnectAction, ConnectBudget, ConnectFailure, ConnectProgress, MAX_CONNECT_PACKET_BYTES,
     NoAuthConnectAttempt,

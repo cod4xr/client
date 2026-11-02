@@ -4,7 +4,7 @@
     clippy::expect_used,
     reason = "Finite caller fields exercise explicit valid/invalid profile boundaries."
 )]
-mod connect_support;
+use crate::connect_support;
 use cod4x_protocol::{InfoLimit, InfoString};
 use cod4xr_client_core::connect::{
     ConnectPlanError, MAX_CONNECT_PACKET_BYTES, NoAuthConnectPlan, NoAuthConnectSettings,

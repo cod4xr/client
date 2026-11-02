@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-use crate::{MAX_MESSAGE_BYTES, padded, skip_padding, state};
+use super::{MAX_MESSAGE_BYTES, padded, skip_padding, state};
 use cod4x_protocol::{
     LegacyIndexDecoder, LegacyIndexEncoder, LegacyIndexError, LegacyIndexKind, MessageReader,
     MessageWriter,

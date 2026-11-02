@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-use crate::{BUDGET, LEGACY_VECTOR, block, dirty_slots};
+use super::{BUDGET, LEGACY_VECTOR, block, dirty_slots};
 use cod4x_protocol::MAX_MESSAGE_BYTES;
 use cod4xr_client_core::{
     BaselineProtocol,

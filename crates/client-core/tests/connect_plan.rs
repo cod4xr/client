@@ -4,7 +4,7 @@
     clippy::expect_used,
     reason = "Finite userinfo/receipt fixtures use explicit compatibility settings."
 )]
-mod connect_support;
+use crate::connect_support;
 use cod4x_protocol::connection::ConnectRequest;
 use cod4x_protocol::{CommandLine, InfoLimit, InfoString};
 use cod4xr_client_core::connect::{

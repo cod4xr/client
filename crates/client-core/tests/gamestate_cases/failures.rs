@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-use crate::{BUDGET, Output, client, configstrings, encoded, entity, finish, mixed};
+use super::{BUDGET, Output, client, configstrings, encoded, entity, finish, mixed};
 use cod4xr_client_core::{
     BaselineProtocol,
     gamestate::{GameStateBudget, GameStateError, GameStatePlan},

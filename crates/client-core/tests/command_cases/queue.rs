@@ -5,7 +5,7 @@ use cod4xr_client_core::commands::{
     MAX_LEGACY_COMMAND_STORAGE_BYTES, MAX_LEGACY_PENDING_COMMANDS,
 };
 
-use crate::snapshot;
+use super::snapshot;
 
 #[test]
 fn canonical_commands_own_only_initialized_bytes_and_keep_private_data_out_of_debug() {

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+use super::legacy_entity_support::coordinate;
 use super::*;
-use crate::legacy_entity_support::coordinate;
 
 #[test]
 fn every_legacy_target_layout_retains_nonzero_origins_or_applies_its_native_hint_two_forms() {

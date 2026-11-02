@@ -9,5 +9,5 @@ mod limits;
 #[path = "service_cases/records.rs"]
 mod records;
 
-mod service_support;
+use crate::service_support;
 use service_support::{Fixture, append_command};

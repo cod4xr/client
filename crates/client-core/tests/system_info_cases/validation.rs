@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-use crate::{BUDGET, SystemInfo, SystemInfoBudget, SystemInfoError};
+use super::{BUDGET, SystemInfo, SystemInfoBudget, SystemInfoError};
 use cod4x_protocol::InfoError;
 
 #[test]

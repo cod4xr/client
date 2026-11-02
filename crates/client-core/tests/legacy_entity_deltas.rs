@@ -10,7 +10,7 @@ mod context;
 mod failures;
 #[path = "legacy_delta_cases/layouts.rs"]
 mod layouts;
-mod legacy_entity_support;
+use crate::legacy_entity_support;
 #[path = "legacy_delta_cases/vectors.rs"]
 mod vectors;
 

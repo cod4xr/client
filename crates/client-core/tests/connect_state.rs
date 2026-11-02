@@ -4,8 +4,7 @@
     clippy::expect_used,
     reason = "Finite explicit clock/reply fixtures have valid phase budgets."
 )]
-mod connect_state_support;
-mod connect_support;
+use crate::connect_state_support;
 use cod4xr_client_core::connect::{
     ConnectAction, ConnectBudget, ConnectFailure, ConnectProgress, ConnectRejection,
     ConnectReplyKind, MAX_CONNECT_PACKET_BYTES, NoAuthConnectAttempt,

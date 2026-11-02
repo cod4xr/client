@@ -6,7 +6,7 @@ use cod4xr_client_core::{
     server_payload::ServerPayloadDecoder,
 };
 
-use crate::{CHALLENGE, INITIAL, KEYED, decoder};
+use super::{CHALLENGE, INITIAL, KEYED, decoder};
 
 #[test]
 fn profiles_map_only_explicit_reviewed_connect_numbers_without_hint_fallback() {

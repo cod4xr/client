@@ -8,7 +8,7 @@ use cod4xr_client_core::{
     service_controls::{LegacyServicePlan, ServiceControlBudget},
 };
 
-use crate::{Fixture, append_command, apply_pair, plan};
+use super::{Fixture, append_command, apply_pair, plan};
 
 #[test]
 fn monotonic_handling_ignores_old_records_counts_gaps_and_keeps_private_commands_out_of_debug() {
@@ -106,7 +106,7 @@ fn profile_and_stale_message_failures_leave_existing_records_unchanged() {
     ));
     let mut old = Fixture::at_sequence(source, 0, b"", 6);
     let mut old_output = [0; 64];
-    let old_plan = crate::plan(&mut old, &client, &mut old_output);
+    let old_plan = super::plan(&mut old, &client, &mut old_output);
     assert!(matches!(
         history.prepare(&old_plan),
         Err(ServerCommandError::MessageOrder)

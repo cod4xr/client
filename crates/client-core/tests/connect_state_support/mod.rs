@@ -8,7 +8,7 @@ use cod4xr_client_core::connect::{NoAuthConnectPlan, NoAuthConnectSettings};
 
 pub fn plan() -> NoAuthConnectPlan {
     NoAuthConnectPlan::new(
-        crate::connect_support::receipt(i32::MIN),
+        super::connect_support::receipt(i32::MIN),
         NoAuthConnectSettings {
             protocol: 21,
             qport: 40_000,

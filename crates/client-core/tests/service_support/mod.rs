@@ -1,4 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+#![allow(
+    clippy::expect_used,
+    reason = "Checked compression and service fixtures."
+)]
 use cod4x_protocol::{MAX_MESSAGE_BYTES, compression, obfuscation};
 use cod4xr_client_core::{
     BaselineProtocol,

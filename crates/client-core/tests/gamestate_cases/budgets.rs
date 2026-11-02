@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-use crate::{BUDGET, Output, encoded, failures::rejected, mixed};
+use super::{BUDGET, Output, encoded, failures::rejected, mixed};
 use cod4xr_client_core::{BaselineProtocol, gamestate::GameStatePlan, message_body::BodyReader};
 
 #[test]

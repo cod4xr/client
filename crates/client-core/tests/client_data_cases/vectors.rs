@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-use crate::{carrier, identity, parse};
+use super::{carrier, identity, parse};
 use cod4x_protocol::MAX_MESSAGE_BYTES;
 use cod4xr_client_core::{
     BaselineProtocol,

@@ -5,7 +5,7 @@ use cod4xr_client_core::{
     control::{ClientControlHeader, ControlMessageError, ControlMessagePlan, ServerCommandKey},
 };
 
-use crate::{CHALLENGE, build, decoded_body, legacy, modern};
+use super::{CHALLENGE, build, decoded_body, legacy, modern};
 
 #[test]
 fn idle_profiles_match_independent_plaintext_huffman_and_xor_vectors() {

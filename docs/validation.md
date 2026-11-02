@@ -2,7 +2,7 @@
 
 Latest local checkpoint: 564 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (562 source files, 6 crates; all checked source
+formatting and repository policy pass (563 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,20 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 543-test player-objective checkpoint passed hosted Windows/Linux CI in
-[run 41496814095](https://github.com/cod4xr/client/actions/runs/41496814095), including
-locked sources and table reproduction. Hosted player-array validation will
+The 564-test player-array checkpoint passed hosted Windows/Linux CI in
+[run 41499569969](https://github.com/cod4xr/client/actions/runs/41499569969), including
+locked sources and table reproduction. Hosted consolidated-harness validation will
 follow its commit. These changes edit only the client repository and consume the
 published shared revision.
+
+The core integration harness now loads all 31 component suites in one executable
+and shares four fixture modules once. Before/after listing comparisons preserved
+the exact qualified identities of 289 integration and nine unit cases; the
+[inventory evidence](core-test-inventory.json) records their canonical hash. Full
+workspace coverage remains unchanged. Missing, duplicate, unknown and conditional
+harness declarations fail repository policy. Production runtime code, release
+settings and the existing local Cargo target remain unchanged; see
+[test organization](testing.md).
 
 Twenty-one player-array tests add native stats/ammunition physical vectors, both
 profiles, signed/unsigned boundaries, absolute updates versus XOR, high mask bits,

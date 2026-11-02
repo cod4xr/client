@@ -5,7 +5,7 @@
 mod application;
 #[path = "mixed_service_cases/bounds.rs"]
 mod bounds;
-mod service_support;
+use crate::service_support;
 #[path = "mixed_service_cases/vectors.rs"]
 mod vectors;
 use cod4xr_client_core::{

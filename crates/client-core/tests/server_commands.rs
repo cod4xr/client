@@ -4,7 +4,7 @@
     clippy::expect_used,
     reason = "Finite explicit metadata/data and validated plan fixtures."
 )]
-mod service_support;
+use crate::service_support;
 #[path = "server_command_cases/storage.rs"]
 mod storage;
 #[path = "server_command_cases/updates.rs"]

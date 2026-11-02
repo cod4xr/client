@@ -9,7 +9,7 @@ use cod4xr_client_core::{
     },
 };
 
-use crate::{Fixture, append_command, plan};
+use super::{Fixture, append_command, plan};
 
 #[test]
 fn storage_geometry_is_checked_before_mutation_and_dirty_data_is_initially_opaque() {
@@ -200,7 +200,7 @@ fn full_big_command_survives_retention_and_shorter_reuse_exposes_no_stale_tail()
     );
     let mut empty = Fixture::at_sequence(b"\x04\x02\0\0\0\0\x07", 0, b"", 8);
     let mut output = [];
-    let plan = crate::plan(&mut empty, &client, &mut output);
+    let plan = super::plan(&mut empty, &client, &mut output);
     let _summary = history.prepare(&plan).expect("Short reuse").commit();
     assert!(history.command(1).is_err());
     assert!(

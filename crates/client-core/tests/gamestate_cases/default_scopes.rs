@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-use crate::{BUDGET, Output, configstrings, encoded, finish};
+use super::{BUDGET, Output, configstrings, encoded, finish};
 use cod4xr_client_core::{BaselineProtocol, gamestate::GameStatePlan, message_body::BodyReader};
 use std::collections::BTreeMap;
 

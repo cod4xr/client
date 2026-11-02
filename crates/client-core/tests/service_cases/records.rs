@@ -6,7 +6,7 @@ use cod4xr_client_core::{
     service_controls::{LegacyServicePlan, ServiceControlBudget},
 };
 
-use crate::{Fixture, append_command};
+use super::{Fixture, append_command};
 
 #[test]
 fn nop_and_eof_validate_metadata_without_interpreting_padding_or_following_records() {

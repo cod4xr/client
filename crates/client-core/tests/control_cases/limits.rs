@@ -8,7 +8,7 @@ use cod4xr_client_core::{
     },
 };
 
-use crate::{CHALLENGE, build, decoded_body, modern};
+use super::{CHALLENGE, build, decoded_body, modern};
 
 #[test]
 fn retained_server_keys_validate_representation_without_claiming_history_provenance() {

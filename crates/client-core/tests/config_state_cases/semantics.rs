@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-use crate::{BUDGET, defaults, dirty_slots, patches};
+use super::{BUDGET, defaults, dirty_slots, patches};
 use cod4xr_client_core::config_state::{
     ConfigMergeSlot, ConfigPatch, ConfigSnapshot, ConfigStateSlot, ConfigValue,
 };

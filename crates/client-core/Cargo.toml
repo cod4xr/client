@@ -1,6 +1,7 @@
 [package]
 name = "cod4xr-client-core"
-description = "Deterministic bounded CoD4XR client discovery"
+description = "Deterministic CoD4XR client protocol and session state"
+autotests = false
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -9,6 +10,10 @@ publish.workspace = true
 
 [dependencies]
 cod4x-protocol.workspace = true
+
+[[test]]
+name = "core"
+path = "tests/core.rs"
 
 [lints]
 workspace = true

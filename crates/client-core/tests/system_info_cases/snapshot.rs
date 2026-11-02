@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-use crate::{BUDGET, SystemInfo, SystemInfoError};
+use super::{BUDGET, SystemInfo, SystemInfoError};
 use cod4x_protocol::MessageWriter;
 use cod4xr_client_core::{
     BaselineProtocol,

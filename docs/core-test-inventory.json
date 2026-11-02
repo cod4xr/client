@@ -1,0 +1,16 @@
+{
+  "operation": "compare_qualified_core_test_inventory_before_and_after_harness_consolidation",
+  "baseline_commit": "d572452992550cf90369551402207ffce6291a66",
+  "core_integration_executables_before": 31,
+  "core_integration_executables_after": 1,
+  "core_integration_cases": 289,
+  "core_unit_cases": 9,
+  "qualified_case_identity_sha256": "3e9d4d77ff48dbb0a43d416c1c85c906781b447f2032d4590d3ce7616f9c4fcd",
+  "identity_encoding": "utf8_compact_json_sorted_pairs_of_unit_or_integration_and_namespaced_case_name",
+  "identical_before_and_after": true,
+  "shared_fixture_modules_loaded_once": 4,
+  "missing_duplicate_unknown_conditional_module_policies_checked": true,
+  "production_runtime_code_changed": false,
+  "new_cargo_target_directory_created": false,
+  "release_profile_changed": false
+}

@@ -5,7 +5,7 @@ use cod4xr_client_core::{
     service_controls::{LegacyServicePlan, ServiceControlBudget, ServiceControlError},
 };
 
-use crate::{Fixture, append_command};
+use super::{Fixture, append_command};
 
 #[test]
 fn truncated_records_and_malformed_suffixes_never_publish_partial_commands() {

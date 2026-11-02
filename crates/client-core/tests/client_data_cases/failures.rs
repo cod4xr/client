@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-use crate::{carrier, identity, parse, state};
+use super::{carrier, identity, parse, state};
 use cod4xr_client_core::{
     BaselineProtocol, client_data::ClientDataError, message_body::BodyReader,
 };
