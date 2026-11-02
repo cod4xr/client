@@ -230,6 +230,13 @@ keeping the cooked snapshot's native body consumption distinct. Unsupported mixe
 services are rejected, never skipped; wider routing/ACK ownership remains separate.
 See [snapshot services](snapshot-services.md).
 
+The snapshot payload adapter checks the actual decoded payload profile/sequence
+against caller context before service work. Explicit prediction selection precedes
+all output publication; cooked results retain only final storage and checked ACK
+metadata. Temporary payload/key-history borrows end after parsing, while actual
+ACK/history mutation remains with the original connection owner. Shared ordinary
+profile widths are unchanged; see [snapshot payloads](snapshot-payloads.md).
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

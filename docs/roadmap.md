@@ -85,7 +85,9 @@ Complete snapshot wire transactions now validate all constituents, exact cooked
 message/epoch references and prediction before atomic reader/two-output publication.
 Snapshot-only service carriers now validate NOP/snapshot/EOF framing before any
 publication, rejecting unsupported mixed services without skipping their bodies.
-Host history/session ownership, combined routing and payload/ACK admission remain open.
+Snapshot payload adapters now bind the actual decoded profile/message sequence
+and preserve checked ACK metadata without mutating the outgoing key owner.
+Host history/session ownership, combined routing and joint ACK admission remain open.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 

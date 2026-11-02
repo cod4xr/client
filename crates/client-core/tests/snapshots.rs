@@ -5,6 +5,10 @@
 mod bindings;
 #[path = "snapshot_cases/ownership.rs"]
 mod ownership;
+#[path = "snapshot_cases/payload_failures.rs"]
+mod payload_failures;
+#[path = "snapshot_cases/payload_vectors.rs"]
+mod payload_vectors;
 #[path = "snapshot_cases/prediction.rs"]
 mod prediction;
 #[path = "snapshot_cases/rollback.rs"]

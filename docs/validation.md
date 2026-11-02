@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 673 tests pass in both debug and release on the pinned
+Latest local checkpoint: 679 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (641 source files, 6 crates; all checked source
+formatting and repository policy pass (645 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,19 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 663-test complete snapshot-body checkpoint passed hosted Windows/Linux CI in
-[run 41512913165](https://github.com/cod4xr/client/actions/runs/41512913165), including
-locked sources and table reproduction. Hosted snapshot-service validation will
-follow its commit. These changes edit only the client repository and consume the
-published shared revision.
+The 673-test snapshot-service checkpoint passed hosted Windows/Linux CI in
+[run 41514147677](https://github.com/cod4xr/client/actions/runs/41514147677), including
+locked sources and table reproduction. Hosted decoded snapshot-payload validation
+will follow its commit. These changes edit only the client repository and consume
+the published shared revision.
+
+Six decoded snapshot-payload cases exercise both profiles through actual shared
+compression/obfuscation and payload decoding. They cover positive retained-key ACK
+metadata, actual profile/message mismatch before service work, late unsupported
+services, failed prediction, explicit sample/fallback, retry, owned lifetimes and
+private Debug. Successful and failed parsing leave outgoing ACK/key state intact;
+only a separate explicit owner commit advances it. Joint connection history/ACK
+admission remains open; see [snapshot payloads](snapshot-payloads.md).
 
 Nine snapshot-only service cases add independent framing/EOF vectors, native
 padding, cached-bit continuity, owned cooked references, all tested truncations,

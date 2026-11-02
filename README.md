@@ -100,6 +100,10 @@ and a host gameplay/history owner remain open.
 framing before publishing either snapshot output. Unsupported mixed services are
 rejected, and native padding after logical EOF remains uninterpreted.
 
+[Decoded snapshot payloads](docs/snapshot-payloads.md) now bind the specialized
+carrier to the actual payload profile/message sequence and retain checked ACK
+metadata without changing command-key ownership or admitting a connection ACK.
+
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add
 caller-funded fragment retention, selective metadata and bounded stream reads.
