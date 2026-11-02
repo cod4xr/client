@@ -15,6 +15,7 @@ pub mod datagram;
 mod error;
 mod outcome;
 mod peer;
+mod reliable_connection;
 
 pub use challenge::{ChallengeRun, ChallengedSocket, challenge};
 pub use channel::{ChannelParts, ClientChannel};
@@ -29,3 +30,7 @@ pub use channel_usage::{ReceiveUsage, SendUsage};
 pub use connect::{ConnectRun, PendingConnect};
 pub use error::NetworkError;
 pub use outcome::{AcknowledgedSocket, ConnectOutcome, ConnectSummary};
+pub use reliable_connection::{
+    ConnectionReceive, ConnectionSend, OrdinaryConnectionSender, ReliableConnection,
+    ReliableConnectionStats, ReliableRejection, ReliableUsage,
+};

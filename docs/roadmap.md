@@ -20,8 +20,9 @@ by deterministic and loopback tests. Outgoing queues and whole ACK admission now
 have model tests; explicit auxiliary UDP sends now couple OS I/O to transmission
 admission. Scheduling now paces original retries and ACKs with combined I/O admission.
 Unified endpoints now own windows, framing, whole-packet admission and scheduling.
-Next are continuous connection I/O, typed message dispatch and complete gamestate
-handling.
+Connection owners now bind the original socket, actual host clock and endpoint,
+with scoped ordinary callbacks and bounded packet operations. Next are typed
+message dispatch, complete gamestate handling and the engine's ongoing game loop.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 

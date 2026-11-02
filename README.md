@@ -61,7 +61,9 @@ complete OS sends, with explicit ACK-only sends and profile checks.
 periodic/forced ACKs, committing timers and data only after successful I/O.
 [Unified endpoints](docs/reliable-endpoint.md) now coordinate framed queues,
 whole-packet admission, bounded drains and scheduling over one set of buffers.
-Continuous connection I/O and typed application dispatch remain open.
+[Connection owners](docs/reliable-connection.md) now retain the acknowledged socket,
+endpoint and internal clock, with bounded I/O operations and receipt/work counters.
+The engine's ongoing game loop and typed application dispatch remain open.
 
 ## Run
 

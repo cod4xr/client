@@ -1,19 +1,19 @@
 # Validation evidence
 
-Latest local checkpoint: 182 tests pass in both debug and release on the pinned
+Latest local checkpoint: 188 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (194 source files, 4 crates; all checked source
+formatting and repository policy pass (206 source files, 4 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
 owned control encoding, payload/service validation, configurable server-command
 retention, auxiliary reliable bodies, receive/send windows, whole ACK admission,
-application framing, paced auxiliary UDP sends and unified endpoint orchestration.
-Typed command delivery, continuous connection I/O, gamestate and ordinary gameplay remain open.
+application framing, paced auxiliary UDP sends and socket/clock/endpoint ownership.
+The ongoing game loop, typed command delivery, gamestate and ordinary gameplay remain open.
 
-The 173-test scheduler checkpoint passed hosted Windows/Linux CI in
-[run 41354667657](https://github.com/cod4xr/client/actions/runs/41354667657).
-Hosted validation for the endpoint work will follow its commit. These
+The 182-test endpoint checkpoint passed hosted Windows/Linux CI in
+[run 41391951101](https://github.com/cod4xr/client/actions/runs/41391951101).
+Hosted validation for the connection-owner work will follow its commit. These
 changes edit only the client repository and consume the published shared revision.
 
 Eight new independent loopback tests exercise the reusable network crate: one
@@ -147,6 +147,15 @@ invalid/valid packet admission, complete body delivery and consumed ACK emission
 
 The local workspace contains a pre-existing edit to the challenge process test;
 it is excluded from this checkpoint. Hosted CI checks the committed version.
+
+Six connection-owner UDP tests add original socket/profile/endpoint coupling,
+deadline failure without data admission, exact framed exchange, wrong routing,
+body/ACK rejection, scoped ordinary/connectionless callbacks with hidden debug
+results, independent ordinary sending, actual receipt time after delayed I/O,
+expired waits without work or timestamp refresh, terminal framing failure before
+more socket operations, and profile/storage/timer failures preserving supplied
+buffers. Counters include work before failure and count terminal transitions once.
+The ordinary sender wrapper exposes no external auxiliary windows or schedulers.
 
 ## Initial foundation
 

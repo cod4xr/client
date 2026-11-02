@@ -56,6 +56,7 @@ retry and backpressure from three receive slots. A real UDP fixture rejects a
 combined invalid ACK/data/force request, then validates the next complete packet,
 delivers its frame and emits the correct consumed ACK on the original socket.
 
-This supplies endpoint orchestration. A connection owner with a continuous I/O
-loop, typed gamestate/application dispatch and ordinary-peer gameplay evidence
-remains to be implemented. The CLI still exposes discovery/challenge probes.
+This supplies endpoint orchestration. [Connection owners](reliable-connection.md)
+now bind the original socket, internal clock and endpoint to bounded I/O operations.
+An ongoing game loop, typed gamestate/application dispatch and ordinary-peer gameplay
+evidence remain open. The CLI still exposes discovery/challenge probes.

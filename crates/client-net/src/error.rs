@@ -45,6 +45,8 @@ pub enum NetworkError {
     Envelope(cod4x_protocol::PacketError),
     /// The original message profile does not support this reviewed auxiliary transport.
     AuxiliaryProfile,
+    /// Unified reliable endpoint state or storage failed.
+    Endpoint(cod4xr_reliable::endpoint::EndpointError),
 }
 
 impl fmt::Display for NetworkError {
@@ -71,9 +73,9 @@ impl fmt::Display for NetworkError {
             Self::AuxiliaryKind => formatter.write_str("unexpected auxiliary envelope family"),
             Self::Reliable(error) => error.fmt(formatter),
             Self::Envelope(error) => error.fmt(formatter),
-            Self::AuxiliaryProfile => {
-                formatter.write_str("original profile does not support auxiliary reliable sending")
-            }
+            Self::Endpoint(error) => error.fmt(formatter),
+            Self::AuxiliaryProfile => formatter
+                .write_str("original profile does not support auxiliary reliable transport"),
         }
     }
 }
@@ -89,6 +91,7 @@ impl Error for NetworkError {
             Self::Channel(error) => Some(error),
             Self::Reliable(error) => Some(error),
             Self::Envelope(error) => Some(error),
+            Self::Endpoint(error) => Some(error),
             _ => None,
         }
     }

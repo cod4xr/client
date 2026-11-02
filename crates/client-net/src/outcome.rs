@@ -7,7 +7,7 @@ use std::{
 
 use cod4xr_client_core::connect::{ConnectObservation, ConnectReplyKind, ConnectUsage};
 
-use crate::{ChannelContext, ClientChannel, NetworkError, peer::PeerIo};
+use crate::{ChannelContext, ClientChannel, NetworkError, ReliableConnection, peer::PeerIo};
 
 /// Owned terminal metadata. Remote payloads have no command/filesystem authority.
 pub struct ConnectSummary {
@@ -122,6 +122,25 @@ impl AcknowledgedSocket {
     /// Rejects reassembly capacity above the shared logical-message profile.
     pub fn into_channel(self, storage: &mut [u8]) -> Result<ClientChannel<'_>, NetworkError> {
         ClientChannel::new(self.io, self.context, storage)
+    }
+
+    /// Consumes this original socket into a fresh reliable connection owner.
+    /// All clocks, windows, routing and frame budgets stay tied to this connection.
+    ///
+    /// # Errors
+    /// Rejects unsupported original profiles and invalid channel/endpoint storage.
+    pub fn into_reliable<'storage>(
+        self,
+        reassembly: &'storage mut [u8],
+        storage: cod4xr_reliable::endpoint::EndpointStorage<'storage>,
+        config: cod4xr_reliable::endpoint::EndpointConfig,
+    ) -> Result<ReliableConnection<'storage>, NetworkError> {
+        if cod4xr_client_core::BaselineProtocol::from_number(self.summary().requested_protocol())
+            != Some(cod4xr_client_core::BaselineProtocol::Cod4x21)
+        {
+            return Err(NetworkError::AuxiliaryProfile);
+        }
+        ReliableConnection::new(self.into_channel(reassembly)?, storage, config)
     }
 }
 
