@@ -19,7 +19,7 @@ impl<'storage> EntityStateSource<'storage> {
     pub fn from_states(states: &'storage [EntityState]) -> Self {
         Self(Source::States(states))
     }
-    pub(super) fn published(slots: &'storage [SnapshotEntitySlot]) -> Self {
+    pub(crate) fn published(slots: &'storage [SnapshotEntitySlot]) -> Self {
         Self(Source::Published(slots))
     }
     /// Returns the exact source length charged to inspection policy.

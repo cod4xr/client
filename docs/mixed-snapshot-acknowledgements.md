@@ -29,6 +29,11 @@ performs no I/O or fallible validation. The final consuming ACK commit copies th
 checked original key before its pending slot becomes reusable and returns the
 complete cooked mixed plan. No incoming owner is mutated by parsing itself.
 
+[Snapshot retention](snapshot-history.md) now provides another child preparation
+over that same cooked plan. Preflight its next-slot capacities with command/identity
+resources, then commit all children before consuming the original outgoing holder.
+History resource failure cancels sibling preparations and preserves the original key.
+
 A resource-budget rejection after successful wire parsing must cancel sibling
 preparations before retrying preflight, or drop them and the ACK holder to abandon
 the message. This differs from wire failure: successful cooked

@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-//! Native snapshot framing constituents without history or message admission.
+//! Native snapshot wire transactions and explicit caller-funded retention.
 //! Explicit profiles select codecs; the host owns reference epochs and retention.
 
 mod error;
 mod header;
+pub mod history;
 mod input;
 mod message;
 pub mod mixed_services;

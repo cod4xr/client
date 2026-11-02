@@ -35,6 +35,9 @@ pub struct SnapshotEntityPlan<'storage> {
     consumed_bytes: usize,
 }
 impl<'storage> SnapshotEntityPlan<'storage> {
+    pub(crate) fn retained_slots(&self) -> &[SnapshotEntitySlot] {
+        self.slots
+    }
     /// Validates sources and all records before publishing merged entities or advancing
     /// the original reader. Existing cached bits survive; following data is not consumed.
     /// Source/prior/baseline borrows are not retained in the returned cooked plan.

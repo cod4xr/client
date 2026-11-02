@@ -10,7 +10,10 @@ use cod4xr_client_core::{
     server_commands::{SERVER_COMMAND_SLOT_BYTES, ServerCommandHistory, ServerCommandSlot},
     server_payload::{MixedSnapshotRequest, ServerPayloadDecoder, SnapshotDecodeStorage},
     service_controls::ClientDataUpdateSlot,
-    snapshots::services::SnapshotPrediction,
+    snapshots::{
+        history::{SnapshotHistory, SnapshotHistorySlot},
+        services::SnapshotPrediction,
+    },
 };
 
 #[test]
@@ -143,6 +146,14 @@ fn all_incoming_owners_preflight_then_commit_before_original_outgoing_ack_releas
         ClientIdentityState::new(BaselineProtocol::Cod4x21, &mut cells).expect("Identity owner");
     seed_identities(&mut identities, 0);
     let mut identity_work = vec![ClientIdentitySlot::default(); 2];
+    let mut retained_entities = vec![super::SnapshotEntitySlot::default(); 2];
+    let mut retained_clients = vec![super::SnapshotClientSlot::default(); 2];
+    let mut snapshot_slots = [SnapshotHistorySlot::new(
+        &mut retained_entities,
+        &mut retained_clients,
+    )];
+    let mut snapshots =
+        SnapshotHistory::new(7, context.profile(), &mut snapshot_slots).expect("Snapshot owner");
     let commands = server
         .prepare(pending.plan().controls())
         .expect("Command preflight");
@@ -156,12 +167,23 @@ fn all_incoming_owners_preflight_then_commit_before_original_outgoing_ack_releas
             &mut identity_work,
         )
         .expect("Identity preflight");
+    let retained = snapshots
+        .prepare(pending.plan().snapshot())
+        .expect("Snapshot resource preflight");
     let command_update = commands.commit();
     let _ = patches.commit();
+    let _ = retained.commit();
     let plan = pending.commit();
     assert_eq!(command_update.newest_command, 9);
     assert_eq!(history.acknowledged_sequence(), 1);
     assert_eq!(identities.accepted_sequence(), Some(2));
     assert_eq!(identities.client(2).expect("Identity").name(), b"After");
     assert_eq!(plan.snapshot().message().server_command_sequence(), 4);
+    assert_eq!(
+        snapshots
+            .source(7)
+            .expect("Retained original snapshot")
+            .message(),
+        plan.snapshot().message()
+    );
 }

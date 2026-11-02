@@ -33,6 +33,9 @@ pub struct SnapshotClientPlan<'storage> {
     consumed_bytes: usize,
 }
 impl<'storage> SnapshotClientPlan<'storage> {
+    pub(crate) fn retained_slots(&self) -> &[SnapshotClientSlot] {
+        self.slots
+    }
     /// Checks the complete prior source and stream before publishing any final cell.
     /// A private validation pass proves the immutable replay's reads and output extent.
     /// Following fields and unused final tails remain available without bit alignment.

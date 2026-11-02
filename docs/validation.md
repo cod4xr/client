@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 705 tests pass in both debug and release on the pinned
+Latest local checkpoint: 715 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (676 source files, 6 crates; all checked source
+formatting and repository policy pass (688 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,12 +14,18 @@ Reliable gamestate bodies now have whole-frame admission coverage. Mixed-message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 699-test mixed snapshot-carrier checkpoint passed hosted Windows/Linux CI in
-[run 41521657642](https://github.com/cod4xr/client/actions/runs/41521657642), including
-locked sources and table reproduction. The 704-test mixed original-owner ACK run is
-[41523347146](https://github.com/cod4xr/client/actions/runs/41523347146); its final hosted
-status is separate from the successful local checks. These changes edit only the client repository and consume
-the published shared revision.
+The 705-test scoped UDP snapshot checkpoint passed hosted Windows/Linux CI in
+[run 41524111529](https://github.com/cod4xr/client/actions/runs/41524111529), including
+locked sources and table reproduction. The preceding mixed ACK checkpoint also
+passed [run 41523347146](https://github.com/cod4xr/client/actions/runs/41523347146).
+These changes edit only the client repository and consume the published shared revision.
+
+Eight whole-snapshot history cases cover both profiles, exact retained references,
+40 slots and distance 255, independent sparse capacities, cancellation/tails,
+epoch/profile/order rejection and reset, and mixed sibling-owner resource failure.
+An independent queue model runs 256 operations at five capacities in both profiles.
+Two compile-fail examples protect history/source borrows; joint mixed ACK preflight
+now includes snapshot retention. See [snapshot history](snapshot-history.md).
 
 A real protocol-21 loopback UDP case returns prepared mixed snapshots from scoped
 receive without copying packet bytes, rejects malformed tails, retries host identity

@@ -260,6 +260,12 @@ checks, infallible incoming command/identity commits precede the consuming ACK
 commit. Resource rejection cancels all prepared owners; no frame parser executes
 peer text. See [mixed snapshot acknowledgements](mixed-snapshot-acknowledgements.md).
 
+Whole-snapshot history now owns coherent copies in caller-selected slots with
+independent sparse capacities. Exact circular-order binary lookup, epoch/profile
+binding and cancellable resource preflight precede infallible retention alongside
+the other message owners. Sources borrow the history; cooked decoded plans release
+prior-history borrows. See [snapshot history](snapshot-history.md).
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

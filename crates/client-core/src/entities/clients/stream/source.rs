@@ -19,7 +19,7 @@ impl<'storage> ClientStateSource<'storage> {
     pub fn from_states(states: &'storage [ClientState]) -> Self {
         Self(Source::States(states))
     }
-    pub(super) fn published(slots: &'storage [SnapshotClientSlot]) -> Self {
+    pub(crate) fn published(slots: &'storage [SnapshotClientSlot]) -> Self {
         Self(Source::Published(slots))
     }
     /// Returns every entry charged to source inspection policy.

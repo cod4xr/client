@@ -115,7 +115,8 @@ buffers publish only after complete validation and prediction selection.
 
 [Mixed snapshot ACK preparation](docs/mixed-snapshot-acknowledgements.md) now retains
 the original outgoing key through complete mixed decoding and incoming-owner
-preflight. Cancellation preserves ACK/history; commitment copies the checked key.
+preflight, including [caller-funded snapshot history](docs/snapshot-history.md).
+Cancellation preserves ACK/history; commitment copies the checked key.
 
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add

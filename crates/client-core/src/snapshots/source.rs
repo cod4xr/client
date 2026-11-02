@@ -38,7 +38,8 @@ impl fmt::Debug for SnapshotBaselines<'_> {
     }
 }
 /// Coherent player/entity/client references borrowed from one cooked snapshot plan.
-/// Only `SnapshotPlan::as_source` constructs this view; component parts cannot be mixed.
+/// Only cooked plans and retained whole snapshots construct this view; component
+/// parts cannot be mixed.
 #[derive(Clone, Copy)]
 pub struct SnapshotSource<'snapshot> {
     pub(super) message: SnapshotMessage,
