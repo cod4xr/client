@@ -60,6 +60,9 @@ An owned archive registry now retains original file handles with process-unique
 epochs and bounded checked reads. Inspector verification releases whole ZIP input
 before reading individual payloads through that owner. Full engine search order,
 pure checksums, asset formats and playable rendering/simulation remain open.
+PC IWI6 metadata and complete direct bitmap/BC layouts now have independent vectors
+and installed-corpus inspection. Wavelet headers are recognized explicitly; their
+pixel decoder, GPU resources/uploads and renderer integration remain open.
 
 Features that remove asset/model/image/entity/configstring limits need both
 internal storage/resource design and a negotiated extended wire/content profile.

@@ -96,6 +96,13 @@ no source image or registry borrow. The inspector uses this actual owner and fre
 the complete catalog image before per-entry reads. Search-order/pure/engine policy
 remains separate from this filesystem ownership boundary.
 
+IWI6 header geometry and direct bitmap/BC layout remain in the deterministic content
+crate. Byte/mip/texel budgets precede payload views; active picmip extents and exact
+exhaustion validate before complete layouts are exposed. Mip views borrow cooked
+image bytes and assign no GPU authority. Header recognition includes wavelets while
+direct interpretation rejects them. The inspector CRC-checks selected source entries
+through owned I/O before separate header/direct-layout analysis.
+
 Client identity records have one owned representation shared by gamestate patches
 and ordinary sequenced updates. Their small arrays are explicit native field
 capacities, without imposing a player-table allocation on the engine. Parsing

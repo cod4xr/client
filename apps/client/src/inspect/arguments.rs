@@ -14,9 +14,11 @@ pub(super) const HELP: &str = "CoD4XR installed-client data inspector\n\
 Usage: cod4xr-client-inspect PATH_TO_IW3MP_EXE [--log-format human|json|auto]\n\
        cod4xr-client-inspect --archive PATH_TO_IWD [--log-format human|json|auto]\n\
        cod4xr-client-inspect --verify-archive PATH_TO_IWD [--log-format human|json|auto]\n\
+       cod4xr-client-inspect --inspect-images PATH_TO_IWD [--log-format human|json|auto]\n\
 Imports reviewed default data and reports counts. Requires a caller-provided game file.\n\
 Archive mode catalogs classic stored/Deflate ZIP metadata without extraction or CRC verification.\n\
 Verification mode decodes in memory with exact length/CRC checks and no extraction to disk.\n\
+Image mode checks selected IWI6 headers/direct layouts; wavelet pixel decoding remains separate.\n\
 Reports use JSON stdout; logs use stderr. Source values and paths stay out of logs.\n";
 
 pub(super) struct Options {
@@ -29,6 +31,7 @@ pub(super) enum Kind {
     ClientImage,
     Archive,
     VerifiedArchive,
+    Images,
 }
 pub(super) fn from_environment() -> Result<Option<Options>, InspectError> {
     let values: Vec<_> = std::env::args_os().skip(1).take(5).collect();
@@ -50,6 +53,9 @@ pub(super) fn parse(mut values: Vec<OsString>) -> Result<Option<Options>, Inspec
     } else if values[0] == OsStr::new("--verify-archive") {
         values.remove(0);
         Kind::VerifiedArchive
+    } else if values[0] == OsStr::new("--inspect-images") {
+        values.remove(0);
+        Kind::Images
     } else {
         Kind::ClientImage
     };

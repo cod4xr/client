@@ -3,6 +3,7 @@ mod archive;
 mod arguments;
 mod error;
 mod file;
+mod images;
 mod report;
 mod verify;
 
@@ -44,10 +45,7 @@ pub(crate) fn run() -> Result<ExitCode, InspectError> {
 
 fn execute(options: &arguments::Options) -> Result<(), InspectError> {
     if options.kind != arguments::Kind::ClientImage {
-        return archive::execute(
-            &options.path,
-            options.kind == arguments::Kind::VerifiedArchive,
-        );
+        return archive::execute(&options.path, options.kind);
     }
     let started = Instant::now();
     let budget = DefaultsBudget {

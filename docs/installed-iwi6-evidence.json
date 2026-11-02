@@ -1,0 +1,17 @@
+{
+  "archives": 21,
+  "largest_image_dimension": 2048,
+  "wavelet_pixel_decoding_implemented": false,
+  "gameplay_compatibility": "unverified",
+  "image_headers": 6565,
+  "direct_image_layouts": 6540,
+  "wavelet_headers": 25,
+  "image_mip_levels": 56168,
+  "image_texels": 2565716492,
+  "verified_uncompressed_bytes": 2018472572,
+  "host_admitted_source_bytes": 4236262877,
+  "modes": [
+    "debug",
+    "release"
+  ]
+}

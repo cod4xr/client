@@ -15,6 +15,8 @@ use std::{
 static NEXT: AtomicU64 = AtomicU64::new(0);
 #[path = "inspect_cases/archive.rs"]
 mod archive;
+#[path = "inspect_cases/images.rs"]
+mod images;
 #[path = "inspect_cases/verification.rs"]
 mod verification;
 struct Fixture(PathBuf);

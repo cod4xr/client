@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 339 tests pass in both debug and release on the pinned
+Latest local checkpoint: 354 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (371 source files, 6 crates; all checked source
+formatting and repository policy pass (385 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,9 +14,9 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 328-test mount-index checkpoint passed hosted Windows/Linux CI in
-[run 41413695696](https://github.com/cod4xr/client/actions/runs/41413695696), including
-locked sources and table reproduction. Hosted archive-host validation will
+The 339-test archive-host checkpoint passed hosted Windows/Linux CI in
+[run 41417216296](https://github.com/cod4xr/client/actions/runs/41417216296), including
+locked sources and table reproduction. Hosted IWI6 validation will
 follow its commit. These changes edit only the client repository and consume the
 published shared revision.
 
@@ -168,6 +168,18 @@ Release verification through the new owner checked all 21 installed main IWDs /
 match the catalog images plus compressed spans exactly; [owned-I/O evidence](owned-iwd-payload-evidence.json)
 records only aggregate metadata. The debug owner separately checked the smallest
 archive's seven entries / 844,144 decoded bytes.
+
+Thirteen IWI6 tests add all direct bitmap/BC formats, dense channel layouts,
+reverse mips, NPOT blocks, inactive dimensions, cube/volume geometry, sixteen levels,
+known wavelet metadata and explicit direct rejection. Every prefix, appended byte,
+used/inactive picmip size, host budget and header mutation covers bounded views.
+Owned headers and borrowed mip views retain only their documented source lifetimes.
+Two process tests add selected-image CRC scope, private human/JSON reporting and
+wrong-version failure without partial output. Debug inspection checked 6,565 native
+headers / 6,540 direct layouts / 25 explicitly undecoded wavelet headers across all
+21 installed main IWDs. [Image evidence](installed-iwi6-evidence.json) contains only
+aggregate metadata. Five public format-source hashes verify locally and in CI;
+no game pixels, binaries or upstream runtime implementation are distributed.
 
 Eight new independent loopback tests exercise the reusable network crate: one
 source socket across challenge/connect/retries/handoff, exact cookie/protocol/qport

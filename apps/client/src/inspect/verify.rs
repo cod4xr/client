@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-use super::{InspectError, file};
+use super::{InspectError, file, images};
 use cod4xr_client_content::ArchiveRegistry;
 use cod4xr_content::{
     mount_index::ArchiveId,
@@ -11,12 +11,14 @@ use cod4xr_content::{
 pub(super) struct Summary {
     pub entries: usize,
     pub bytes: u64,
+    pub images: Option<images::Summary>,
 }
 
 pub(super) fn payloads(
     registry: &mut ArchiveRegistry,
     id: ArchiveId,
     entries: &[Zip32EntryMetadata],
+    inspect_images: bool,
 ) -> Result<Summary, InspectError> {
     // Verification command policy. Reused buffers grow to the largest admitted entry,
     // never the archive's combined declared output. Nothing is written to disk.
@@ -30,6 +32,7 @@ pub(super) fn payloads(
     let mut summary = Summary {
         entries: 0,
         bytes: 0,
+        images: inspect_images.then(images::Summary::default),
     };
     for &entry in entries {
         if entry.compressed_byte_count() > budget.max_compressed_bytes {
@@ -51,7 +54,7 @@ pub(super) fn payloads(
             0
         };
         file::resize(&mut scratch, private_length, 0)?;
-        registry.read_entry(
+        let checked = registry.read_entry(
             id,
             entry,
             budget,
@@ -59,6 +62,9 @@ pub(super) fn payloads(
             &mut scratch,
             &mut output,
         )?;
+        if let Some(images) = &mut summary.images {
+            images.inspect(checked.bytes())?;
+        }
         summary.entries += 1;
         summary.bytes = summary
             .bytes

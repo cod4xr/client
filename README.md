@@ -95,6 +95,8 @@ payload reads without retaining the original whole-archive buffer.
 and lookup without retaining source ZIP buffers, before host file ownership or asset loading.
 [Owned archive I/O](docs/archive-host.md) now binds copied lookup metadata to retained
 original file handles, bounded reads and checked payloads in a separate host crate.
+[IWI6 image layouts](docs/iwi6-images.md) now validate texture metadata and complete
+bitmap/BC mip spans; selected-image inspection reports wavelet support separately.
 
 ## Run
 
