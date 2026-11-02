@@ -17,7 +17,7 @@ MAXIMUM_FILE_BYTES = 512 * 1024 * 1024
 MAXIMUM_DECODED_BYTES = 512 * 1024 * 1024
 
 
-def reference(path: Path) -> dict:
+def decode_reference(path: Path) -> tuple:
     with path.open("rb") as stream:
         encoded = stream.read(MAXIMUM_FILE_BYTES + 1)
     if len(encoded) > MAXIMUM_FILE_BYTES or encoded[:12] != b"IWffu100\x05\0\0\0":
@@ -30,7 +30,12 @@ def reference(path: Path) -> dict:
     sizes = struct.unpack_from("<11I", decoded)
     if len(decoded) != sizes[0] + 44:
         raise ValueError("Reference fastfile size declaration mismatch")
-    return {"encoded_bytes": len(encoded), "decoded_bytes": len(decoded),
+    return len(encoded), decoded, sizes
+
+
+def reference(path: Path) -> dict:
+    encoded_bytes, decoded, sizes = decode_reference(path)
+    return {"encoded_bytes": encoded_bytes, "decoded_bytes": len(decoded),
             "serialized_body_bytes": sizes[0], "declared_external_bytes": sizes[1],
             "declared_total_block_bytes": sum(sizes[2:]),
             "decoded_sha256": list(hashlib.sha256(decoded).digest())}

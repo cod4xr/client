@@ -16,11 +16,13 @@ Usage: cod4xr-client-inspect PATH_TO_IW3MP_EXE [--log-format human|json|auto]\n\
        cod4xr-client-inspect --verify-archive PATH_TO_IWD [--log-format human|json|auto]\n\
        cod4xr-client-inspect --inspect-images PATH_TO_IWD [--log-format human|json|auto]\n\
        cod4xr-client-inspect --inspect-fastfile PATH_TO_FF [--log-format human|json|auto]\n\
+       cod4xr-client-inspect --inspect-zone-directory PATH_TO_FF [--log-format human|json|auto]\n\
 Imports reviewed default data and reports counts. Requires a caller-provided game file.\n\
 Archive mode catalogs classic stored/Deflate ZIP metadata without extraction or CRC verification.\n\
 Verification mode decodes in memory with exact length/CRC checks and no extraction to disk.\n\
 Image mode checks direct IWI6 layouts and reconstructs wavelet pixels.\n\
 Fastfile mode verifies unsigned PC version-5 framing, full zlib integrity and size declarations.\n\
+Zone-directory mode additionally catalogs script strings and asset records without loading children.\n\
 Reports use JSON stdout; logs use stderr. Source values and paths stay out of logs.\n";
 
 pub(super) struct Options {
@@ -35,6 +37,7 @@ pub(super) enum Kind {
     VerifiedArchive,
     Images,
     Fastfile,
+    ZoneDirectory,
 }
 pub(super) fn from_environment() -> Result<Option<Options>, InspectError> {
     let values: Vec<_> = std::env::args_os().skip(1).take(5).collect();
@@ -62,6 +65,9 @@ pub(super) fn parse(mut values: Vec<OsString>) -> Result<Option<Options>, Inspec
     } else if values[0] == OsStr::new("--inspect-fastfile") {
         values.remove(0);
         Kind::Fastfile
+    } else if values[0] == OsStr::new("--inspect-zone-directory") {
+        values.remove(0);
+        Kind::ZoneDirectory
     } else {
         Kind::ClientImage
     };

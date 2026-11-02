@@ -67,6 +67,9 @@ backend color policy and renderer integration remain open.
 Unsigned PC version-5 fastfile envelopes now have bounded metadata inspection and
 complete zlib/size validation before publication. Serialized relocation, typed
 asset loading, resource ownership and map/model rendering remain open.
+Root script-string and asset-directory catalogs now stage privately and publish
+into exact caller-owned storage. Child schemas, string aliases, target relocation
+and typed resources remain separate implementation gates.
 
 Features that remove asset/model/image/entity/configstring limits need both
 internal storage/resource design and a negotiated extended wire/content profile.

@@ -69,7 +69,7 @@ SHA-256 over the ordered per-file decoded hashes. These checks establish contain
 validation, without asset interpretation or playable map loading.
 
 Primary format research is pinned to OpenAssetTools revision
-`63e6d57b9c1866ba0ac8b3e7b134d0652c2be44c`, with nine hashes in
+`63e6d57b9c1866ba0ac8b3e7b134d0652c2be44c`, with fourteen container/zone hashes in
 [source evidence](fastfile-format-sources.json). The
 [factory](https://github.com/Laupetin/OpenAssetTools/blob/63e6d57b9c1866ba0ac8b3e7b134d0652c2be44c/src/ZoneLoading/Game/IW3/ZoneLoaderFactoryIW3.cpp),
 [profile constants](https://github.com/Laupetin/OpenAssetTools/blob/63e6d57b9c1866ba0ac8b3e7b134d0652c2be44c/src/ZoneCommon/Game/IW3/ZoneConstantsIW3.h),

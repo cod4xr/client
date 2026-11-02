@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 383 tests pass in both debug and release on the pinned
+Latest local checkpoint: 398 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (418 source files, 6 crates; all checked source
+formatting and repository policy pass (435 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,9 +14,9 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 369-test wavelet checkpoint passed hosted Windows/Linux CI in
-[run 41451570424](https://github.com/cod4xr/client/actions/runs/41451570424), including
-locked sources and table reproduction. Hosted fastfile validation will
+The 383-test fastfile checkpoint passed hosted Windows/Linux CI in
+[run 41454877366](https://github.com/cod4xr/client/actions/runs/41454877366), including
+locked sources and table reproduction. Hosted zone-directory validation will
 follow its commit. These changes edit only the client repository and consume the
 published shared revision.
 
@@ -207,6 +207,20 @@ matched all 76 installed fastfiles against independent Python zlib/size/SHA-256
 checks: 2,642,982,057 encoded bytes / 4,764,264,952 decoded bytes, with no compressed
 tails. [Container evidence](installed-fastfile5-evidence.json) records aggregate
 metadata only; no asset graph or renderer is claimed.
+
+Thirteen zone-root tests add null/empty/raw strings, all native type codes, inert
+skipped records, biased packed descriptors, a 70,000-null-string catalog, independent
+physical/virtual alignment, zero-count allocation behavior, every prefix truncation,
+host/scratch/final capacities, alias/type/count failures, virtual overflow, output
+rollback/retry/tails, cooked lifetimes and mutations. Two process tests inspect a
+real published catalog with an independent string hash and prove that zlib-valid
+invalid roots emit no report or completion event. Fourteen container/zone source
+hashes verify. Debug/release comparisons matched all 76 installed root catalogs:
+32,169 string slots (32 null), 486,555 cooked bytes and 139,101 asset records, including
+the two inert non-inline sound-driver fields. Every cooked-string SHA-256, type/link
+distribution, prefix extent and full-container hash matched independent Python.
+[Directory evidence](installed-zone5-evidence.json) contains aggregate metadata only. Child
+assets, serialized targets, registry resources and playable rendering remain open.
 
 Eight new independent loopback tests exercise the reusable network crate: one
 source socket across challenge/connect/retries/handoff, exact cookie/protocol/qport

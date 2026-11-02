@@ -3,7 +3,7 @@
   "revision": "63e6d57b9c1866ba0ac8b3e7b134d0652c2be44c",
   "normalization": "CRLF to LF",
   "license": "GPL-3.0",
-  "purpose": "Immutable format evidence for fresh checked Rust container code; no upstream runtime or game payload included",
+  "purpose": "Immutable format evidence for fresh checked Rust container/root catalog code; no upstream runtime or game payload included",
   "sources": {
     "src/ZoneLoading/Game/IW3/ZoneLoaderFactoryIW3.cpp": "e04ede20e88c3f8e838a84d4845a90a57e3463400af32d94415fc3ef115c997c",
     "src/ZoneCommon/Game/IW3/ZoneConstantsIW3.h": "0cbec34b892932e41123b6c595ba313a3e7898f571b2d6cb7f44fd5ed945f489",
@@ -13,6 +13,11 @@
     "src/ZoneLoading/Loading/Steps/StepAllocXBlocks.cpp": "6a544674197fb54e84c2d94edf1af49e436dee59a468c86ec9f92a9d616b5447",
     "src/ZoneWriting/Writing/Steps/StepWriteZoneSizes.cpp": "6fb678dbb77c334d2d63d376c3b0edd180180c7742c5ab6653706929ba919dfe",
     "src/ZoneLoading/Game/IW3/ContentLoaderIW3.cpp": "f33f9cdf788e68879df7b17d5dec02f30001a73bfcc5949c6c484fbca58fa605",
-    "src/Common/Game/IW3/IW3_Assets.h": "5602d4c23532c884443cad2fe9165989699af57f80aa5edd75ff5081b911b76c"
+    "src/Common/Game/IW3/IW3_Assets.h": "5602d4c23532c884443cad2fe9165989699af57f80aa5edd75ff5081b911b76c",
+    "src/Common/Game/IW3/IW3.h": "1b863798f1aaef9c4a6ac044dbd82268ca8c20bbc1d4789dcc475be4b6539350",
+    "src/ZoneLoading/Loading/ContentLoaderBase.h": "3097169f7064d5153cc2a8ec06879dda3b56cd73e50c6de7fbf7fb17648c6b5a",
+    "src/ZoneLoading/Loading/ContentLoaderBase.cpp": "7fe3a3898545e1f4ce9e297a3558ca61e44462a246fb65bcdec5151c02f24382",
+    "src/ZoneLoading/Zone/Stream/ZoneInputStream.h": "dc021912850e5b993df936db64da52db59a946e153935c1197d0aa62dca89d05",
+    "src/ZoneLoading/Zone/Stream/ZoneInputStream.cpp": "02aaff4632989c12299d9f418f87ee89d2bec80c0861cdb3128d5e929ebc8396"
   }
 }

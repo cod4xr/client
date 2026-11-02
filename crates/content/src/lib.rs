@@ -10,3 +10,4 @@ pub mod mount_index;
 pub mod pe32;
 pub mod zip32;
 pub mod zip_payload;
+pub mod zone5;

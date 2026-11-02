@@ -17,35 +17,9 @@ const BUDGET: Fastfile5Budget = Fastfile5Budget {
     max_total_block_bytes: 1024 * 1024,
     max_external_bytes: 1024 * 1024,
 };
-fn inner(body: &[u8], declared: u32, external: u32, blocks: [u32; 9]) -> Vec<u8> {
-    let mut bytes = Vec::new();
-    for word in [declared, external].into_iter().chain(blocks) {
-        bytes.extend_from_slice(&word.to_le_bytes());
-    }
-    bytes.extend_from_slice(body);
-    bytes
-}
-fn outer(zlib: &[u8]) -> Vec<u8> {
-    let mut input = b"IWffu100".to_vec();
-    input.extend_from_slice(&5_u32.to_le_bytes());
-    input.extend_from_slice(zlib);
-    input
-}
-// Independent RFC1950/1951 stored-block encoder, not the production inflater.
-fn stored(decoded: &[u8]) -> Vec<u8> {
-    let length = u16::try_from(decoded.len()).expect("Single synthetic stored block");
-    let mut zlib = vec![0x78, 0x01, 0x01];
-    zlib.extend_from_slice(&length.to_le_bytes());
-    zlib.extend_from_slice(&(!length).to_le_bytes());
-    zlib.extend_from_slice(decoded);
-    let (mut a, mut b) = (1_u32, 0_u32);
-    for &byte in decoded {
-        a = (a + u32::from(byte)) % 65521;
-        b = (b + a) % 65521;
-    }
-    zlib.extend_from_slice(&((b << 16) | a).to_be_bytes());
-    outer(&zlib)
-}
+#[path = "fastfile_cases/fixture.rs"]
+mod fixture;
+use fixture::{inner, outer, stored};
 // Python zlib.compress(pack('<11I',10000,777,*range(1,10))+b'abcde'*2000,9).
 const HISTORY: &[u8] = &[
     0x78, 0xda, 0xed, 0xc6, 0xb9, 0x0d, 0x83, 0x00, 0x00, 0x04, 0xc1, 0x33, 0x3f, 0x99, 0xbb, 0xa0,

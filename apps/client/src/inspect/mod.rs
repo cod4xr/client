@@ -8,6 +8,7 @@ mod file;
 mod images;
 mod report;
 mod verify;
+mod zone;
 
 use cod4x_observability::{LogConfig, LogRuntime};
 use cod4xr_content::defaults::{DefaultSlot, DefaultsBudget, ImportedDefaults};
@@ -46,8 +47,14 @@ pub(crate) fn run() -> Result<ExitCode, InspectError> {
 }
 
 fn execute(options: &arguments::Options) -> Result<(), InspectError> {
-    if options.kind == arguments::Kind::Fastfile {
-        return fastfile::execute(&options.path);
+    if matches!(
+        options.kind,
+        arguments::Kind::Fastfile | arguments::Kind::ZoneDirectory
+    ) {
+        return fastfile::execute(
+            &options.path,
+            options.kind == arguments::Kind::ZoneDirectory,
+        );
     }
     if options.kind != arguments::Kind::ClientImage {
         return archive::execute(&options.path, options.kind);

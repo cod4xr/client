@@ -114,6 +114,14 @@ block/external sizes grant neither allocation nor pointer authority. The host ow
 file reads, fallible work/output buffers and diagnostic decoded hashes. This leaves
 asset graphs, serialized relocation and engine resource admission to later layers.
 
+The separate `zone5` layer accepts only a checked fastfile view. Counts inspection,
+private metadata staging and final publication keep allocation planning distinct
+from data admission. Cooked strings and copied asset records outlive source/work;
+physical consumption and virtual-block alignment are accounted separately. Link
+words remain inert metadata until per-type dispatch, including skipped native
+records whose offset-like fields must not be dereferenced. The inspector allocates
+exact admitted counts and validates its actual published catalog before reporting.
+
 Client identity records have one owned representation shared by gamestate patches
 and ordinary sequenced updates. Their small arrays are explicit native field
 capacities, without imposing a player-table allocation on the engine. Parsing

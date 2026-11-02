@@ -21,6 +21,8 @@ mod fastfile;
 mod images;
 #[path = "inspect_cases/verification.rs"]
 mod verification;
+#[path = "inspect_cases/zone.rs"]
+mod zone;
 struct Fixture(PathBuf);
 impl Fixture {
     fn new(oversized: bool) -> Self {

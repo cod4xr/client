@@ -104,6 +104,10 @@ decoded counts and aggregate pixel fingerprints.
 version-5 envelope, complete zlib integrity and declared sizes before exposing any
 untyped serialized body. Asset interpretation and playable map loading remain open.
 
+[Zone root catalogs](docs/zone5-directories.md) add bounded script-string and asset
+directory publication over checked containers. Child payloads and serialized offset
+targets remain separate from this metadata layer.
+
 ## Run
 
 Rust 1.95 is pinned. On this workstation, reuse the existing Cargo target:
