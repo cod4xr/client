@@ -13,13 +13,14 @@ does not prove a playable connection.
 | UDP runtime | Real loopback responder/process tests; noise, endpoint, size, timeout/budget checks | Ordinary CoD4X server trials |
 | No-auth connect | Owned challenge/connect/acknowledged socket transitions, retry stability, inert refusals and bounded state | Clean disconnect and ordinary peer traces |
 | Channel/snapshots | Ordinary transport, control/payload/service validation, configurable command histories and socket/clock/endpoint ownership with paced UDP I/O | Game loop, typed execution, gamestate, snapshots and input replay |
-| Gamestate configstring blocks | Independent vectors for both profiles, whole-block validation, caller-funded storage, complete namespaces and large bodies | Default/wire merging, engine application and ordinary peer captures |
+| Gamestate configstring blocks | Independent vectors for both profiles, whole-block validation, caller-funded storage, complete namespaces and large bodies | Engine application and ordinary peer captures |
 | Client identity records | Owned protocol-21 gamestate/update vectors, exact text capacities, sequence-bit preservation and complete-record rollback | Whole-message validation, session sequence admission and ordinary peer captures |
 | Initial entity baselines | Protocol-21 field vectors, all eighteen source-reproduced layouts, owned words and atomic index/message admission | Native peer captures, legacy coordinates, engine interpretation and later snapshot deltas |
 | Complete gamestate constituent | Protocol-21 header/records/trailer, whole-output rollback, full wire namespaces and configurable retention | Outer-message admission, native defaults/content, legacy coordinates, engine application and real peer captures |
 | Reliable gamestate body | Immutable wrapper/tail evidence, complete-output rollback, reordered real UDP frames and source-independent cooked plans | Session admission, native defaults/content, application ownership and ordinary peer captures |
 | Typed frame ownership | Original-profile preparation, exclusive frame identity, cancel/commit behavior, work counters and real UDP tests | Session epochs, engine/content preflight and ordinary peer captures |
-| Native defaults | Exact installed-image identity, checked PE32 data views, caller-funded raw imports and local 832-record inspection | More reviewed images, default/wire merging, engine/content application and ordinary peer sessions |
+| Native defaults | Exact installed-image identity, checked PE32 data views, caller-funded raw imports and local 832-record inspection | More reviewed images, engine/content application and ordinary peer sessions |
+| Effective config state | Native restoration/persistence, sorted sparse snapshots, wide IDs, 256 model traces, work/storage budgets and wire-view integration | Session epochs, engine/resource interpretation and ordinary peer sessions |
 | Content/render/simulation | Native default import only; map/model loading, rendering and simulation remain open | Stock/custom content and complete playable sessions |
 | Optional extensions | No wire behavior invented | Negotiated features and ordinary-server fallback |
 

@@ -7,6 +7,7 @@
 mod challenge;
 pub mod client_data;
 pub mod commands;
+pub mod config_state;
 pub mod connect;
 pub mod control;
 mod error;

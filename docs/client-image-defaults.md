@@ -58,5 +58,6 @@ bounded regular-file reads and metadata-only JSON/human process failures. A sepa
 local inspection successfully imported the reviewed installed image's 832 defaults.
 Validated wire plans retain each original configstring block start because native
 defaults are reapplied per block; an engine merge must honor those scopes rather
-than overlaying one flattened patch list. Merging defaults with validated wire blocks, session/engine application, map/model
-loading and playable ordinary-server sessions remain open.
+than overlaying one flattened patch list. `ConfigSnapshot` now performs that sparse
+merge into caller-owned storage. Session/engine application, map/model loading and
+playable ordinary-server sessions remain open.

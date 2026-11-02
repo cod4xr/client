@@ -79,6 +79,8 @@ connection, with cancellable inspection and explicit frame commit/release.
 Other message admission, engine/content application, the game loop and typed dispatch remain open.
 [Installed client defaults](docs/client-image-defaults.md) now import from an exact
 reviewed user-provided image into caller-owned storage, with a metadata-only inspector.
+[Sparse config snapshots](docs/config-state.md) now merge defaults and original wire
+blocks with native restoration rules, bounded work and source-independent output.
 
 ## Run
 

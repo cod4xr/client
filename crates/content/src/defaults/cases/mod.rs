@@ -112,6 +112,8 @@ fn complete_import_preserves_raw_values_unused_tails_and_source_independent_owne
     assert_eq!((entries[0].index(), entries[0].bytes()), (12, &b"one"[..]));
     assert!(entries[1].bytes().is_empty());
     assert_eq!(entries[2].bytes(), b"Private%\x92");
+    let borrowed_values: Vec<_> = plan.records().map(|entry| entry.bytes()).collect();
+    assert_eq!(borrowed_values[2], b"Private%\x92");
     assert!(!format!("{plan:?} {:?}", entries[2]).contains("Private"));
     assert_eq!(&output[12..], &[0xa5; 2]);
     assert_eq!(slots[3], unused);

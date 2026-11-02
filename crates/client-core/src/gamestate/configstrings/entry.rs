@@ -19,7 +19,7 @@ pub struct ConfigString<'text> {
     pub(in crate::gamestate) first_in_block: bool,
 }
 
-impl ConfigString<'_> {
+impl<'text> ConfigString<'text> {
     /// Returns the checked baseline wire identifier without narrowing engine storage.
     #[must_use]
     pub fn index(&self) -> u32 {
@@ -27,7 +27,7 @@ impl ConfigString<'_> {
     }
     /// Returns raw normalized bytes, excluding the wire NUL terminator.
     #[must_use]
-    pub fn bytes(&self) -> &[u8] {
+    pub fn bytes(&self) -> &'text [u8] {
         self.bytes
     }
     /// Returns whether this patch starts its original native configstring block.

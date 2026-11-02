@@ -15,7 +15,7 @@ pub struct ConfigDefault<'text> {
     pub(super) index: u32,
     pub(super) bytes: &'text [u8],
 }
-impl ConfigDefault<'_> {
+impl<'text> ConfigDefault<'text> {
     /// Returns the reviewed baseline default identifier, widened without engine narrowing.
     #[must_use]
     pub fn index(&self) -> u32 {
@@ -23,7 +23,7 @@ impl ConfigDefault<'_> {
     }
     /// Returns original raw bytes, excluding NUL, with no wire-string normalization.
     #[must_use]
-    pub fn bytes(&self) -> &[u8] {
+    pub fn bytes(&self) -> &'text [u8] {
         self.bytes
     }
 }

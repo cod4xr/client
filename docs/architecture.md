@@ -53,6 +53,12 @@ Validated configstring views preserve original block starts and a total block co
 Native constants are reapplied for each block; these boundaries keep later default
 merging source-independent without silently changing omission/reset semantics.
 
+Effective config snapshots merge immutable source descriptors with caller-owned
+sorting scratch and packed final storage. Native default restoration follows original
+block scope; wide sparse IDs never allocate an ID-sized array. Input work and final
+retention have independent budgets. All capacities/selected values validate before
+publication, and only final output is borrowed by the returned snapshot.
+
 Client identity records have one owned representation shared by gamestate patches
 and ordinary sequenced updates. Their small arrays are explicit native field
 capacities, without imposing a player-table allocation on the engine. Parsing
