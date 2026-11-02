@@ -20,14 +20,25 @@ use crate::{
 };
 
 pub(super) fn response(socket: &UdpSocket, client: SocketAddr, sequence: u32, source: &[u8]) {
+    response_with_key(socket, client, sequence, 1, b"a.", source);
+}
+
+pub(super) fn response_with_key(
+    socket: &UdpSocket,
+    client: SocketAddr,
+    sequence: u32,
+    acknowledgement: u32,
+    key: &[u8],
+    source: &[u8],
+) {
     let mut body = [0; 2048];
-    body[..4].copy_from_slice(&1_u32.to_le_bytes());
+    body[..4].copy_from_slice(&acknowledgement.to_le_bytes());
     let length = compression::compress(source, &mut body[4..]).expect("Fixture compression");
     obfuscation::apply_server_payload(
         &mut body[4..4 + length],
         u32::from_le_bytes((-2_147_481_234_i32).to_le_bytes()),
         sequence,
-        b"a.",
+        key,
     )
     .expect("Original command key");
     socket

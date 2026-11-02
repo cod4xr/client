@@ -34,6 +34,10 @@ over that same cooked plan. Preflight its next-slot capacities with command/iden
 resources, then commit all children before consuming the original outgoing holder.
 History resource failure cancels sibling preparations and preserves the original key.
 
+The [history-assisted variant](history-snapshot-decoding.md) selects the exact prior
+from the packet's actual header, without requiring a caller-selected distance or
+performing a second transform/decompression pass. It returns the same prepared holder.
+
 A resource-budget rejection after successful wire parsing must cancel sibling
 preparations before retrying preflight, or drop them and the ACK holder to abandon
 the message. This differs from wire failure: successful cooked

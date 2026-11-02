@@ -4,8 +4,10 @@
 mod decode;
 mod error;
 mod plan;
+mod prefix;
 mod storage;
 
 pub use error::MixedSnapshotError;
 pub use plan::MixedSnapshotPayloadPlan;
+pub(crate) use prefix::inspect_header;
 pub use storage::MixedSnapshotStorage;

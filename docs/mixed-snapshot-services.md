@@ -53,6 +53,8 @@ framing, owned lifetimes, coherent delta reuse and private Debug. Existing contr
 identity, pre-game and snapshot suites remain in the full workspace checks. The
 empty identity-baseline fixture is shared once by the control and snapshot suites.
 
-Next gates are an original-owner mixed-carrier ACK adapter, connection-wide host
-history/session ownership, typed command/session effects, simulation and ordinary
-peer captures. The core does not execute native command strings or install plugins.
+The [original-owner ACK adapter](mixed-snapshot-acknowledgements.md) and
+[history-assisted decoding](history-snapshot-decoding.md) now integrate this carrier
+with exact retained references and host resource preflight. Next gates are broader
+routing, connection/session lifecycle, typed effects, simulation and ordinary peer
+captures. The core does not execute native command strings or install plugins.

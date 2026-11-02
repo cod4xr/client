@@ -12,7 +12,8 @@ pub use decoded::DecodedServerPayload;
 pub use decoder::ServerPayloadDecoder;
 pub use error::ServerPayloadError;
 pub use mixed_snapshot_ack::{
-    MixedSnapshotAcknowledgementError, MixedSnapshotRequest, PreparedMixedSnapshotAcknowledgement,
+    MixedSnapshotAcknowledgementError, MixedSnapshotHistoryRequest, MixedSnapshotRequest,
+    PreparedMixedSnapshotAcknowledgement,
 };
 pub use snapshot_ack::{
     PreparedSnapshotAcknowledgement, SnapshotAcknowledgementError, SnapshotDecodeStorage,

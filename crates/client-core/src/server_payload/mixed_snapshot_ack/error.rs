@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 use super::super::ServerPayloadError;
-use crate::{commands::ClientCommandError, snapshots::mixed_services::MixedSnapshotError};
+use crate::{
+    commands::ClientCommandError,
+    snapshots::{history::SnapshotHistoryError, mixed_services::MixedSnapshotError},
+};
 use std::{error::Error, fmt};
 
 /// Metadata-only mixed-carrier original-owner ACK preparation failures.
@@ -12,6 +15,8 @@ pub enum MixedSnapshotAcknowledgementError {
     Acknowledgement(ClientCommandError),
     /// Complete mixed controls/snapshot/EOF or prediction validation failed.
     Payload(MixedSnapshotError),
+    /// The exact current-world reference or history binding was rejected.
+    History(SnapshotHistoryError),
 }
 impl fmt::Display for MixedSnapshotAcknowledgementError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -19,6 +24,7 @@ impl fmt::Display for MixedSnapshotAcknowledgementError {
             Self::Decode(_) => "mixed snapshot acknowledgement decoding failed",
             Self::Acknowledgement(_) => "mixed snapshot acknowledgement original prefix rejected",
             Self::Payload(_) => "mixed snapshot acknowledgement complete carrier rejected",
+            Self::History(_) => "mixed snapshot acknowledgement history reference rejected",
         })
     }
 }
@@ -28,6 +34,7 @@ impl Error for MixedSnapshotAcknowledgementError {
             Self::Decode(error) => Some(error),
             Self::Acknowledgement(error) => Some(error),
             Self::Payload(error) => Some(error),
+            Self::History(error) => Some(error),
         }
     }
 }

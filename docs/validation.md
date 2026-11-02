@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 715 tests pass in both debug and release on the pinned
+Latest local checkpoint: 722 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (688 source files, 6 crates; all checked source
+formatting and repository policy pass (695 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,18 @@ Reliable gamestate bodies now have whole-frame admission coverage. Mixed-message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 705-test scoped UDP snapshot checkpoint passed hosted Windows/Linux CI in
-[run 41524111529](https://github.com/cod4xr/client/actions/runs/41524111529), including
-locked sources and table reproduction. The preceding mixed ACK checkpoint also
-passed [run 41523347146](https://github.com/cod4xr/client/actions/runs/41523347146).
+The 715-test whole-snapshot history checkpoint passed hosted Windows/Linux CI in
+[run 41525874749](https://github.com/cod4xr/client/actions/runs/41525874749), including
+locked sources and table reproduction. The preceding scoped UDP checkpoint also
+passed [run 41524111529](https://github.com/cod4xr/client/actions/runs/41524111529).
 These changes edit only the client repository and consume the published shared revision.
+
+Seven history-assisted mixed decoding cases cover actual-header reference selection
+in both profiles, owned scratch/history lifetimes, full/cancel/retry behavior, exact
+missing/evicted/wrong-world/profile/order rejection, prefix binding/error ordering,
+independent prefix/tail budgets and late wire/prediction failure. The existing real
+UDP case now covers full-to-delta retention and both next control packets. See
+[history-assisted decoding](history-snapshot-decoding.md).
 
 Eight whole-snapshot history cases cover both profiles, exact retained references,
 40 slots and distance 255, independent sparse capacities, cancellation/tails,
@@ -29,7 +36,9 @@ now includes snapshot retention. See [snapshot history](snapshot-history.md).
 
 A real protocol-21 loopback UDP case returns prepared mixed snapshots from scoped
 receive without copying packet bytes, rejects malformed tails, retries host identity
-resource preflight and verifies the next control's original key and three ACK words.
+resource preflight, retains a full snapshot and selects its exact prior for a later
+delta from the actual header. The peer verifies both subsequent controls' original
+keys and three ACK words. History slots are reused only after complete delta decode.
 This adds synthetic transport evidence, not native gameplay interoperability.
 
 Four mixed original-owner ACK cases cover actual decode in both profiles, original

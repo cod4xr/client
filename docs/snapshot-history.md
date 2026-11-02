@@ -55,6 +55,10 @@ existing joint mixed ACK test now preflights and commits snapshot retention alon
 incoming commands and identities before outgoing key release.
 
 This is deterministic storage and synthetic wire evidence. Connection-wide routing,
-actual header discovery within broader mixed carriers, prediction production,
+broader mixed-service routing, prediction production,
 gamestate/content lifecycle, typed simulation, rendering and native peer sessions
 remain separate work. It does not make the CLI playable or widen legacy wire IDs.
+
+[History-assisted decoding](history-snapshot-decoding.md) now locates the actual
+header in the reviewed mixed carrier and selects this owner's exact prior before
+complete wire validation, without another transform/decompression pass.

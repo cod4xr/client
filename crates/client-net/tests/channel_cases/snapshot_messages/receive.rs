@@ -4,15 +4,16 @@ use cod4xr_client_core::{
     commands::LegacyClientCommands,
     entities::EntityDecodeContext,
     server_payload::{
-        MixedSnapshotAcknowledgementError, MixedSnapshotRequest,
+        MixedSnapshotAcknowledgementError, MixedSnapshotHistoryRequest,
         PreparedMixedSnapshotAcknowledgement, SnapshotDecodeStorage,
     },
     service_controls::{ClientDataUpdateSlot, ClientServiceBudget, ClientServiceStorage},
     snapshot_clients::{ClientStreamBudget, SnapshotClientSlot},
     snapshot_entities::{EntityStateSource, EntityStreamBudget, SnapshotEntitySlot},
     snapshots::{
-        SnapshotBaselines, SnapshotBudget, SnapshotInput, SnapshotMessage, SnapshotOutput,
-        mixed_services::MixedSnapshotStorage, services::SnapshotPrediction,
+        SnapshotBaselines, SnapshotBudget, SnapshotMessage, SnapshotOutput,
+        history::SnapshotHistory, mixed_services::MixedSnapshotStorage,
+        services::SnapshotPrediction,
     },
 };
 use cod4xr_client_net::{ChannelEvent, ClientChannel};
@@ -39,6 +40,7 @@ pub(super) fn receive<'owner, 'history, 'output>(
     channel: &mut ClientChannel<'_>,
     outgoing: &'owner mut LegacyClientCommands<'history>,
     command_sequence: u32,
+    history: &SnapshotHistory<'_, '_>,
     finals: &'output mut Finals,
 ) -> Result<
     PreparedMixedSnapshotAcknowledgement<'owner, 'history, 'output>,
@@ -58,7 +60,7 @@ pub(super) fn receive<'owner, 'history, 'output>(
             let mut text = [0; 128];
             let mut updates = vec![ClientDataUpdateSlot::default(); 4];
             Some(
-                payload_codec.prepare_mixed_snapshot_ack(
+                payload_codec.prepare_mixed_snapshot_history_ack(
                     outgoing,
                     message.sequence(),
                     message.body(),
@@ -66,31 +68,29 @@ pub(super) fn receive<'owner, 'history, 'output>(
                         work: &mut work,
                         decoded: &mut decoded,
                     },
-                    MixedSnapshotRequest {
-                        input: SnapshotInput {
-                            context: EntityDecodeContext::Cod4x21,
-                            message: SnapshotMessage::new(1, message.sequence(), command_sequence)
-                                .expect("Host association"),
-                            previous: None,
-                            baselines: SnapshotBaselines::new(
-                                1,
-                                BaselineProtocol::Cod4x21,
-                                EntityStateSource::from_states(&[]),
-                            ),
-                            budget: SnapshotBudget {
-                                entities: EntityStreamBudget {
-                                    max_wire_records: 16,
-                                    max_previous_entities: 16,
-                                    max_baselines: 0,
-                                    max_entities: 4,
-                                },
-                                clients: ClientStreamBudget {
-                                    max_wire_records: 16,
-                                    max_previous_clients: 4,
-                                    max_clients: 4,
-                                },
+                    MixedSnapshotHistoryRequest {
+                        context: EntityDecodeContext::Cod4x21,
+                        message: SnapshotMessage::new(1, message.sequence(), command_sequence)
+                            .expect("Host association"),
+                        baselines: SnapshotBaselines::new(
+                            1,
+                            BaselineProtocol::Cod4x21,
+                            EntityStateSource::from_states(&[]),
+                        ),
+                        budget: SnapshotBudget {
+                            entities: EntityStreamBudget {
+                                max_wire_records: 16,
+                                max_previous_entities: 16,
+                                max_baselines: 0,
+                                max_entities: 4,
+                            },
+                            clients: ClientStreamBudget {
+                                max_wire_records: 16,
+                                max_previous_clients: 4,
+                                max_clients: 4,
                             },
                         },
+                        history,
                         services: ClientServiceBudget {
                             max_records: 32,
                             max_client_updates: 4,

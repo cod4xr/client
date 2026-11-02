@@ -97,6 +97,8 @@ Real protocol-21 loopback UDP now carries that prepared mixed result out of the
 scoped receive callback and verifies the next control's original key and all ACKs.
 Whole-snapshot history now retains coherent copies in host-funded slots, with exact
 binary lookup, independent sparse capacities, epoch reset and joint owner preflight.
+History-assisted mixed decoding now selects the exact prior from the actual packet
+header before complete publication, with real protocol-21 UDP full/delta coverage.
 Connection-wide gameplay/history ownership and broader routing remain open.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.

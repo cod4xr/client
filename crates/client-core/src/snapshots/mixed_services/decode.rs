@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 use super::super::{
-    SNAPSHOT_OPCODE, SnapshotInput, prepare as snapshot,
+    SnapshotInput, prepare as snapshot,
     services::{SnapshotPayloadPlan, SnapshotPrediction},
 };
-use super::{MixedSnapshotError, MixedSnapshotPayloadPlan, MixedSnapshotStorage};
+use super::{MixedSnapshotError, MixedSnapshotPayloadPlan, MixedSnapshotStorage, prefix};
 use crate::{
     BaselineProtocol,
     message_body::BodyReader,
@@ -49,26 +49,14 @@ pub(super) fn parse<'output>(
         },
         BaselineProtocol::Legacy6 => Clients::Reject,
     };
-    loop {
-        let opcode = layout
-            .next(&mut candidate, limits)
-            .map_err(MixedSnapshotError::Controls)?;
-        if opcode == SNAPSHOT_OPCODE {
-            break;
-        }
-        if layout
-            .control(
-                opcode,
-                &mut candidate,
-                text_scratch,
-                command_bytes.len(),
-                &mut identities,
-            )
-            .map_err(MixedSnapshotError::Controls)?
-        {
-            return Err(MixedSnapshotError::MissingSnapshot);
-        }
-    }
+    prefix::scan(
+        &mut candidate,
+        &mut layout,
+        limits,
+        text_scratch,
+        command_bytes.len(),
+        &mut identities,
+    )?;
     let command_prefix = layout.newest_command(input.message.server_command_sequence());
     input.message = input.message.with_server_command_sequence(command_prefix);
     let header_start = candidate.byte_position();

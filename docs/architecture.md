@@ -266,6 +266,11 @@ binding and cancellable resource preflight precede infallible retention alongsid
 the other message owners. Sources borrow the history; cooked decoded plans release
 prior-history borrows. See [snapshot history](snapshot-history.md).
 
+The history-assisted mixed ACK adapter privately inspects the actual header through
+the shared prefix scanner, selects the exact retained prior, then validates the
+complete carrier before publication. Transform/decompression runs once; no guessed
+distance or partial-message authority escapes. See [history-assisted decoding](history-snapshot-decoding.md).
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

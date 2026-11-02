@@ -117,6 +117,8 @@ buffers publish only after complete validation and prediction selection.
 the original outgoing key through complete mixed decoding and incoming-owner
 preflight, including [caller-funded snapshot history](docs/snapshot-history.md).
 Cancellation preserves ACK/history; commitment copies the checked key.
+[History-assisted decoding](docs/history-snapshot-decoding.md) now selects exact
+priors from actual packet headers, with protocol-21 UDP full/delta coverage.
 
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add
