@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 313 tests pass in both debug and release on the pinned
+Latest local checkpoint: 318 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (345 source files, 5 crates; all checked source
+formatting and repository policy pass (349 source files, 5 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,9 +14,9 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 300-test archive-catalog checkpoint passed hosted Windows/Linux CI in
-[run 41409025932](https://github.com/cod4xr/client/actions/runs/41409025932), including
-locked sources and table reproduction. Hosted payload-verification validation will
+The 313-test payload-verification checkpoint passed hosted Windows/Linux CI in
+[run 41410156585](https://github.com/cod4xr/client/actions/runs/41410156585), including
+locked sources and table reproduction. Hosted virtual-key validation will
 follow its commit. These
 changes edit only the client repository and consume the published shared revision.
 
@@ -130,6 +130,14 @@ main IWDs: 24,243 entries / 3,999,040,612 decoded bytes passed exact lengths and
 [Payload evidence](installed-iwd-payload-evidence.json) records only aggregate
 metadata. Virtual mount policy, native pure checksums and gameplay remain separate
 unimplemented gates.
+
+Five virtual-key tests add native ASCII case/slash equivalence, canonical hash
+contracts, preserved raw/Unicode bytes, private Debug/errors, every forbidden
+control byte, invalid relative names and complete final-output rollback. They cover
+every short output, byte/component budgets, a 65,536-byte host-funded key,
+source-independent ownership and 2,816 deterministic single-byte mutations. This
+does not implement native request sanitation, OS paths, mount/duplicate policy or
+physical asset resolution.
 
 Eight new independent loopback tests exercise the reusable network crate: one
 source socket across challenge/connect/retries/handoff, exact cookie/protocol/qport

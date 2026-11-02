@@ -74,6 +74,10 @@ Payload decoding owns reusable inline Deflate state but no allocator. Caller scr
 holds a guarded complete output; exact stream/length/CRC validation precedes final
 copying. Checked results borrow only final storage. Host verification reuses entry
 buffers, performs fallible reservations and reports only complete aggregate results.
+Strict virtual file keys normalize native ASCII case/slashes into caller-owned bytes,
+with independent byte/component budgets and full validation before publication.
+They are lookup data, without physical path or extraction authority. Native request
+sanitation, archive ownership and mount/duplicate policy remain separate boundaries.
 
 Client identity records have one owned representation shared by gamestate patches
 and ordinary sequenced updates. Their small arrays are explicit native field

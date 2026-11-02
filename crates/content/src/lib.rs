@@ -2,6 +2,7 @@
 //! Deterministic read-only imports from caller-provided game files.
 //! No filesystem, executable loading, logging subscriber or engine state is owned here.
 
+pub mod asset_key;
 pub mod defaults;
 pub mod pe32;
 pub mod zip32;

@@ -87,6 +87,8 @@ retain unknown fields as inert bytes, without applying remote engine variables.
 records with caller-funded storage; inspector archive mode reports metadata only.
 [Checked archive payloads](docs/zip-payloads.md) now decode stored/Deflate data with
 exact lengths, CRC32 and rollback; explicit verification mode checks entries in memory.
+[Virtual file keys](docs/asset-keys.md) now provide canonical, caller-funded asset
+names with explicit budgets and atomic validation, before mount or filesystem policy.
 
 ## Run
 

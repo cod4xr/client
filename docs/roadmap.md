@@ -48,7 +48,9 @@ Classic stored/Deflate IWD catalogs now have checked metadata, caller-funded
 descriptors and an inspector mode. Installed archive counts match an independent
 ZIP reader. Stored/raw-Deflate payloads now have exact stream/length/CRC validation
 and an explicit in-memory verification command. Next content gates are virtual
-path/mount policy and native pure checksums before resource loading.
+mount policy and native pure checksums before resource loading. Strict canonical
+virtual file keys now cover native ASCII case/slash equivalence without OS path
+authority; native request sanitation and physical resolution remain separate.
 
 Features that remove asset/model/image/entity/configstring limits need both
 internal storage/resource design and a negotiated extended wire/content profile.

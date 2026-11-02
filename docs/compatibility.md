@@ -24,6 +24,7 @@ does not prove a playable connection.
 | Native system info | Shared big-info validation, full-width decimal server IDs, host budgets, raw unknown fields and wire-to-snapshot integration | Session epochs, resource/CVar policy and real ordinary peer sessions |
 | Classic IWD catalogs | Checked stored/Deflate metadata, local/central consistency, overlap rejection and independent installed-archive counts | Virtual mounts, pure checksums and asset loading |
 | Checked archive payloads | Exact stored/raw-Deflate lengths, full stream consumption, CRC32, rollback and explicit verification command | Virtual path/mount policy, native pure checksums and asset loading |
+| Virtual file keys | ASCII case/slash equivalence, raw bytes, wide host-funded names, atomic output and mutation checks | Native request sanitation, mount/duplicate policy and physical asset resolution |
 | Content/render/simulation | Native default import only; map/model loading, rendering and simulation remain open | Stock/custom content and complete playable sessions |
 | Optional extensions | No wire behavior invented | Negotiated features and ordinary-server fallback |
 
