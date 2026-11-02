@@ -65,7 +65,9 @@ whole-packet admission, bounded drains and scheduling over one set of buffers.
 endpoint and internal clock, with bounded I/O operations and receipt/work counters.
 [Complete-body readers](docs/message-body-reader.md) now reuse shared primitive
 codecs beyond a single 128 KiB backing view, preserving legacy cached bits and
-explicit whole-message budgets. The game loop and typed application dispatch remain open.
+explicit whole-message budgets. [Configstring block plans](docs/gamestate-configstrings.md)
+now validate both baseline gamestate patch formats into caller-owned storage.
+Full gamestate validation, the game loop and typed application dispatch remain open.
 
 ## Run
 

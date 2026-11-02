@@ -9,6 +9,7 @@ pub mod commands;
 pub mod connect;
 pub mod control;
 mod error;
+pub mod gamestate;
 pub mod handshake;
 mod info_response;
 pub mod message_body;

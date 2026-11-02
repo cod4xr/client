@@ -22,8 +22,10 @@ admission. Scheduling now paces original retries and ACKs with combined I/O admi
 Unified endpoints now own windows, framing, whole-packet admission and scheduling.
 Connection owners now bind the original socket, actual host clock and endpoint,
 with scoped ordinary callbacks and bounded packet operations. Complete-body reader
-views now preserve shared field codecs beyond 128 KiB. Next are typed gamestate
-configstrings/baselines, application dispatch and the engine's ongoing game loop.
+views now preserve shared field codecs beyond 128 KiB. Typed configstring blocks
+now validate both baseline formats with caller-funded storage and whole-block
+rollback. Next are entity baseline deltas, default merging, complete gamestate
+validation, application dispatch and the engine's ongoing game loop.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 
