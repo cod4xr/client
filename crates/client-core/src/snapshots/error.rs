@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 use crate::{
-    message_body::BodyReadError, player_state::PlayerStateError,
-    snapshot_clients::ClientStreamError, snapshot_entities::EntityStreamError,
+    message_body::BodyReadError,
+    player_state::{PlayerStateError, history::PredictionHistoryError},
+    snapshot_clients::ClientStreamError,
+    snapshot_entities::EntityStreamError,
 };
 use std::{error::Error, fmt};
 
@@ -28,6 +30,8 @@ pub enum SnapshotError {
     Body(BodyReadError),
     /// Player-state decoding or prediction resolution failed.
     Player(PlayerStateError),
+    /// Exact retained prediction lookup or world/profile binding failed.
+    PredictionHistory(PredictionHistoryError),
     /// Entity stream validation failed.
     Entities(EntityStreamError),
     /// Client-state stream validation failed.
@@ -46,6 +50,7 @@ impl fmt::Display for SnapshotError {
             Self::UnexpectedReference => "full snapshot cannot use a prior reference",
             Self::Body(_) => "invalid snapshot header",
             Self::Player(_) => "invalid snapshot player state or prediction",
+            Self::PredictionHistory(_) => "snapshot prediction history rejected",
             Self::Entities(_) => "invalid snapshot entity stream",
             Self::Clients(_) => "invalid snapshot client-state stream",
         })
@@ -56,6 +61,7 @@ impl Error for SnapshotError {
         match self {
             Self::Body(error) => Some(error),
             Self::Player(error) => Some(error),
+            Self::PredictionHistory(error) => Some(error),
             Self::Entities(error) => Some(error),
             Self::Clients(error) => Some(error),
             _ => None,

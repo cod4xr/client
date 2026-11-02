@@ -40,7 +40,7 @@ fn source(valid: bool, distance: u8) -> Vec<u8> {
         .write_u8(distance)
         .expect("Actual reference distance");
     writer.write_u8(0).expect("Flags");
-    writer.write_bits(1, 1).expect("Transmitted prediction");
+    writer.write_bits(0, 1).expect("Exact prediction required");
     writer.write_bits(0, 8).expect("Unchanged scalar prefix");
     writer.write_bits(0, 13).expect("Unchanged player arrays");
     writer.write_bits(6, 12).expect("Absolute entity one");

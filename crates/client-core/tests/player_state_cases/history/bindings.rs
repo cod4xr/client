@@ -112,6 +112,7 @@ fn debug_and_errors_do_not_publish_times_labels_or_raw_player_words() {
         prepared.commit();
         for text in [
             format!("{history:?}"),
+            format!("{:?}", history.source()),
             format!("{}", Error::Missing),
             format!("{:?}", Error::Missing),
         ] {

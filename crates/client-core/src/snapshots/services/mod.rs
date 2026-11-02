@@ -7,6 +7,7 @@ mod error;
 mod payload;
 mod payload_error;
 mod plan;
+mod prediction;
 mod prepare;
 mod prepared;
 

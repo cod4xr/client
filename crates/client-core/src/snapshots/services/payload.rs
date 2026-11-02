@@ -2,19 +2,24 @@
 use super::super::{SnapshotInput, SnapshotOutput};
 use super::{SnapshotPayloadError, SnapshotServicePlan};
 use crate::{
-    message_body::BodyReader, player_state::PredictionSample, server_payload::DecodedServerPayload,
+    message_body::BodyReader,
+    player_state::{PredictionSample, history::PredictionHistorySource},
+    server_payload::DecodedServerPayload,
     service_controls::ServiceControlBudget,
 };
 use cod4x_protocol::MAX_MESSAGE_BYTES;
 use std::fmt;
 
-/// Explicit one-shot prediction policy; no sample lookup or silent fallback occurs.
+/// Explicit one-shot prediction policy; retained lookup never silently falls back.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum SnapshotPrediction<'sample> {
     /// Require native transmitted-origin mode.
     Transmitted,
     /// Require unsent-origin mode and an exact caller-owned profile/time sample.
     Sample(&'sample PredictionSample),
+    /// Bind the original history world/profile and resolve the actual decoded time
+    /// only when native unsent-origin mode requires prediction; otherwise transmit.
+    History(PredictionHistorySource<'sample>),
     /// Require unsent-origin mode and explicitly select native prior fallback.
     NativePriorFallback,
 }
@@ -63,6 +68,7 @@ impl<'storage> SnapshotPayloadPlan<'storage> {
         let services = match prediction {
             SnapshotPrediction::Transmitted => prepared.commit_transmitted(),
             SnapshotPrediction::Sample(sample) => prepared.commit_with_prediction(sample),
+            SnapshotPrediction::History(history) => prepared.commit_from_history(history),
             SnapshotPrediction::NativePriorFallback => prepared.commit_native_prior_fallback(),
         }
         .map_err(SnapshotPayloadError::Services)?;

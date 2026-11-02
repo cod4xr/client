@@ -12,15 +12,11 @@ use cod4xr_client_core::{
     BaselineProtocol,
     client_identities::{ClientIdentitySlot, ClientIdentityState},
     commands::{LEGACY_COMMAND_SLOT_BYTES, LegacyClientCommands},
+    player_state::history::{PredictionHistory, PredictionSlot},
     server_commands::{SERVER_COMMAND_SLOT_BYTES, ServerCommandHistory, ServerCommandSlot},
-    server_payload::MixedSnapshotAcknowledgementError,
-    service_controls::ServiceControlError,
     snapshot_clients::SnapshotClientSlot,
     snapshot_entities::SnapshotEntitySlot,
-    snapshots::{
-        history::{SnapshotHistory, SnapshotHistorySlot},
-        mixed_services::MixedSnapshotError,
-    },
+    snapshots::history::{SnapshotHistory, SnapshotHistorySlot},
 };
 use receive::{Finals, receive};
 use std::{sync::mpsc, thread};
@@ -60,29 +56,23 @@ fn mixed_snapshots_cross_scoped_udp_receive_and_commit_all_owners_before_next_co
     let mut snapshots = SnapshotHistory::new(1, BaselineProtocol::Cod4x21, &mut snapshot_slots)
         .expect("Snapshot history");
     let mut finals = Finals::new();
-    let saved = finals.clone();
-    assert_eq!(
-        receive(
-            &mut channel,
-            &mut outgoing,
-            commands.newest_sequence(),
-            &snapshots,
-            &mut finals
-        )
-        .expect_err("Late malformed service"),
-        MixedSnapshotAcknowledgementError::Payload(MixedSnapshotError::Controls(
-            ServiceControlError::UnsupportedService(0xfe)
-        ))
+    let mut prediction_slots = [PredictionSlot::default()];
+    let mut prediction =
+        PredictionHistory::new(1, BaselineProtocol::Cod4x21, &mut prediction_slots)
+            .expect("Prediction history");
+    host::reject_malformed(
+        &mut channel,
+        &mut outgoing,
+        &commands,
+        &identities,
+        &snapshots,
+        &prediction,
+        &mut finals,
     );
-    assert_eq!(finals, saved);
-    assert_eq!(
-        (outgoing.acknowledged_sequence(), outgoing.pending_count()),
-        (0, 1)
-    );
-    assert_eq!(commands.newest_sequence(), 0);
-    assert_eq!(identities.accepted_sequence(), Some(9));
-    assert!(identities.is_empty());
-    assert_eq!(channel.split().receiver.incoming_sequence(), 7);
+    prediction
+        .prepare_insert(1, host::prediction_sample(1.0))
+        .expect("Exact native time")
+        .commit();
     proceed.send(()).expect("Allow valid next message");
     for (sequence, prefix, acknowledgement, text) in [
         (8, 3, 1, b"next".as_slice()),
@@ -93,11 +83,18 @@ fn mixed_snapshots_cross_scoped_udp_receive_and_commit_all_owners_before_next_co
             &mut outgoing,
             commands.newest_sequence(),
             &snapshots,
+            &prediction,
             &mut finals,
         )
         .expect("Header-selected mixed snapshot");
         assert!(!format!("{pending:?}").contains("Private"));
         assert!(!format!("{pending:?}").contains("Before"));
+        let origin = if sequence == 8 { 1.0_f32 } else { 2.0 };
+        // Returned cooked state outlives the source borrow and later replay update.
+        prediction
+            .prepare_replace(1, host::prediction_sample(origin + 1.0))
+            .expect("Replay after scoped decode")
+            .commit();
         let plan = host::commit_after_resource_retry(
             pending,
             &mut commands,
@@ -105,7 +102,7 @@ fn mixed_snapshots_cross_scoped_udp_receive_and_commit_all_owners_before_next_co
             &mut snapshots,
         );
         host::assert_owners(&outgoing, &commands, &identities, sequence, acknowledgement);
-        host::assert_snapshot(&plan, prefix);
+        host::assert_snapshot(&plan, prefix, origin.to_bits());
         assert_eq!(
             snapshots
                 .source(sequence)
@@ -120,6 +117,7 @@ fn mixed_snapshots_cross_scoped_udp_receive_and_commit_all_owners_before_next_co
     }
     assert!(snapshots.source(8).is_none());
     assert_eq!(snapshots.newest_sequence(), Some(11));
+    assert_eq!(prediction.len(), 1);
     responder
         .join()
         .expect("Peer verified actual outgoing context");

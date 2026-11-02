@@ -9,6 +9,7 @@ mod input;
 mod message;
 pub mod mixed_services;
 mod plan;
+mod prediction;
 mod prepare;
 mod prepared;
 pub mod services;

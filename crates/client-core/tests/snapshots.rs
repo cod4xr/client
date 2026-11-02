@@ -35,6 +35,8 @@ mod payload_failures;
 mod payload_vectors;
 #[path = "snapshot_cases/prediction.rs"]
 mod prediction;
+#[path = "snapshot_cases/prediction_history/mod.rs"]
+mod prediction_history;
 #[path = "snapshot_cases/rollback.rs"]
 mod rollback;
 #[path = "snapshot_cases/service_failures.rs"]

@@ -49,7 +49,9 @@ ordered-map model runs 2,048 operations at five capacities in both profiles, inc
 full-table misses, cancellation, replacement, removal and a world reset.
 
 The existing player-state transaction consumes an exact resolved sample and still
-validates profile/time before publishing. Automatic enclosing snapshot selection,
-prediction production, collision/physics, replay scheduling, authoritative input
-reconciliation and playable sessions remain separate implementation work. Native
-prior fallback remains an explicit choice, never a cache-miss policy.
+validates profile/time before publishing. [Complete snapshot admission](retained-snapshot-prediction.md)
+now selects exact samples through an explicit borrowed world-bound history source,
+after full body/carrier validation. Prediction production, collision/physics,
+replay scheduling, authoritative input reconciliation and playable sessions remain
+separate implementation work. Native prior fallback remains an explicit choice,
+never a cache-miss policy.

@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 758 tests pass in both debug and release on the pinned
+Latest local checkpoint: 765 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (745 source files, 6 crates; all checked source
+formatting and repository policy pass (753 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,19 @@ Reliable gamestate bodies now have whole-frame admission coverage. Mixed-message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 749-test input-history checkpoint passed hosted Windows/Linux CI in
-[run 41537255526](https://github.com/cod4xr/client/actions/runs/41537255526), including
-locked sources and table reproduction. The preceding movement-packet checkpoint
-also passed [run 41534071481](https://github.com/cod4xr/client/actions/runs/41534071481).
+The 758-test prediction-history checkpoint passed hosted Windows/Linux CI in
+[run 41538544890](https://github.com/cod4xr/client/actions/runs/41538544890), including
+locked sources and table reproduction. The preceding input-history checkpoint
+also passed [run 41537255526](https://github.com/cod4xr/client/actions/runs/41537255526).
 These changes edit only the client repository and consume the published shared revision.
+
+Six retained snapshot-prediction cases cover actual/inherited native command times,
+both profiles, time extremes, nearby-key rejection, world/profile binding, reader/
+all-output rollback, EOF precedence, transmitted mode, actual payload dispatch,
+original mixed ACK cancellation/retry and cache/workspace lifetimes. A compile-fail
+example protects borrowed source ownership. The existing UDP snapshot case now
+checks replay-corrected prediction in the next delta, while malformed tails reject
+before missing-cache lookup. See [retained snapshot prediction](retained-snapshot-prediction.md).
 
 Seven exact prediction-history cases cover 257 samples, arbitrary/wrapped time keys,
 explicit replay/cancellation, stale producers, reconstruction and actual decoded

@@ -106,6 +106,8 @@ the original socket context, with real UDP/ACK coverage. Caller-funded input his
 now supports 64-bit world-bound IDs, exact replay ranges, backup sends and separate
 transmission/retirement. A separate caller-funded prediction table now retains
 exact world-bound samples and explicit replay corrections beyond the native ring.
+Complete snapshot carriers now select the actual decoded time through that owner's
+borrowed source, with full EOF/ACK rollback and UDP replay-to-delta coverage.
 Engine input sampling, prediction production and authoritative reconciliation
 remain open.
 Connection-wide gameplay/history ownership and broader routing remain open.

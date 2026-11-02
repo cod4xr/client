@@ -1,15 +1,26 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+use super::receive::{Finals, receive};
 use cod4xr_client_core::{
+    BaselineProtocol,
     client_identities::{
         ClientIdentityBudget, ClientIdentityError, ClientIdentitySlot, ClientIdentityState,
     },
     client_states::ClientStateWord,
     commands::LegacyClientCommands,
     entity_deltas::EntityWord,
+    player_scalars::word,
+    player_state::{
+        PredictionProvenance, PredictionSample, PredictionWords, history::PredictionHistory,
+    },
     server_commands::ServerCommandHistory,
-    server_payload::PreparedMixedSnapshotAcknowledgement,
-    snapshots::{history::SnapshotHistory, mixed_services::MixedSnapshotPayloadPlan},
+    server_payload::{MixedSnapshotAcknowledgementError, PreparedMixedSnapshotAcknowledgement},
+    service_controls::ServiceControlError,
+    snapshots::{
+        history::SnapshotHistory,
+        mixed_services::{MixedSnapshotError, MixedSnapshotPayloadPlan},
+    },
 };
+use cod4xr_client_net::ClientChannel;
 
 pub(super) fn commit_after_resource_retry<'output>(
     pending: PreparedMixedSnapshotAcknowledgement<'_, '_, 'output>,
@@ -63,7 +74,22 @@ pub(super) fn commit_after_resource_retry<'output>(
     pending.commit()
 }
 
-pub(super) fn assert_snapshot(plan: &MixedSnapshotPayloadPlan<'_>, command_sequence: u32) {
+pub(super) fn assert_snapshot(
+    plan: &MixedSnapshotPayloadPlan<'_>,
+    command_sequence: u32,
+    origin: u32,
+) {
+    assert_eq!(
+        plan.snapshot().player().prediction(),
+        PredictionProvenance::CommandTimeMatched
+    );
+    assert_eq!(
+        plan.snapshot()
+            .player()
+            .scalars()
+            .word(word::motion::ORIGIN_X),
+        origin
+    );
     assert_eq!(
         plan.snapshot().message().server_command_sequence(),
         command_sequence
@@ -84,6 +110,50 @@ pub(super) fn assert_snapshot(plan: &MixedSnapshotPayloadPlan<'_>, command_seque
             .collect::<Vec<_>>(),
         [(63, 511)]
     );
+}
+
+pub(super) fn prediction_sample(origin: f32) -> PredictionSample {
+    PredictionSample::new(
+        BaselineProtocol::Cod4x21,
+        0,
+        PredictionWords::new([origin.to_bits(), 0, 0], [0; 3], [0; 3], 0, 0),
+    )
+}
+
+pub(super) fn reject_malformed(
+    channel: &mut ClientChannel<'_>,
+    outgoing: &mut LegacyClientCommands<'_>,
+    commands: &ServerCommandHistory<'_>,
+    identities: &ClientIdentityState<'_>,
+    snapshots: &SnapshotHistory<'_, '_>,
+    prediction: &PredictionHistory<'_>,
+    finals: &mut Finals,
+) {
+    let saved = finals.clone();
+    assert_eq!(
+        receive(
+            channel,
+            outgoing,
+            commands.newest_sequence(),
+            snapshots,
+            prediction,
+            finals
+        )
+        .expect_err("Late malformed service before missing prediction"),
+        MixedSnapshotAcknowledgementError::Payload(MixedSnapshotError::Controls(
+            ServiceControlError::UnsupportedService(0xfe)
+        ))
+    );
+    assert_eq!(*finals, saved);
+    assert_eq!(
+        (outgoing.acknowledged_sequence(), outgoing.pending_count()),
+        (0, 1)
+    );
+    assert_eq!(commands.newest_sequence(), 0);
+    assert_eq!(identities.accepted_sequence(), Some(9));
+    assert!(identities.is_empty());
+    assert_eq!(channel.split().receiver.incoming_sequence(), 7);
+    assert!(prediction.is_empty());
 }
 
 pub(super) fn assert_owners(

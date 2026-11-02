@@ -3,6 +3,7 @@ use cod4xr_client_core::{
     BaselineProtocol,
     commands::LegacyClientCommands,
     entities::EntityDecodeContext,
+    player_state::history::PredictionHistory,
     server_payload::{
         MixedSnapshotAcknowledgementError, MixedSnapshotHistoryRequest,
         PreparedMixedSnapshotAcknowledgement, SnapshotDecodeStorage,
@@ -41,6 +42,7 @@ pub(super) fn receive<'owner, 'history, 'output>(
     outgoing: &'owner mut LegacyClientCommands<'history>,
     command_sequence: u32,
     history: &SnapshotHistory<'_, '_>,
+    prediction: &PredictionHistory<'_>,
     finals: &'output mut Finals,
 ) -> Result<
     PreparedMixedSnapshotAcknowledgement<'owner, 'history, 'output>,
@@ -95,7 +97,7 @@ pub(super) fn receive<'owner, 'history, 'output>(
                             max_records: 32,
                             max_client_updates: 4,
                         },
-                        prediction: SnapshotPrediction::Transmitted,
+                        prediction: SnapshotPrediction::History(prediction.source()),
                     },
                     MixedSnapshotStorage {
                         text_scratch: &mut text,

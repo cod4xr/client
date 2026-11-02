@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-use super::{PredictionHistoryError, PredictionSlot, PreparedPredictionUpdate};
+use super::{
+    PredictionHistoryError, PredictionHistorySource, PredictionSlot, PreparedPredictionUpdate,
+};
 use crate::{BaselineProtocol, player_state::PredictionSample};
 use std::fmt;
 
@@ -75,6 +77,17 @@ impl<'storage> PredictionHistory<'storage> {
     #[must_use]
     pub fn is_empty(&self) -> bool {
         self.used == 0
+    }
+    /// Borrows exact read-only world-bound lookup without retaining a mutable owner.
+    /// The view prevents reset/replacement until its final use; decoded owned results
+    /// retain no source borrow. This is inert provenance, not authentication.
+    #[must_use]
+    pub fn source(&self) -> PredictionHistorySource<'_> {
+        PredictionHistorySource {
+            slots: self.slots,
+            epoch: self.epoch,
+            profile: self.profile,
+        }
     }
     /// Preflights one new exact-time key while exclusively leasing the original owner.
     /// Drop cancels; commit publishes only prechecked cell/count assignments.

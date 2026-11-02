@@ -18,7 +18,7 @@ use cod4xr_client_core::{
     snapshots::{history::SnapshotHistory, services::SnapshotPrediction},
 };
 
-pub(super) fn outgoing(bytes: &mut [u8]) -> LegacyClientCommands<'_> {
+pub(in crate::snapshots) fn outgoing(bytes: &mut [u8]) -> LegacyClientCommands<'_> {
     let mut owner = LegacyClientCommands::new(bytes).expect("Original outgoing owner");
     owner.enqueue(b"PrivateKey").expect("Retained key");
     owner
@@ -26,7 +26,7 @@ pub(super) fn outgoing(bytes: &mut [u8]) -> LegacyClientCommands<'_> {
         .expect("Synthetic host transmission");
     owner
 }
-pub(super) fn seed(
+pub(in crate::snapshots) fn seed(
     history: &mut SnapshotHistory<'_, '_>,
     context: EntityDecodeContext,
     sequence: u32,
@@ -45,7 +45,7 @@ pub(super) fn seed(
         .expect("Seed coherent retained state")
         .commit();
 }
-pub(super) fn request<'source, 'slots, 'storage>(
+pub(in crate::snapshots) fn request<'source, 'slots, 'storage>(
     context: EntityDecodeContext,
     history: &'source SnapshotHistory<'slots, 'storage>,
 ) -> MixedSnapshotHistoryRequest<'source, 'slots, 'storage, 'static> {
@@ -60,7 +60,7 @@ pub(super) fn request<'source, 'slots, 'storage>(
         history,
     }
 }
-pub(super) struct Attempt {
+pub(in crate::snapshots) struct Attempt {
     fixture: Fixture,
     payload_codec: ServerPayloadDecoder,
     work: Vec<u8>,

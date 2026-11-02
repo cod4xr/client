@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-use super::{PredictionHistory, PredictionHistoryError};
+use super::{PredictionHistory, PredictionHistoryError, PredictionSlot};
 use crate::player_state::{PredictionRequest, PredictionSample};
 
 impl PredictionHistory<'_> {
@@ -23,8 +23,7 @@ impl PredictionHistory<'_> {
         epoch: u64,
         request: PredictionRequest,
     ) -> Result<&PredictionSample, PredictionHistoryError> {
-        self.check(epoch, request.profile())?;
-        self.sample_at(epoch, request.command_time())
+        self.source().resolve(epoch, request)
     }
     /// Borrows an exact raw time within the owner's explicitly checked world/profile.
     /// This is a host lookup, not a native-time-to-input-ID or ACK mapping.
@@ -36,14 +35,7 @@ impl PredictionHistory<'_> {
         epoch: u64,
         command_time: u32,
     ) -> Result<&PredictionSample, PredictionHistoryError> {
-        self.check(epoch, self.profile)?;
-        let index = self
-            .position(command_time)
-            .map_err(|_| PredictionHistoryError::Missing)?;
-        self.slots[index]
-            .0
-            .as_ref()
-            .ok_or(PredictionHistoryError::Missing)
+        self.source().sample_at(epoch, command_time)
     }
     /// Explicitly removes one exact sample without interpreting ordering or ACKs.
     /// Compacts its probe cluster so repeated removal does not accumulate tombstones.
@@ -56,52 +48,52 @@ impl PredictionHistory<'_> {
             .position(command_time)
             .map_err(|_| PredictionHistoryError::Missing)?;
         self.slots[hole].0 = None;
-        let mut scan = self.next(hole);
+        let capacity = self.slots.len();
+        let mut scan = next(hole, capacity);
         // Every other physical cell needs at most one visit, including full tables.
-        for _ in 1..self.slots.len() {
+        for _ in 1..capacity {
             let Some(sample) = self.slots[scan].0 else {
                 break;
             };
-            let bucket = self.home(sample.command_time());
-            if self.distance(bucket, hole) < self.distance(bucket, scan) {
+            let bucket = home(sample.command_time(), capacity);
+            if distance(bucket, hole, capacity) < distance(bucket, scan, capacity) {
                 self.slots[hole].0 = self.slots[scan].0.take();
                 hole = scan;
             }
-            scan = self.next(scan);
+            scan = next(scan, capacity);
         }
         self.used -= 1;
         Ok(())
     }
     // Ok is the exact occupied key; Err is the first free cell (or full table).
     pub(super) fn position(&self, time: u32) -> Result<usize, Option<usize>> {
-        let mut index = self.home(time);
-        for _ in 0..self.slots.len() {
-            match self.slots[index].0 {
-                Some(sample) if sample.command_time() == time => return Ok(index),
-                None => return Err(Some(index)),
-                Some(_) => index = self.next(index),
-            }
-        }
-        Err(None)
+        position(self.slots, time)
     }
-    fn home(&self, time: u32) -> usize {
-        // Local engine keys, not a hash of attacker-controlled text or coordinates.
-        time.to_le_bytes().into_iter().fold(0_usize, |hash, byte| {
-            hash.wrapping_mul(16_777_619) ^ usize::from(byte)
-        }) % self.slots.len()
-    }
-    fn next(&self, index: usize) -> usize {
-        if index == self.slots.len() - 1 {
-            0
-        } else {
-            index + 1
+}
+pub(super) fn position(slots: &[PredictionSlot], time: u32) -> Result<usize, Option<usize>> {
+    let mut index = home(time, slots.len());
+    for _ in 0..slots.len() {
+        match slots[index].0 {
+            Some(sample) if sample.command_time() == time => return Ok(index),
+            None => return Err(Some(index)),
+            Some(_) => index = next(index, slots.len()),
         }
     }
-    fn distance(&self, start: usize, end: usize) -> usize {
-        if end >= start {
-            end - start
-        } else {
-            self.slots.len() - (start - end)
-        }
+    Err(None)
+}
+fn home(time: u32, capacity: usize) -> usize {
+    // Local engine keys, not a hash of attacker-controlled text or coordinates.
+    time.to_le_bytes().into_iter().fold(0_usize, |hash, byte| {
+        hash.wrapping_mul(16_777_619) ^ usize::from(byte)
+    }) % capacity
+}
+fn next(index: usize, capacity: usize) -> usize {
+    if index == capacity - 1 { 0 } else { index + 1 }
+}
+fn distance(start: usize, end: usize, capacity: usize) -> usize {
+    if end >= start {
+        end - start
+    } else {
+        capacity - (start - end)
     }
 }

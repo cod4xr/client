@@ -4,7 +4,7 @@ mod model;
 mod owners;
 mod payload_failures;
 mod payload_framing;
-mod payload_support;
+pub(super) mod payload_support;
 mod payload_vectors;
 mod retention;
 mod support;

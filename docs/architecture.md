@@ -297,6 +297,13 @@ fallback. Preflighted updates lease the original owner, and borrowed samples pre
 reset while consumed. No input/ACK mapping is inferred. See
 [prediction history](prediction-history.md).
 
+Complete snapshot commitment now accepts an explicit borrowed prediction-history
+source, checking world/profile and selecting the actual decoded command time only
+after full body/carrier validation. Existing mixed ACK/header-assisted decoding
+dispatches this policy without another partial scan; cooked words retain no cache
+borrow. Missing exact samples preserve all outputs and the original ACK. See
+[retained snapshot prediction](retained-snapshot-prediction.md).
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

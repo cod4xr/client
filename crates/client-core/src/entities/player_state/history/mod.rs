@@ -7,9 +7,11 @@ mod error;
 mod lookup;
 mod owner;
 mod prepared;
+mod source;
 mod storage;
 
 pub use error::PredictionHistoryError;
 pub use owner::PredictionHistory;
 pub use prepared::PreparedPredictionUpdate;
+pub use source::PredictionHistorySource;
 pub use storage::PredictionSlot;

@@ -86,6 +86,7 @@ pub(super) fn parse<'output>(
     let snapshot = match prediction {
         SnapshotPrediction::Transmitted => prepared.commit_transmitted(),
         SnapshotPrediction::Sample(sample) => prepared.commit_with_prediction(sample),
+        SnapshotPrediction::History(history) => prepared.commit_from_history(history),
         SnapshotPrediction::NativePriorFallback => prepared.commit_native_prior_fallback(),
     }
     .map_err(MixedSnapshotError::Snapshot)?;
