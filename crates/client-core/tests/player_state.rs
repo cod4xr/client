@@ -6,6 +6,8 @@
 )]
 #[path = "player_state_cases/failures.rs"]
 mod failures;
+#[path = "player_state_cases/history/mod.rs"]
+mod history;
 #[path = "player_state_cases/ownership.rs"]
 mod ownership;
 #[path = "player_state_cases/prediction.rs"]

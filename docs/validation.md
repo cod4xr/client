@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 749 tests pass in both debug and release on the pinned
+Latest local checkpoint: 758 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (735 source files, 6 crates; all checked source
+formatting and repository policy pass (745 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,18 @@ Reliable gamestate bodies now have whole-frame admission coverage. Mixed-message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 738-test movement-packet checkpoint passed hosted Windows/Linux CI in
-[run 41534071481](https://github.com/cod4xr/client/actions/runs/41534071481), including
-locked sources and table reproduction. The preceding full-form command checkpoint
-also passed [run 41530485121](https://github.com/cod4xr/client/actions/runs/41530485121).
+The 749-test input-history checkpoint passed hosted Windows/Linux CI in
+[run 41537255526](https://github.com/cod4xr/client/actions/runs/41537255526), including
+locked sources and table reproduction. The preceding movement-packet checkpoint
+also passed [run 41534071481](https://github.com/cod4xr/client/actions/runs/41534071481).
 These changes edit only the client repository and consume the published shared revision.
+
+Seven exact prediction-history cases cover 257 samples, arbitrary/wrapped time keys,
+explicit replay/cancellation, stale producers, reconstruction and actual decoded
+player-state request resolution. All 120 removal orders of a full five-cell table
+preserve every remaining key. An independent ordered-map model checks 2,048
+operations at five capacities in both profiles. Two compile-fail examples protect
+original-owner updates and borrowed lookups. See [prediction history](prediction-history.md).
 
 Nine input-history integration cases cover 257 retained inputs, exact local IDs,
 backups, send cancellation, sent-only retirement, constant-time logical reset,

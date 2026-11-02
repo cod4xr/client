@@ -124,8 +124,9 @@ priors from actual packet headers, with protocol-21 UDP full/delta coverage.
 full-form movement/action fields with atomic output. [Movement packets](docs/movement-packets.md)
 compose complete batches and prediction reports through the original socket context;
 [input history](docs/input-command-history.md) now separates retained, transmitted
-and retired prefixes with original-owner I/O leases. Prediction production,
-authoritative reconciliation and gameplay simulation remain open.
+and retired prefixes with original-owner I/O leases. [Prediction history](docs/prediction-history.md)
+now retains exact world-bound samples with explicit replay replacement. Prediction
+production, authoritative reconciliation and gameplay simulation remain open.
 
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add

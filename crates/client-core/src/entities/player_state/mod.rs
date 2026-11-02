@@ -6,6 +6,7 @@
 
 mod decode;
 mod error;
+pub mod history;
 mod pending;
 mod prediction;
 mod prepared;

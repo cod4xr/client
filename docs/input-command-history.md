@@ -60,6 +60,7 @@ complete I/O. A later validated reliable ACK releases its reliable command while
 all three inputs remain retained. Snapshot fixtures are shared once in the core
 test harness; no new test target or production callback is introduced.
 
-Device sampling, backup scheduling, prediction production/history, authoritative
+Device sampling, backup scheduling, prediction production, authoritative
 snapshot-to-input reconciliation, collision, physics, rendering and native peer
-sessions remain separate implementation gates.
+sessions remain separate implementation gates. A separate
+[prediction history](prediction-history.md) now owns exact world-bound samples.

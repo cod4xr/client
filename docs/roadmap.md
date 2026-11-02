@@ -104,8 +104,10 @@ atomic caller output. Native movement packet batches now share owned control fra
 derive original native keys, retain all inputs through compression retry and use
 the original socket context, with real UDP/ACK coverage. Caller-funded input history
 now supports 64-bit world-bound IDs, exact replay ranges, backup sends and separate
-transmission/retirement. Engine input sampling, prediction and authoritative
-reconciliation remain open.
+transmission/retirement. A separate caller-funded prediction table now retains
+exact world-bound samples and explicit replay corrections beyond the native ring.
+Engine input sampling, prediction production and authoritative reconciliation
+remain open.
 Connection-wide gameplay/history ownership and broader routing remain open.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.

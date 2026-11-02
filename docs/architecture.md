@@ -290,6 +290,13 @@ transmission and explicit retirement remain separate from reliable-command ACKs.
 Logical reset invalidates old records without clearing physical slots. See
 [input command history](input-command-history.md).
 
+Prediction samples now have a separate caller-funded exact-time table, bound to
+the host world/profile. New insertion, explicit replay replacement and exact removal
+are separate operations; full capacity rejects without eviction or nearest-time
+fallback. Preflighted updates lease the original owner, and borrowed samples prevent
+reset while consumed. No input/ACK mapping is inferred. See
+[prediction history](prediction-history.md).
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,
