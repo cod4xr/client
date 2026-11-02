@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 use super::{
-    BASELINE_ENTITY_WORDS, EntityBaseline, EntityBaselineError, LegacyMapCenter, fields, tables,
+    BASELINE_ENTITY_WORDS, EntityBaseline, EntityBaselineError, EntityDecodeContext,
+    LegacyMapCenter, fields, tables,
 };
 use crate::{BaselineProtocol, message_body::BodyReader};
 use cod4x_protocol::{LegacyIndexDecoder, LegacyIndexKind};
@@ -10,7 +11,7 @@ use std::fmt;
 /// Successful complete records alone advance both shared index and message cursors.
 pub struct EntityBaselineDecoder {
     indices: LegacyIndexDecoder,
-    map_center: Option<LegacyMapCenter>,
+    context: EntityDecodeContext,
 }
 
 impl EntityBaselineDecoder {
@@ -24,7 +25,7 @@ impl EntityBaselineDecoder {
         }
         Ok(Self {
             indices: LegacyIndexDecoder::new(LegacyIndexKind::Entity),
-            map_center: None,
+            context: EntityDecodeContext::Cod4x21,
         })
     }
     /// Starts an explicitly selected protocol-6 zero-reference baseline stream.
@@ -33,17 +34,13 @@ impl EntityBaselineDecoder {
     pub fn with_legacy_map_center(center: LegacyMapCenter) -> Self {
         Self {
             indices: LegacyIndexDecoder::new(LegacyIndexKind::Entity),
-            map_center: Some(center),
+            context: EntityDecodeContext::Legacy6(center),
         }
     }
     /// Returns the original explicit coordinate profile, independent of discovery.
     #[must_use]
     pub fn profile(&self) -> BaselineProtocol {
-        if self.map_center.is_some() {
-            BaselineProtocol::Legacy6
-        } else {
-            BaselineProtocol::Cod4x21
-        }
+        self.context.profile()
     }
     /// Replaces legacy context between records without resetting index ordering.
     /// The host owns configstring/block application and chooses when its center changes.
@@ -54,11 +51,11 @@ impl EntityBaselineDecoder {
         &mut self,
         center: LegacyMapCenter,
     ) -> Result<(), EntityBaselineError> {
-        *self
-            .map_center
-            .as_mut()
-            .ok_or(EntityBaselineError::UnsupportedProfile)? = center;
-        Ok(())
+        if self.context.replace_legacy(center) {
+            Ok(())
+        } else {
+            Err(EntityBaselineError::UnsupportedProfile)
+        }
     }
     /// Restarts index ordering for an explicitly begun new gamestate.
     pub fn reset(&mut self) {
@@ -112,7 +109,7 @@ impl EntityBaselineDecoder {
         reader: &mut BodyReader<'_>,
         field: fields::FieldSpec,
     ) -> Result<u32, EntityBaselineError> {
-        match self.map_center {
+        match self.context.legacy_center() {
             Some(center) => fields::read_legacy(reader, field, center),
             None => fields::read(reader, field),
         }

@@ -65,7 +65,7 @@ impl PreparedEntityDelta<'_, '_, '_> {
             self.number,
             reference,
             time,
-            self.owner.map_center,
+            self.owner.context.legacy_center(),
         )?;
         self.owner.indices = self.indices;
         *self.reader = self.candidate;

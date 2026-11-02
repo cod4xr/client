@@ -11,6 +11,7 @@ pub mod commands;
 pub mod config_state;
 pub mod connect;
 pub mod control;
+pub mod entities;
 mod error;
 pub mod gamestate;
 pub mod handshake;
@@ -25,9 +26,11 @@ pub mod service_controls;
 pub mod system_info;
 
 pub use challenge::QueryChallenge;
-pub use error::DiscoveryError;
 /// Explicit-profile entity deltas sharing the reviewed baseline wire catalog.
-pub use gamestate::entity_baselines::deltas as entity_deltas;
+pub use entities::deltas as entity_deltas;
+/// Complete native entity substreams with transactional merged output.
+pub use entities::deltas::stream as snapshot_entities;
+pub use error::DiscoveryError;
 pub use info_response::{InfoResponse, MAX_INFO_DATAGRAM_BYTES};
 pub use profile::BaselineProtocol;
 pub use request::INFO_REQUEST_BYTES;

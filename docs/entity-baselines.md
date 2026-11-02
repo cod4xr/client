@@ -38,7 +38,9 @@ then commits both together. Truncation, invalid order/namespace, removal records
 invalid changed-field counts preserve both originals. Returned baselines own their
 values and permit source-frame release. Nothing applies a baseline to the engine.
 
-Generated tables are split into six focused files. Reproduction verifies the
+Generated tables are split into six focused files under
+`crates/client-core/src/entities/tables`; compatibility import paths remain
+available for existing gamestate callers. Reproduction verifies the
 normalized hashes of both `src/msg.c` and `src/q_shared.h` from `upstream.lock.json`,
 checks all list shapes, reviewed encodings and unique semantic aliases, then uses
 the pinned formatter. The alias map was reviewed against the native entity and

@@ -23,8 +23,11 @@ bit byte; integer, bit, string and index field decoding still has one shared
 implementation. This permits native reliable bodies larger than the primitive
 view cap without turning that cap into an engine memory or asset limit.
 
-Typed gamestate constituents live under client-core's `gamestate` module. Explicit
-configstring blocks use independent wire namespace and host work/storage budgets.
+Typed gamestate constituents live under client-core's `gamestate` module.
+Shared entity wire code lives under `entities`, independently of its gamestate
+consumer; compatibility re-exports preserve the original baseline/delta imports.
+Both decoders use `EntityDecodeContext`, with explicit checked legacy map context.
+Explicit configstring blocks use independent wire namespace and host work/storage budgets.
 Validation precedes publication into caller-owned text and metadata; plans borrow
 only cooked output. Initial entity baselines now have a separate owned semantic-word
 representation and shared ordered-index state. Protocol 21 uses raw coordinates;
@@ -143,6 +146,14 @@ framing, host snapshot mutation or engine authority is part of this layer. Proto
 6 requires explicit checked map-center context, and its shared coordinate reader
 distinguishes short prior-float addition from full prior-integer biased XOR. Context
 stays on the exclusive index owner through preparation and commit.
+
+Complete entity substreams now validate sparse source order/namespaces and every
+record through the native terminator before publishing merged caller cells. A
+private two-pass walker preserves both input cursors and all final cells on failure,
+including late retention failures in the unchanged prior tail. Cooked source views
+reuse final cells without repacking or retaining prior inputs. Host budgets replace
+the native global parse-entity ring; full snapshot/epoch/message admission remains
+separate from these inert substream results.
 
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or

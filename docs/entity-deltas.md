@@ -1,5 +1,9 @@
 # Explicit-profile entity delta records
 
+The shared implementation lives under `entities`; original baseline and delta import
+paths remain available through compatibility re-exports. Complete
+[entity substreams](snapshot-entity-streams.md) now compose these same record rules.
+
 `entity_deltas::EntityDeltaDecoder` decodes individual protocol-21 entity records
 against a caller-selected prior state. Protocol 6 also has
 [explicit legacy context](legacy-entity-deltas.md). Both profiles share the generated eighteen
@@ -74,7 +78,7 @@ records its exact image hash, addresses and reviewed rules, without binary bytes
 disassembly. The sixteenth client source hash binds its public assembly entry point.
 Protocol-21 coordinate behavior follows the public C reader/writer; the stock
 installed coordinate routines retain their distinct legacy representation.
-Complete snapshot framing, stream terminators,
+Complete snapshot framing, remaining client/player streams,
 player-state/client-state deltas, host snapshot storage, interpolation/prediction and
 engine application remain separate work. Individual record success never advances a
 network ACK, admits a complete snapshot or makes the client playable.

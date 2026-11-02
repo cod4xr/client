@@ -59,6 +59,9 @@ owned results. Complete snapshot framing and engine application remain separate.
 checked map-center context, native precision/bias rules and atomic record admission.
 [Nonzero legacy deltas](docs/legacy-entity-deltas.md) share that context and the
 prepared update path, including native fractional and integer-boundary behavior.
+[Snapshot entity substreams](docs/snapshot-entity-streams.md) now merge complete
+ordered updates before publication, with caller-funded storage and reusable cooked
+sources. Shared wire code lives in `entities` while existing imports remain available.
 
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add

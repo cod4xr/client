@@ -7,6 +7,7 @@ mod error;
 mod prepared;
 mod record;
 mod state;
+pub mod stream;
 
 /// Shared semantic word names; no native memory layout or union casts are exposed.
 pub use super::BaselineWord as EntityWord;

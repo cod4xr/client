@@ -57,6 +57,11 @@ with native precision/bias rules and the same atomic reader/index admission. Leg
 gamestate context integration remains a separate gate. Individual nonzero legacy
 records now use explicit owned context, native short/full origin behavior and the
 same prepared reader/index transaction as modern records.
+Complete entity substreams now merge prior states, baselines, updates and removals
+through the native terminator before final publication. Shared wire code lives in
+the dedicated `entities` module, with compatibility imports retained. Caller-owned
+results can retain more total entity states than the native ring; full snapshots,
+client/player streams and epoch-bound history remain separate work.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 

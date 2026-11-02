@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 482 tests pass in both debug and release on the pinned
+Latest local checkpoint: 498 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (499 source files, 6 crates; all checked source
+formatting and repository policy pass (512 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,24 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 471-test legacy-baseline checkpoint passed hosted Windows/Linux CI in
-[run 41480721403](https://github.com/cod4xr/client/actions/runs/41480721403), including
-locked sources and table reproduction. Hosted legacy-delta validation will
+The 482-test legacy-delta checkpoint passed hosted Windows/Linux CI in
+[run 41484203668](https://github.com/cod4xr/client/actions/runs/41484203668), including
+locked sources and table reproduction. Hosted entity-stream validation will
 follow its commit. These changes edit only the client repository and consume the
 published shared revision.
+
+Fifteen complete entity-substream tests add native terminator/framing bytes, maximum
+index termination, valid existing cached bits and following fields, full sparse
+merge rules, previous/baseline/zero precedence, removals, legacy context, all tested
+truncations, late malformed records, input source/order failures, independent host
+budgets/capacities and unchanged final tails. Cooked-only lifetimes/source reuse,
+128 ordered-map traces, 512 retained entities and six simultaneous results with
+3,072 entities exercise owned storage beyond the native global ring. A compile-fail
+example prevents overwriting borrowed cooked input cells. Shared codecs moved to
+`entities`, preserving compatibility imports and source-table reproduction.
+[Audit metadata](snapshot-entity-reader-evidence.json) binds stream rules to the
+reviewed native reader. Complete snapshots, client/player streams and native peers
+remain open; see [entity substreams](snapshot-entity-streams.md).
 
 Eleven nonzero legacy-delta tests add explicit coordinate-profile ownership, all
 short values against prior state, fractional short/full distinctions, all eighteen

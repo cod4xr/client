@@ -9,7 +9,7 @@ import re
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
-TARGET = ROOT / "crates/client-core/src/gamestate/entity_baselines/tables"
+TARGET = ROOT / "crates/client-core/src/entities/tables"
 
 # Semantic word aliases reviewed against the locked q_shared.h entity/union types.
 # Number is separate; these word keys never depend on the host's C struct ABI.
@@ -71,7 +71,7 @@ def main() -> None:
     for start in range(0, 18, 3):
         lines = ["// SPDX-License-Identifier: AGPL-3.0-or-later",
                  "// Generated from hash-locked msg.c by tools/import_entity_baseline_tables.py.",
-                 "use super::{FieldSpec, f};", "use crate::gamestate::entity_baselines::BaselineWord as W;", ""]
+                 "use super::{FieldSpec, f};", "use crate::entities::BaselineWord as W;", ""]
         for index, body in tables[start:start + 3]:
             fields = re.findall(r"\{ NETF\( (.*?) \), (-?\d+), (\d+)\}", body)
             expected_count = {12: 58, 13: 60}.get(int(index), 59)

@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-//! Explicit-profile initial entity baselines, decoded from a zero reference state.
-//! These inert wire values are not validated engine objects or snapshot deltas.
+//! Shared explicit-profile entity wire formats, independent of engine object storage.
+//! Baselines and deltas share value rules and native field catalogs. Whole-message
+//! admission, snapshot ownership and geometry/resource interpretation remain separate.
 
+mod context;
 mod decoder;
 #[cfg(test)]
 mod delta_field_cases;
@@ -20,6 +22,7 @@ mod state;
 mod tables;
 mod word;
 
+pub use context::EntityDecodeContext;
 pub use decoder::EntityBaselineDecoder;
 pub use error::EntityBaselineError;
 pub use map_center::LegacyMapCenter;

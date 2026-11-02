@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-use super::super::LegacyMapCenter;
+use super::super::{EntityDecodeContext, LegacyMapCenter};
 use super::{EntityDeltaError, PreparedEntityDelta};
 use crate::{BaselineProtocol, message_body::BodyReader};
 use cod4x_protocol::{LegacyIndexDecoder, LegacyIndexKind};
@@ -8,7 +8,7 @@ use std::fmt;
 /// One ordered entity-index stream, independent of any fixed host entity array.
 pub struct EntityDeltaDecoder {
     pub(super) indices: LegacyIndexDecoder,
-    pub(super) map_center: Option<LegacyMapCenter>,
+    pub(super) context: EntityDecodeContext,
 }
 impl EntityDeltaDecoder {
     /// Starts a protocol-21 record stream. Discovery alone does not select a dialect.
@@ -21,7 +21,7 @@ impl EntityDeltaDecoder {
         }
         Ok(Self {
             indices: LegacyIndexDecoder::new(LegacyIndexKind::Entity),
-            map_center: None,
+            context: EntityDecodeContext::Cod4x21,
         })
     }
     /// Starts an explicitly selected protocol-6 record stream with checked map context.
@@ -29,17 +29,13 @@ impl EntityDeltaDecoder {
     pub fn with_legacy_map_center(center: LegacyMapCenter) -> Self {
         Self {
             indices: LegacyIndexDecoder::new(LegacyIndexKind::Entity),
-            map_center: Some(center),
+            context: EntityDecodeContext::Legacy6(center),
         }
     }
     /// Returns the original explicit coordinate profile, independent of discovery.
     #[must_use]
     pub fn profile(&self) -> BaselineProtocol {
-        if self.map_center.is_some() {
-            BaselineProtocol::Legacy6
-        } else {
-            BaselineProtocol::Cod4x21
-        }
+        self.context.profile()
     }
     /// Replaces legacy context between records without resetting index order.
     ///
@@ -49,11 +45,11 @@ impl EntityDeltaDecoder {
         &mut self,
         center: LegacyMapCenter,
     ) -> Result<(), EntityDeltaError> {
-        *self
-            .map_center
-            .as_mut()
-            .ok_or(EntityDeltaError::UnsupportedProfile)? = center;
-        Ok(())
+        if self.context.replace_legacy(center) {
+            Ok(())
+        } else {
+            Err(EntityDeltaError::UnsupportedProfile)
+        }
     }
     /// Restarts ordering for a new entity stream, retaining explicit coordinate context.
     pub fn reset(&mut self) {

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Generated from hash-locked msg.c by tools/import_entity_baseline_tables.py.
 use super::{FieldSpec, f};
-use crate::gamestate::entity_baselines::BaselineWord as W;
+use crate::entities::BaselineWord as W;
 
 pub(super) const TABLE_6: [FieldSpec; 59] = [
     f(W::Kind, 8, false),              // eType
