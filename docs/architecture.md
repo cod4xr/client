@@ -253,6 +253,13 @@ validation precedes all four output publications. Existing command/identity owne
 preflight consumes the cooked controls; mixed ACK/session ownership remains
 separate. See [mixed snapshot services](mixed-snapshot-services.md).
 
+Mixed-carrier ACK preparation reuses the same original-owner key lease before
+complete mixed decoding. Cooked controls/snapshot data survives input workspaces,
+while host preflight retains exclusive outgoing-owner access. After all resource
+checks, infallible incoming command/identity commits precede the consuming ACK
+commit. Resource rejection cancels all prepared owners; no frame parser executes
+peer text. See [mixed snapshot acknowledgements](mixed-snapshot-acknowledgements.md).
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

@@ -91,7 +91,9 @@ Original-owner snapshot ACK preparation now retains the checked command key thro
 decoding and host preflight, then commits key publication without a fallible step.
 Mixed control/one-snapshot carriers now validate commands and protocol-21 identities
 on both sides through EOF, preserving all four final buffers until validation.
-Mixed original-owner ACK and connection-wide history/session ownership remain open.
+Mixed original-owner ACK preparation now spans complete decoding and incoming-owner
+resource preflight, with cancellation and infallible checked-key commitment.
+Connection-wide gameplay/history ownership and broader routing remain open.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 

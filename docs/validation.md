@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 699 tests pass in both debug and release on the pinned
+Latest local checkpoint: 704 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (665 source files, 6 crates; all checked source
+formatting and repository policy pass (672 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,17 @@ Reliable gamestate bodies now have whole-frame admission coverage. Mixed-message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 689-test original-owner snapshot ACK checkpoint passed hosted Windows/Linux CI
-in [run 41518825433](https://github.com/cod4xr/client/actions/runs/41518825433), including
-locked sources and table reproduction. Hosted mixed snapshot-carrier validation
+The 699-test mixed snapshot-carrier checkpoint passed hosted Windows/Linux CI in
+[run 41521657642](https://github.com/cod4xr/client/actions/runs/41521657642), including
+locked sources and table reproduction. Hosted mixed original-owner ACK validation
 will follow its commit. These changes edit only the client repository and consume
 the published shared revision.
+
+Four mixed original-owner ACK cases cover actual decode in both profiles, original
+key cancellation/retry and slot reuse, packet/workspace/scratch lifetimes, private
+Debug, incoming command/identity preflight and commit, identity resource-budget
+rejection, and late wire/prediction failure. A compile-fail example protects the
+original outgoing owner. See [mixed snapshot acknowledgements](mixed-snapshot-acknowledgements.md).
 
 Ten mixed snapshot-carrier cases cover commands and protocol-21 identities on
 both sides of a snapshot, native prefix-only command association, normalization,
@@ -39,6 +45,5 @@ Historical coverage and audit details are kept in focused pages:
 - [Test organization, inspectors and local exclusions](validation/tooling.md)
 - [Initial foundation checkpoint](validation/foundation.md)
 
-Current limitations include mixed-carrier original-owner ACK integration, a
-connection-wide session/history owner, prediction production, typed simulation,
+Current limitations include a connection-wide session/history owner, prediction production, typed simulation,
 rendering and ordinary peer captures. The CLI remains a probe/content inspector.

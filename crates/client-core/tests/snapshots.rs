@@ -9,6 +9,10 @@ mod ack_failures;
 mod ack_vectors;
 #[path = "snapshot_cases/bindings.rs"]
 mod bindings;
+#[path = "snapshot_cases/mixed_ack_failures.rs"]
+mod mixed_ack_failures;
+#[path = "snapshot_cases/mixed_ack_vectors.rs"]
+mod mixed_ack_vectors;
 #[path = "snapshot_cases/mixed_failures.rs"]
 mod mixed_failures;
 #[path = "snapshot_cases/mixed_framing.rs"]

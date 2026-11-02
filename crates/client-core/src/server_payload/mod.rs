@@ -5,11 +5,15 @@
 mod decoded;
 mod decoder;
 mod error;
+mod mixed_snapshot_ack;
 mod snapshot_ack;
 
 pub use decoded::DecodedServerPayload;
 pub use decoder::ServerPayloadDecoder;
 pub use error::ServerPayloadError;
+pub use mixed_snapshot_ack::{
+    MixedSnapshotAcknowledgementError, MixedSnapshotRequest, PreparedMixedSnapshotAcknowledgement,
+};
 pub use snapshot_ack::{
     PreparedSnapshotAcknowledgement, SnapshotAcknowledgementError, SnapshotDecodeStorage,
     SnapshotPayloadRequest,

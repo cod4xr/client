@@ -113,6 +113,10 @@ copies the checked key before its pending slot becomes reusable.
 protocol-21 identities on both sides of one snapshot through EOF. All four final
 buffers publish only after complete validation and prediction selection.
 
+[Mixed snapshot ACK preparation](docs/mixed-snapshot-acknowledgements.md) now retains
+the original outgoing key through complete mixed decoding and incoming-owner
+preflight. Cancellation preserves ACK/history; commitment copies the checked key.
+
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add
 caller-funded fragment retention, selective metadata and bounded stream reads.
