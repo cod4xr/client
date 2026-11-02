@@ -21,6 +21,7 @@ does not prove a playable connection.
 | Typed frame ownership | Original-profile preparation, exclusive frame identity, cancel/commit behavior, work counters and real UDP tests | Session epochs, engine/content preflight and ordinary peer captures |
 | Native defaults | Exact installed-image identity, checked PE32 data views, caller-funded raw imports and local 832-record inspection | More reviewed images, engine/content application and ordinary peer sessions |
 | Effective config state | Native restoration/persistence, sorted sparse snapshots, wide IDs, 256 model traces, work/storage budgets and wire-view integration | Session epochs, engine/resource interpretation and ordinary peer sessions |
+| Native system info | Shared big-info validation, full-width decimal server IDs, host budgets, raw unknown fields and wire-to-snapshot integration | Session epochs, resource/CVar policy and real ordinary peer sessions |
 | Content/render/simulation | Native default import only; map/model loading, rendering and simulation remain open | Stock/custom content and complete playable sessions |
 | Optional extensions | No wire behavior invented | Negotiated features and ordinary-server fallback |
 

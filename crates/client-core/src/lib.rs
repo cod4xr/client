@@ -20,6 +20,7 @@ mod request;
 pub mod server_commands;
 pub mod server_payload;
 pub mod service_controls;
+pub mod system_info;
 
 pub use challenge::QueryChallenge;
 pub use error::DiscoveryError;

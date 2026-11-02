@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 270 tests pass in both debug and release on the pinned
+Latest local checkpoint: 279 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (309 source files, 5 crates; all checked source
+formatting and repository policy pass (315 source files, 5 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,9 +14,10 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 262-test block-scope checkpoint passed hosted Windows/Linux CI in
-[run 41404944438](https://github.com/cod4xr/client/actions/runs/41404944438), including
-locked sources and table reproduction. Hosted validation for sparse config snapshots will follow their commit. These
+The 270-test sparse-config checkpoint passed hosted Windows/Linux CI in
+[run 41406892261](https://github.com/cod4xr/client/actions/runs/41406892261), including
+locked sources and table reproduction. Hosted system-info validation will follow
+its commit. These
 changes edit only the client repository and consume the published shared revision.
 
 Ten configstring-block tests add independent legacy packed-index and protocol-21
@@ -94,6 +95,13 @@ reuse, invalid order/markers/NULs and private debug output. An independent map m
 covers 256 traces; a decoded-wire integration releases parent plans and source frames
 after merging. Imported default views also support source-lived byte references
 from temporary copied records. No engine or session state is automatically applied.
+
+Nine system-info tests add signed/unsigned identifier bit preservation, complete
+decimal validation, missing/duplicate critical keys, unknown/raw inert values,
+whole-string shared syntax checks, all forbidden control bytes, exact byte/field
+budgets and big-info wire bounds. Debug/errors expose no remote text. A gamestate
+wire-to-snapshot integration releases original sources before interpreting system
+metadata. This performs no session admission, local CVar changes or archive mounts.
 
 Eight new independent loopback tests exercise the reusable network crate: one
 source socket across challenge/connect/retries/handoff, exact cookie/protocol/qport

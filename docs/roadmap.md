@@ -35,8 +35,10 @@ Reviewed installed-client defaults now import through a separate deterministic
 content crate and bounded metadata-only inspection command. Wire plans preserve
 original block starts for correct per-block native default restoration. Effective
 sparse snapshots now merge defaults/wire values with bounded work and transactional
-publication. Next are session/engine application, other message admission, legacy coordinates, application dispatch
-and the engine's ongoing game loop. Snapshot deltas remain separate.
+publication. Read-only system-info views now validate full-width native server IDs
+without applying arbitrary remote engine settings. Next are session/engine
+application, other message admission, legacy coordinates, application dispatch and
+the engine's ongoing game loop. Snapshot deltas remain separate.
 Owned protocol-21 client identity records now cover gamestate and ordinary sequenced
 forms; config-data sequence admission remains part of the upcoming session work.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.

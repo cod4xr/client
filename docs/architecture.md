@@ -59,6 +59,12 @@ block scope; wide sparse IDs never allocate an ID-sized array. Input work and fi
 retention have independent budgets. All capacities/selected values validate before
 publication, and only final output is borrowed by the returned snapshot.
 
+System-info interpretation borrows that effective snapshot and reuses the shared
+big-info grammar. Explicit byte/field budgets bound inspection; the critical server
+identifier is unique and decimal-checked with all 32 bits preserved. Unknown fields
+remain inert bytes. This metadata layer owns no CVar changes, resource mounts,
+session epoch, protocol selection or message/config acknowledgement authority.
+
 Client identity records have one owned representation shared by gamestate patches
 and ordinary sequenced updates. Their small arrays are explicit native field
 capacities, without imposing a player-table allocation on the engine. Parsing
