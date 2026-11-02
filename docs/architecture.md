@@ -213,6 +213,16 @@ raw full/delta selector performs no implicit sequence math, reference substituti
 or history admission; all nonzero wire distances survive independently of old
 engine ring sizes. See [snapshot framing](snapshot-headers.md).
 
+Complete snapshot preparation composes these readers with one exclusive reader/
+output lease. A closed cooked source binds all three state projections to one
+message/world/profile; exact native message distance selects the prior. Every
+source is checked before body reads. Player state remains privately pending and
+both sparse walkers validate against no-op sinks before prediction resolution or
+any final output write. Identical closed replay publishes both buffers and then
+the original reader; failure/drop preserves all outputs and cursors. No native
+history ring is reproduced. Enclosing message/ACK admission and host session/
+history ownership remain separate; see [snapshot transactions](snapshot-bodies.md).
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

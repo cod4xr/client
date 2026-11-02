@@ -11,14 +11,14 @@ use crate::{
 use cod4x_protocol::{LegacyIndexDecoder, LegacyIndexKind};
 
 #[derive(Clone, Copy)]
-pub(super) struct Input<'source> {
+pub(crate) struct Input<'source> {
     pub context: EntityDecodeContext,
     pub time: u32,
     pub sources: EntityStreamSources<'source>,
     pub budget: EntityStreamBudget,
     pub capacity: usize,
 }
-pub(super) fn walk(
+pub(crate) fn walk(
     reader: &mut BodyReader<'_>,
     input: Input<'_>,
     sink: &mut impl Sink,

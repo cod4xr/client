@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 use super::{
-    LivePlayerState, PlayerStateError, PredictionProvenance, PredictionRequest, PredictionSample,
-    PredictionWords, state::DecodedPlayerState,
+    LivePlayerState, PendingPlayerState, PlayerStateError, PredictionRequest, PredictionSample,
 };
 use crate::{BaselineProtocol, message_body::BodyReader};
 use std::fmt;
@@ -32,9 +31,7 @@ use std::fmt;
 pub struct PreparedPlayerState<'reader, 'body> {
     pub(super) reader: &'reader mut BodyReader<'body>,
     pub(super) candidate: BodyReader<'body>,
-    pub(super) decoded: DecodedPlayerState,
-    pub(super) request: Option<PredictionRequest>,
-    pub(super) fallback: PredictionWords,
+    pub(super) pending: PendingPlayerState,
     pub(super) consumed_bytes: usize,
 }
 impl PreparedPlayerState<'_, '_> {
@@ -43,12 +40,12 @@ impl PreparedPlayerState<'_, '_> {
     /// scope its prediction queue to the current session.
     #[must_use]
     pub fn prediction_request(&self) -> Option<PredictionRequest> {
-        self.request
+        self.pending.request()
     }
     /// Returns the explicitly selected baseline profile.
     #[must_use]
     pub fn profile(&self) -> BaselineProtocol {
-        self.decoded.context.profile()
+        self.pending.profile()
     }
     /// Returns newly consumed physical bytes; cached bits may also be consumed.
     #[must_use]
@@ -60,10 +57,9 @@ impl PreparedPlayerState<'_, '_> {
     /// # Errors
     /// An outstanding prediction request cancels the entire read.
     pub fn commit_transmitted(self) -> Result<LivePlayerState, PlayerStateError> {
-        if self.request.is_some() {
-            return Err(PlayerStateError::PredictionRequired);
-        }
-        Ok(self.finish(PredictionProvenance::Transmitted))
+        let state = self.pending.transmitted()?;
+        *self.reader = self.candidate;
+        Ok(state)
     }
     /// Replaces exactly eleven native words from a matching caller-owned sample.
     ///
@@ -71,18 +67,12 @@ impl PreparedPlayerState<'_, '_> {
     /// Missing request, profile mismatch or command-time mismatch cancels the entire
     /// read. The sample remains inert and is never retained by the result.
     pub fn commit_with_prediction(
-        mut self,
+        self,
         sample: &PredictionSample,
     ) -> Result<LivePlayerState, PlayerStateError> {
-        let request = self.request.ok_or(PlayerStateError::UnexpectedPrediction)?;
-        if sample.profile() != request.profile() {
-            return Err(PlayerStateError::PredictionProfile);
-        }
-        if sample.command_time() != request.command_time() {
-            return Err(PlayerStateError::PredictionTime);
-        }
-        sample.words.apply(&mut self.decoded.scalars);
-        Ok(self.finish(PredictionProvenance::CommandTimeMatched))
+        let state = self.pending.predicted(sample)?;
+        *self.reader = self.candidate;
+        Ok(state)
     }
     /// Explicitly applies native prior fallback to the eleven prediction words.
     /// Without a prior, those words become zero. New command time, other scalar
@@ -91,27 +81,19 @@ impl PreparedPlayerState<'_, '_> {
     ///
     /// # Errors
     /// Transmitted-origin mode rejects fallback and cancels the entire read.
-    pub fn commit_native_prior_fallback(mut self) -> Result<LivePlayerState, PlayerStateError> {
-        if self.request.is_none() {
-            return Err(PlayerStateError::UnexpectedPrediction);
-        }
-        self.fallback.apply(&mut self.decoded.scalars);
-        Ok(self.finish(PredictionProvenance::ExplicitPriorFallback))
-    }
-    fn finish(self, prediction: PredictionProvenance) -> LivePlayerState {
+    pub fn commit_native_prior_fallback(self) -> Result<LivePlayerState, PlayerStateError> {
+        let state = self.pending.prior_fallback()?;
         *self.reader = self.candidate;
-        LivePlayerState {
-            decoded: self.decoded,
-            prediction,
-        }
+        Ok(state)
     }
 }
+
 impl fmt::Debug for PreparedPlayerState<'_, '_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("PreparedPlayerState")
             .field("profile", &self.profile())
             .field("consumed_bytes", &self.consumed_bytes)
-            .field("needs_prediction", &self.request.is_some())
+            .field("needs_prediction", &self.pending.request().is_some())
             .finish_non_exhaustive()
     }
 }

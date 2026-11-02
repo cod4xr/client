@@ -2,9 +2,23 @@
 //! Native snapshot framing constituents without history or message admission.
 //! Explicit profiles select codecs; the host owns reference epochs and retention.
 
+mod error;
 mod header;
+mod input;
+mod message;
+mod plan;
+mod prepare;
+mod prepared;
+mod source;
+mod transaction;
 
+pub use error::SnapshotError;
 pub use header::{SnapshotDelta, SnapshotHeader};
+pub use input::{SnapshotBudget, SnapshotInput, SnapshotOutput};
+pub use message::SnapshotMessage;
+pub use plan::SnapshotPlan;
+pub use prepared::PreparedSnapshot;
+pub use source::{SnapshotBaselines, SnapshotSource};
 
 /// Native snapshot service tag; the header parser starts immediately after it.
 pub const SNAPSHOT_OPCODE: u8 = 6;

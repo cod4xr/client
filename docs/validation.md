@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 638 tests pass in both debug and release on the pinned
+Latest local checkpoint: 663 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (617 source files, 6 crates; all checked source
+formatting and repository policy pass (634 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,22 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 631-test whole live player-state checkpoint passed hosted Windows/Linux CI in
-[run 41509698263](https://github.com/cod4xr/client/actions/runs/41509698263), including
-locked sources and table reproduction. Hosted snapshot-header validation will
-follow its commit. These changes edit only the client repository and consume the
-published shared revision.
+The 638-test snapshot-header checkpoint passed hosted Windows/Linux CI in
+[run 41510937137](https://github.com/cod4xr/client/actions/runs/41510937137), including
+locked sources and table reproduction. Hosted complete snapshot-body validation
+will follow its commit. These changes edit only the client repository and consume
+the published shared revision.
+
+Twenty-two complete snapshot wire cases cover independent physical framing, both
+profiles, full/delta sparse merges, explicit coherent message/epoch references,
+following services/cached bits, baselines and unused-source inspection, every
+tested truncation, late client errors, independent budgets/capacity, prediction
+selection/fallback/retry, drop cancellation and private/owned results. Forty cooked
+plans and distance 255 demonstrate caller-controlled retention beyond native rings.
+Three compile-fail examples protect reader/output/reference leases. All existing
+player-state/stream cases remain intact after reusing their private pending-player
+and sparse-walk implementations. Host history and enclosing message/ACK admission
+remain open; see [complete snapshot wire bodies](snapshot-bodies.md).
 
 Seven native snapshot-header cases cover physical time/distance/flag vectors,
 every nonzero delta distance and flag pattern, all truncated headers, cached-bit
@@ -69,7 +80,7 @@ harness declarations fail repository policy. Production runtime code, release
 settings and the existing local Cargo target remain unchanged; see
 [test organization](testing.md).
 
-Twenty-one player-array tests add native stats/ammunition physical vectors, both
+Twenty-two player-array tests add native stats/ammunition physical vectors, both
 profiles, signed/unsigned boundaries, absolute updates versus XOR, high mask bits,
 first/last wire slots, all groups, explicit zero clearing, empty masks, omitted
 retention and raw model-table replacement. All tested truncations preserve cached
@@ -237,7 +248,7 @@ decode failures and commits, without changing receipt time or byte ACK state. On
 compile-fail documentation test prevents replacing a frame while its prepared
 handle remains live. Session/engine updates remain separate from frame commit.
 
-Twenty-one content/inspector tests add synthetic PE32 header/section/address
+Twenty-two content/inspector tests add synthetic PE32 header/section/address
 validation, every required prefix, virtual-only/overflow geometry, deterministic
 header/address mutations, exact image identity, native table shape/order/terminators,
 short budgets/storage with complete rollback, raw defaults beyond wire lengths,

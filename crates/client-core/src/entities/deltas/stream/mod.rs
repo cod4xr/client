@@ -4,10 +4,10 @@
 
 mod error;
 mod plan;
-mod sink;
+pub(crate) mod sink;
 mod source;
 mod storage;
-mod walk;
+pub(crate) mod walk;
 
 pub use error::EntityStreamError;
 pub use plan::SnapshotEntityPlan;

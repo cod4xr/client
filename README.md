@@ -7,7 +7,7 @@ features without defining the core product.
 
 **Current status: discovery/challenge probes and reviewed content inspection.** The client sends real
 UDP `getinfo` queries and nonce-correlated `getchallenge` requests. Rendering, map/model loading,
-movement, snapshots, GSC presentation and playable joins are not implemented.
+movement, gameplay snapshot admission, GSC presentation and playable joins are not implemented.
 
 The compatibility target is existing CoD4/CoD4X servers accepting **no-auth
 clients**. Auth-required servers are outside this baseline. A discovery reply
@@ -89,6 +89,12 @@ prediction production remain open.
 six-byte framing, full/delta selector and all flag/time bits, with cached-bit
 rollback and immediate player-state handoff. Reference history and enclosing
 snapshot/message admission remain separate.
+
+[Complete snapshot wire transactions](docs/snapshot-bodies.md) now combine header,
+player state, entities and clients. Exact message/epoch references, prediction
+resolution and complete validation precede both output writes. Caller-funded
+cooked storage replaces fixed native history rings. Enclosing message/ACK admission
+and a host gameplay/history owner remain open.
 
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add

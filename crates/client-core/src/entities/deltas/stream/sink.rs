@@ -3,14 +3,14 @@ use super::super::EntityState;
 use super::SnapshotEntitySlot;
 
 // Only closed internal sinks run during validation/replay; no caller callbacks.
-pub(super) trait Sink {
+pub(crate) trait Sink {
     fn entity(&mut self, state: EntityState);
 }
-pub(super) struct Noop;
+pub(crate) struct Noop;
 impl Sink for Noop {
     fn entity(&mut self, _: EntityState) {}
 }
-pub(super) struct Writer<'storage> {
+pub(crate) struct Writer<'storage> {
     pub slots: &'storage mut [SnapshotEntitySlot],
     pub written: usize,
 }

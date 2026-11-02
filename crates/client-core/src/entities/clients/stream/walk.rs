@@ -6,13 +6,13 @@ use super::{
 use crate::{BaselineProtocol, entities::ordered::Cursor, message_body::BodyReader};
 
 #[derive(Clone, Copy)]
-pub(super) struct Input<'source> {
+pub(crate) struct Input<'source> {
     pub profile: BaselineProtocol,
     pub previous: ClientStateSource<'source>,
     pub budget: ClientStreamBudget,
     pub capacity: usize,
 }
-pub(super) fn walk(
+pub(crate) fn walk(
     reader: &mut BodyReader<'_>,
     input: Input<'_>,
     sink: &mut impl Sink,

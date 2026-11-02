@@ -6,6 +6,7 @@
 
 mod decode;
 mod error;
+mod pending;
 mod prediction;
 mod prepared;
 mod state;
@@ -16,3 +17,5 @@ pub use prediction::{PredictionProvenance, PredictionRequest, PredictionSample};
 pub use prepared::PreparedPlayerState;
 pub use state::LivePlayerState;
 pub use words::PredictionWords;
+
+pub(crate) use pending::PendingPlayerState;

@@ -86,6 +86,19 @@ impl<'storage> SnapshotEntityPlan<'storage> {
             consumed_bytes,
         })
     }
+    pub(crate) fn published(
+        profile: BaselineProtocol,
+        slots: &'storage [SnapshotEntitySlot],
+        stats: EntityStreamStats,
+        consumed_bytes: usize,
+    ) -> Self {
+        Self {
+            profile,
+            slots,
+            stats,
+            consumed_bytes,
+        }
+    }
     /// Returns the exact explicit coordinate dialect used for this substream.
     #[must_use]
     pub fn profile(&self) -> BaselineProtocol {

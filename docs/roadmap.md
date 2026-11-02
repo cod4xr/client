@@ -81,7 +81,9 @@ or explicit native prior fallback before reader publication. Prediction producti
 session-bound reference history and whole snapshot/message admission remain open.
 Native six-byte snapshot headers now preserve full/delta selectors and raw flags
 without native ring limits; byte/cache continuity with player state is covered.
-Reference selection and whole snapshot/history/message admission remain open.
+Complete snapshot wire transactions now validate all constituents, exact cooked
+message/epoch references and prediction before atomic reader/two-output publication.
+Host history/session ownership and enclosing message/ACK admission remain open.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 

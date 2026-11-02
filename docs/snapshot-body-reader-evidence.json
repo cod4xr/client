@@ -1,0 +1,30 @@
+{
+  "operation": "read_only_installed_complete_snapshot_wire_order_audit",
+  "file_name": "iw3mp.exe",
+  "sha256": "f50f8a520581754e73cb7cae67b02adcbad5f2e71aaa412a013bb3ef57a391a5",
+  "image_bytes": 3330048,
+  "preferred_image_base": "0x00400000",
+  "snapshot_reader_address": "0x00473710",
+  "host_server_command_association_load_address": "0x00473728",
+  "host_server_command_association_store_address": "0x00473732",
+  "player_state_call_address": "0x004738f4",
+  "entity_index_reset_address": "0x00473907",
+  "entity_stream_call_address": "0x0047393a",
+  "client_index_reset_address": "0x0047394a",
+  "client_stream_call_address": "0x0047397d",
+  "post_wire_overflow_check_address": "0x00473987",
+  "snapshot_reader_return_address": "0x00473aad",
+  "wire_order": ["six_byte_header", "live_player_state", "entity_substream", "client_state_substream"],
+  "extra_wire_trailer_present": false,
+  "native_server_command_association_is_host_metadata": true,
+  "constituent_evidence": ["snapshot-header-reader-evidence.json", "live-player-state-reader-evidence.json", "snapshot-entity-reader-evidence.json", "snapshot-client-state-reader-evidence.json"],
+  "source_binding": {
+    "repository": "https://github.com/callofduty4x/CoD4x_Client_pub.git",
+    "revision": "17182c7bf04b859dea5c0db4acdb0b83c28d6dd2",
+    "files": ["src/cl_main.c", "src/client.h", "src/msg.c", "src/qcommon.h", "src/callbacks.asm"]
+  },
+  "binary_or_disassembly_included": false,
+  "game_data_values_recorded": false,
+  "host_history_or_message_ack_admission_claimed": false,
+  "gameplay_session_tested": false
+}

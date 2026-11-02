@@ -41,7 +41,7 @@ impl<'storage> EntityStateSource<'storage> {
             Source::Published(slots) => slots.get(index)?.0.as_ref(),
         }
     }
-    pub(super) fn validate(self, maximum: usize, baseline: bool) -> Result<(), EntityStreamError> {
+    pub(crate) fn validate(self, maximum: usize, baseline: bool) -> Result<(), EntityStreamError> {
         if self.len() > maximum {
             return Err(if baseline {
                 EntityStreamError::BaselineBudget

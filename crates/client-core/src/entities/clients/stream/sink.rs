@@ -3,14 +3,14 @@ use super::super::ClientState;
 use super::SnapshotClientSlot;
 
 // Closed internal validation/replay sinks; no caller callbacks during publication.
-pub(super) trait Sink {
+pub(crate) trait Sink {
     fn client(&mut self, state: ClientState);
 }
-pub(super) struct Noop;
+pub(crate) struct Noop;
 impl Sink for Noop {
     fn client(&mut self, _: ClientState) {}
 }
-pub(super) struct Writer<'storage> {
+pub(crate) struct Writer<'storage> {
     pub slots: &'storage mut [SnapshotClientSlot],
     pub written: usize,
 }

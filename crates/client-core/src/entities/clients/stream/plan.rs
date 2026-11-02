@@ -78,6 +78,19 @@ impl<'storage> SnapshotClientPlan<'storage> {
             consumed_bytes,
         })
     }
+    pub(crate) fn published(
+        profile: BaselineProtocol,
+        slots: &'storage [SnapshotClientSlot],
+        stats: ClientStreamStats,
+        consumed_bytes: usize,
+    ) -> Self {
+        Self {
+            profile,
+            slots,
+            stats,
+            consumed_bytes,
+        }
+    }
     /// Returns the explicitly selected baseline profile used for decoding.
     #[must_use]
     pub fn profile(&self) -> BaselineProtocol {

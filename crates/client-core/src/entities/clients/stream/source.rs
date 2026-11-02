@@ -35,7 +35,7 @@ impl<'storage> ClientStateSource<'storage> {
     pub fn is_empty(self) -> bool {
         self.len() == 0
     }
-    pub(super) fn validate(self, maximum: usize) -> Result<(), ClientStreamError> {
+    pub(crate) fn validate(self, maximum: usize) -> Result<(), ClientStreamError> {
         if self.len() > maximum {
             return Err(ClientStreamError::PreviousBudget);
         }
