@@ -4,3 +4,4 @@
 
 pub mod defaults;
 pub mod pe32;
+pub mod zip32;

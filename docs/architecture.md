@@ -65,6 +65,12 @@ identifier is unique and decimal-checked with all 32 bits preserved. Unknown fie
 remain inert bytes. This metadata layer owns no CVar changes, resource mounts,
 session epoch, protocol selection or message/config acknowledgement authority.
 
+Content archive catalogs retain original central-directory order over immutable
+caller bytes. A private descriptor workspace validates local spans and rejects
+overlap before publishing final metadata. Entry views carry no path or integrity
+authority. Host file I/O and metadata reporting stay in the existing inspector;
+decompression, CRC verification and virtual mount policy remain separate layers.
+
 Client identity records have one owned representation shared by gamestate patches
 and ordinary sequenced updates. Their small arrays are explicit native field
 capacities, without imposing a player-table allocation on the engine. Parsing

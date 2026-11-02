@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 279 tests pass in both debug and release on the pinned
+Latest local checkpoint: 300 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (315 source files, 5 crates; all checked source
+formatting and repository policy pass (334 source files, 5 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,10 +14,10 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 270-test sparse-config checkpoint passed hosted Windows/Linux CI in
-[run 41406892261](https://github.com/cod4xr/client/actions/runs/41406892261), including
-locked sources and table reproduction. Hosted system-info validation will follow
-its commit. These
+The 279-test system-info checkpoint passed hosted Windows/Linux CI in
+[run 41407742188](https://github.com/cod4xr/client/actions/runs/41407742188), including
+locked sources and table reproduction. Hosted archive-catalog validation will
+follow its commit. These
 changes edit only the client repository and consume the published shared revision.
 
 Ten configstring-block tests add independent legacy packed-index and protocol-21
@@ -102,6 +102,20 @@ whole-string shared syntax checks, all forbidden control bytes, exact byte/field
 budgets and big-info wire bounds. Debug/errors expose no remote text. A gamestate
 wire-to-snapshot integration releases original sources before interpreting system
 metadata. This performs no session admission, local CVar changes or archive mounts.
+
+Seventeen classic ZIP catalog tests add independent directory/local-header and
+streaming-descriptor vectors, original/physical order, duplicate names, raw/UTF-8
+names, comments, unsupported features/extras, overlap and wide declared totals.
+Every fixture prefix, appended byte values, exact host/storage bounds and record
+mutations cover final-output rollback and bounded views. One argument and three
+process tests cover explicit archive inspection, private metadata-only reports,
+human/JSON events and oversized-file rejection before payload reads. Debug/release
+inspector cataloged all 21 installed main IWDs / 24,243 entries; counts and size totals
+matched Python's ZIP reader. Aggregate [evidence](installed-iwd-catalog-evidence.json)
+contains no game values or file names. Payload integrity, extraction, virtual mounts,
+pure checksums and asset loading remain open. The additional native filesystem
+reference is hash-locked from the read-only client checkout; no local server source
+was accessed or changed.
 
 Eight new independent loopback tests exercise the reusable network crate: one
 source socket across challenge/connect/retries/handoff, exact cookie/protocol/qport

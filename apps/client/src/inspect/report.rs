@@ -18,8 +18,12 @@ pub(super) fn write(
         "longest_default_value": defaults.records().map(|entry| entry.bytes().len()).max().unwrap_or(0),
         "gameplay_compatibility": "unverified"
     });
+    write_value(&value)
+}
+
+pub(super) fn write_value(value: &serde_json::Value) -> Result<(), InspectError> {
     let mut stdout = io::stdout().lock();
-    serde_json::to_writer(&mut stdout, &value).map_err(InspectError::Report)?;
+    serde_json::to_writer(&mut stdout, value).map_err(InspectError::Report)?;
     writeln!(stdout)?;
     Ok(())
 }

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 #![allow(clippy::expect_used, reason = "Finite native argument fixtures.")]
-use super::parse;
+use super::{Kind, parse};
 use cod4x_observability::ConsoleFormat;
 use std::{ffi::OsString, path::PathBuf};
 
@@ -11,6 +11,7 @@ fn explicit_paths_with_spaces_and_named_formats_preserve_native_path_ownership()
         .expect("Arguments")
         .expect("Image path");
     assert_eq!(options.path, PathBuf::from(path));
+    assert_eq!(options.kind, Kind::ClientImage);
     assert!(matches!(options.logs, ConsoleFormat::Json));
     assert!(parse(vec![]).expect("No arguments").is_none());
     assert!(parse(vec!["--help".into()]).expect("Help").is_none());
@@ -25,6 +26,10 @@ fn duplicate_excessive_unknown_or_missing_arguments_reject_without_echoing_input
         vec!["image", "--unknown", "PrivateValue"],
         vec!["image", "--log-format", "PrivateValue"],
         vec!["image", "--log-format", "json", "--log-format", "human"],
+        vec!["--archive"],
+        vec!["--archive", ""],
+        vec!["--archive", "image", "--log-format"],
+        vec!["--archive", "image", "--log-format", "json", "extra"],
     ] {
         let result = parse(values.into_iter().map(OsString::from).collect());
         assert!(result.is_err());
@@ -52,4 +57,25 @@ fn non_unicode_os_paths_are_preserved_instead_of_lossily_converted() {
         .expect("Native path")
         .expect("Inspection");
     assert_eq!(options.path.into_os_string(), path);
+    let options = parse(vec!["--archive".into(), path.clone()])
+        .expect("Native archive path")
+        .expect("Inspection");
+    assert_eq!(options.kind, Kind::Archive);
+    assert_eq!(options.path.into_os_string(), path);
+}
+
+#[test]
+fn explicit_archive_mode_preserves_native_path_and_log_format() {
+    let path = OsString::from("Game files/custom.iwd");
+    let options = parse(vec![
+        "--archive".into(),
+        path.clone(),
+        "--log-format".into(),
+        "json".into(),
+    ])
+    .expect("Archive mode")
+    .expect("Options");
+    assert_eq!(options.kind, Kind::Archive);
+    assert_eq!(options.path, PathBuf::from(path));
+    assert!(matches!(options.logs, ConsoleFormat::Json));
 }

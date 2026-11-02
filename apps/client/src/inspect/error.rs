@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 use cod4xr_content::defaults::DefaultsError;
+use cod4xr_content::zip32::Zip32Error;
 use std::{error::Error, fmt, io};
 
 #[derive(Debug)]
@@ -10,6 +11,7 @@ pub(crate) enum InspectError {
     NotRegular,
     FileBudget,
     Import(DefaultsError),
+    Archive(Zip32Error),
     Report(serde_json::Error),
 }
 impl fmt::Display for InspectError {
@@ -21,6 +23,7 @@ impl fmt::Display for InspectError {
             Self::NotRegular => formatter.write_str("inspection requires a regular game file"),
             Self::FileBudget => formatter.write_str("inspection file byte budget exceeded"),
             Self::Import(error) => error.fmt(formatter),
+            Self::Archive(error) => error.fmt(formatter),
             Self::Report(error) => write!(formatter, "inspection report failed: {error}"),
         }
     }
@@ -31,6 +34,7 @@ impl Error for InspectError {
             Self::Logging(error) => Some(error),
             Self::Io(error) => Some(error),
             Self::Import(error) => Some(error),
+            Self::Archive(error) => Some(error),
             Self::Report(error) => Some(error),
             _ => None,
         }

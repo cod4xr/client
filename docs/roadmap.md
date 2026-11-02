@@ -44,6 +44,11 @@ forms; config-data sequence admission remains part of the upcoming session work.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 
+Classic stored/Deflate IWD catalogs now have checked metadata, caller-funded
+descriptors and an inspector mode. Installed archive counts match an independent
+ZIP reader. Next content gates are exact payload decompression/CRC verification,
+virtual path/mount policy and native pure checksums before resource loading.
+
 Features that remove asset/model/image/entity/configstring limits need both
 internal storage/resource design and a negotiated extended wire/content profile.
 Ordinary servers continue to use their baseline limits. Internal storage should

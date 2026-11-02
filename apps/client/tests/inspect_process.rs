@@ -13,6 +13,8 @@ use std::{
 };
 
 static NEXT: AtomicU64 = AtomicU64::new(0);
+#[path = "inspect_cases/archive.rs"]
+mod archive;
 struct Fixture(PathBuf);
 impl Fixture {
     fn new(oversized: bool) -> Self {

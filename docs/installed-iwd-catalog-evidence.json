@@ -1,0 +1,18 @@
+{
+  "archives": 21,
+  "independent_metadata_match": true,
+  "payload_integrity": "unverified",
+  "archive_bytes": 3031228345,
+  "directory_bytes": 2286849,
+  "entries": 24243,
+  "name_bytes": 1171671,
+  "compressed_bytes": 3027042073,
+  "declared_uncompressed_bytes": 3999040612,
+  "stored_entries": 150,
+  "deflate_entries": 24093,
+  "directory_markers": 149,
+  "modes": [
+    "debug",
+    "release"
+  ]
+}

@@ -83,6 +83,8 @@ reviewed user-provided image into caller-owned storage, with a metadata-only ins
 blocks with native restoration rules, bounded work and source-independent output.
 [System-info views](docs/system-info.md) validate native server identifiers and
 retain unknown fields as inert bytes, without applying remote engine variables.
+[Classic archive catalogs](docs/archive-catalog.md) validate IWD directory/local
+records with caller-funded storage; inspector archive mode reports metadata only.
 
 ## Run
 

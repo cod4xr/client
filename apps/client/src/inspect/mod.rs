@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+mod archive;
 mod arguments;
 mod error;
 mod file;
@@ -41,6 +42,9 @@ pub(crate) fn run() -> Result<ExitCode, InspectError> {
 }
 
 fn execute(options: &arguments::Options) -> Result<(), InspectError> {
+    if options.kind == arguments::Kind::Archive {
+        return archive::execute(&options.path);
+    }
     let started = Instant::now();
     let budget = DefaultsBudget {
         max_image_bytes: 8 * 1024 * 1024,

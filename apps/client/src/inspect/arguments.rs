@@ -12,18 +12,26 @@ mod cases;
 
 pub(super) const HELP: &str = "CoD4XR installed-client data inspector\n\
 Usage: cod4xr-client-inspect PATH_TO_IW3MP_EXE [--log-format human|json|auto]\n\
+       cod4xr-client-inspect --archive PATH_TO_IWD [--log-format human|json|auto]\n\
 Imports reviewed default data and reports counts. Requires a caller-provided game file.\n\
+Archive mode catalogs classic stored/Deflate ZIP metadata without extraction or CRC verification.\n\
 Reports use JSON stdout; logs use stderr. Source values and paths stay out of logs.\n";
 
 pub(super) struct Options {
+    pub kind: Kind,
     pub path: PathBuf,
     pub logs: ConsoleFormat,
 }
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(super) enum Kind {
+    ClientImage,
+    Archive,
+}
 pub(super) fn from_environment() -> Result<Option<Options>, InspectError> {
-    let values: Vec<_> = std::env::args_os().skip(1).take(4).collect();
+    let values: Vec<_> = std::env::args_os().skip(1).take(5).collect();
     parse(values)
 }
-pub(super) fn parse(values: Vec<OsString>) -> Result<Option<Options>, InspectError> {
+pub(super) fn parse(mut values: Vec<OsString>) -> Result<Option<Options>, InspectError> {
     if values.is_empty() {
         return Ok(None);
     }
@@ -33,13 +41,19 @@ pub(super) fn parse(values: Vec<OsString>) -> Result<Option<Options>, InspectErr
         }
         return Ok(None);
     }
+    let kind = if values[0] == OsStr::new("--archive") {
+        values.remove(0);
+        Kind::Archive
+    } else {
+        Kind::ClientImage
+    };
     if values.len() != 1 && values.len() != 3 {
         return Err(InspectError::Arguments(
-            "expected an image path and optional log format",
+            "expected a game-file path and optional log format",
         ));
     }
     if values[0].is_empty() {
-        return Err(InspectError::Arguments("image path cannot be empty"));
+        return Err(InspectError::Arguments("game-file path cannot be empty"));
     }
     let mut logs = ConsoleFormat::Auto;
     if values.len() == 3 {
@@ -60,8 +74,9 @@ pub(super) fn parse(values: Vec<OsString>) -> Result<Option<Options>, InspectErr
     let path = values
         .into_iter()
         .next()
-        .ok_or(InspectError::Arguments("image path missing"))?;
+        .ok_or(InspectError::Arguments("game-file path missing"))?;
     Ok(Some(Options {
+        kind,
         path: PathBuf::from(path),
         logs,
     }))
