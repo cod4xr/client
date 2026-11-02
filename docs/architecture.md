@@ -271,6 +271,11 @@ the shared prefix scanner, selects the exact retained prior, then validates the
 complete carrier before publication. Transform/decompression runs once; no guessed
 distance or partial-message authority escapes. See [history-assisted decoding](history-snapshot-decoding.md).
 
+Native user-command encoding now supplies a checked full-form field plan over shared
+message writers and the pinned command decoder. Explicit wire turns and canonical
+axes avoid implicit engine conversions; private staging precedes atomic final output.
+Packet composition/input/send ownership remains separate. See [user commands](user-command-encoding.md).
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

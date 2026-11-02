@@ -120,6 +120,9 @@ Cancellation preserves ACK/history; commitment copies the checked key.
 [History-assisted decoding](docs/history-snapshot-decoding.md) now selects exact
 priors from actual packet headers, with protocol-21 UDP full/delta coverage.
 
+[Native user-command encoding](docs/user-command-encoding.md) now supplies checked
+full-form movement/action fields with atomic output; packet/send integration remains open.
+
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add
 caller-funded fragment retention, selective metadata and bounded stream reads.

@@ -1,0 +1,38 @@
+{
+  "purpose": "Metadata for the native full-form movement/action command writer; no binary or disassembly",
+  "image": {
+    "name": "iw3mp.exe",
+    "sha256": "f50f8a520581754e73cb7cae67b02adcbad5f2e71aaa412a013bb3ef57a391a5",
+    "bytes": 3330048,
+    "format": "PE32",
+    "base": "0x00400000"
+  },
+  "public_reference": {
+    "repository": "https://github.com/callofduty4x/CoD4x_Client_pub.git",
+    "revision": "17182c7bf04b859dea5c0db4acdb0b83c28d6dd2",
+    "thunk": "src/callbacks.asm:791",
+    "packet_call": "src/cl_main.c:4357"
+  },
+  "native_writer": {
+    "entry": "0x00505c60",
+    "reachable_instructions": 287,
+    "unchanged_return": "0x00505e07",
+    "short_return": "0x00505e66",
+    "full_branch": "0x00505e67",
+    "full_return": "0x00505fb9",
+    "single_bit_helper": "0x00505180",
+    "delta_bits_helper": "0x005059d0",
+    "delta_byte_helper": "0x00505a30",
+    "delta_short_helper": "0x00505b00"
+  },
+  "implemented_form": {
+    "timestamp": "absolute signed 32-bit word",
+    "body": "native full branch, all common fields marked present",
+    "initial_key_fields": ["attack", "pitch", "yaw", "movement mask"],
+    "later_key": "initial key XOR current timestamp bits",
+    "later_fields": ["roll", "remaining buttons", "weapon", "offhand", "conditional location", "conditional melee"],
+    "float_quantization": "none; caller supplies explicit unsigned sixteen-bit turn words",
+    "publication": "bounded private serialization before whole final copy"
+  },
+  "limits": "Field encoding evidence only; packet composition, input lifecycle and native peer sessions remain separate"
+}

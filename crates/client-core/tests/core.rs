@@ -42,3 +42,4 @@ mod snapshot_entities;
 mod snapshot_headers;
 mod snapshots;
 mod system_info;
+mod user_commands;

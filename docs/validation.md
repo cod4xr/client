@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 722 tests pass in both debug and release on the pinned
+Latest local checkpoint: 729 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (695 source files, 6 crates; all checked source
+formatting and repository policy pass (704 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,18 @@ Reliable gamestate bodies now have whole-frame admission coverage. Mixed-message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 715-test whole-snapshot history checkpoint passed hosted Windows/Linux CI in
-[run 41525874749](https://github.com/cod4xr/client/actions/runs/41525874749), including
-locked sources and table reproduction. The preceding scoped UDP checkpoint also
-passed [run 41524111529](https://github.com/cod4xr/client/actions/runs/41524111529).
+The 722-test actual-header/history checkpoint passed hosted Windows/Linux CI in
+[run 41528203245](https://github.com/cod4xr/client/actions/runs/41528203245), including
+locked sources and table reproduction. The preceding whole-history checkpoint also
+passed [run 41525874749](https://github.com/cod4xr/client/actions/runs/41525874749).
 These changes edit only the client repository and consume the published shared revision.
+
+Six native user-command integration cases cover an independent physical vector,
+all key bits, timestamp signs/extremes, nonzero references, canonical axes/actions,
+raw location bytes, native widths/presence, exact/short capacities and private Debug.
+One private unit case checks every initial cached-bit width and following fields.
+They reuse the published shared decoder; [writer evidence](user-command-encoding.md)
+contains metadata only. Complete movement packet/input/send ownership remains open.
 
 Seven history-assisted mixed decoding cases cover actual-header reference selection
 in both profiles, owned scratch/history lifetimes, full/cancel/retry behavior, exact

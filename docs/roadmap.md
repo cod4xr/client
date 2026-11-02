@@ -99,6 +99,8 @@ Whole-snapshot history now retains coherent copies in host-funded slots, with ex
 binary lookup, independent sparse capacities, epoch reset and joint owner preflight.
 History-assisted mixed decoding now selects the exact prior from the actual packet
 header before complete publication, with real protocol-21 UDP full/delta coverage.
+Native full-form user-command fields now encode through checked wire inputs and
+atomic caller output. Batch/packet/key composition and input/send ownership follow.
 Connection-wide gameplay/history ownership and broader routing remain open.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.

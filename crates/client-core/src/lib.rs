@@ -26,6 +26,7 @@ pub mod server_payload;
 pub mod service_controls;
 pub mod snapshots;
 pub mod system_info;
+pub mod user_commands;
 
 pub use challenge::QueryChallenge;
 /// Owned snapshot client-state records, distinct from protocol-21 identity updates.
