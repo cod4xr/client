@@ -39,6 +39,13 @@ that same publication pass. Other message admission and engine application remai
 later boundaries, including complete legacy gamestates,
 session/content application and complete snapshots.
 
+Ordinary protocol-21 gamestate carriers now validate surrounding controls, the
+inner constituent/trailer and outer EOF before publishing six independent outputs.
+Outer prefix counts preserve command/identity order around the gamestate baseline.
+`GameStateRecords` separates coherent cooked records from typed trailer metadata;
+existing constituent/reliable accessors remain available. No wire parser is forked.
+See [ordinary gamestate services](ordinary-gamestate-services.md).
+
 The network owner can prepare a whole typed gamestate over its original ready
 frame. An exclusive handle prevents concurrent frame replacement while the host
 inspects cooked output; drop cancels release, and commit releases exactly that frame.

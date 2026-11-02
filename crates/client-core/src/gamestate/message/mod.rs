@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 mod error;
 mod plan;
+mod records;
 mod reliable;
 mod reliable_error;
 mod sink;
@@ -9,6 +10,7 @@ mod walk;
 
 pub use error::GameStateError;
 pub use plan::GameStatePlan;
+pub use records::GameStateRecords;
 pub use reliable::ReliableGameStatePlan;
 pub use reliable_error::ReliableGameStateError;
 pub use storage::{ClientDataSlot, EntityBaselineSlot, GameStateStorage};
@@ -38,7 +40,7 @@ struct Counts {
     clients: usize,
 }
 
-struct Layout {
+pub(super) struct Layout {
     counts: Counts,
     server_command_sequence: u32,
     config_data_sequence: u32,

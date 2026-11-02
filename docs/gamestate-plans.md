@@ -12,8 +12,9 @@ effective per-block map-center integration. Individual
 
 This is a constituent of an ordinary service message or reliable application
 command. `ReliableGameStatePlan` now validates the complete reviewed auxiliary
-wrapper; other enclosing service streams still need complete admission before
-session acknowledgement or engine application. Parsing stops exactly after the
+wrapper; [ordinary gamestate carriers](ordinary-gamestate-services.md) now validate
+supported surrounding controls through outer EOF before publication. Session/world
+acknowledgement and engine application remain separate. Parsing stops exactly after the
 trailer, preserving following service bytes and cached bits. Sequence/checksum
 words retain all 32 wire bits and grant no ordering, authentication or file authority.
 

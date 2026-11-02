@@ -1,17 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 use super::{
-    ClientDataSlot, Counts, EntityBaselineSlot, GameStateBudget, GameStateError, GameStateStorage,
-    Layout,
+    Counts, GameStateBudget, GameStateError, GameStateRecords, GameStateStorage, Layout,
     sink::{Noop, Writer},
     walk,
 };
 use crate::{
     BaselineProtocol,
     client_data::ClientData,
-    gamestate::{
-        configstrings::{ConfigString, ConfigStringSlot},
-        entity_baselines::EntityBaseline,
-    },
+    gamestate::{configstrings::ConfigString, entity_baselines::EntityBaseline},
     message_body::BodyReader,
 };
 use std::fmt;
@@ -19,12 +15,8 @@ use std::fmt;
 /// Complete protocol-21 gamestate constituent, before engine/default application.
 /// Cooked output alone is borrowed; input frames may be released after validation.
 pub struct GameStatePlan<'storage> {
-    profile: BaselineProtocol,
     layout: Layout,
-    bytes: &'storage [u8],
-    strings: &'storage [ConfigStringSlot],
-    entities: &'storage [EntityBaselineSlot],
-    clients: &'storage [ClientDataSlot],
+    records: GameStateRecords<'storage>,
 }
 
 impl<'storage> GameStatePlan<'storage> {
@@ -44,25 +36,34 @@ impl<'storage> GameStatePlan<'storage> {
         scratch: &mut [u8],
         storage: GameStateStorage<'storage>,
     ) -> Result<Self, GameStateError> {
-        if profile != BaselineProtocol::Cod4x21 {
-            return Err(GameStateError::UnsupportedProfile);
-        }
-        let capacities = storage.capacities();
         let mut validated = reader.clone();
-        let layout = walk::walk(
-            &mut validated,
-            profile,
-            budget,
-            capacities,
-            scratch,
-            &mut Noop,
-        )?;
+        let layout = Self::inspect(&mut validated, profile, budget, scratch, &storage)?;
         let plan = Self::publish(reader, profile, budget, scratch, storage, layout)?;
         *reader = validated;
         Ok(plan)
     }
 
-    pub(super) fn publish(
+    pub(in crate::gamestate) fn inspect(
+        reader: &mut BodyReader<'_>,
+        profile: BaselineProtocol,
+        budget: GameStateBudget,
+        scratch: &mut [u8],
+        storage: &GameStateStorage<'_>,
+    ) -> Result<Layout, GameStateError> {
+        if profile != BaselineProtocol::Cod4x21 {
+            return Err(GameStateError::UnsupportedProfile);
+        }
+        walk::walk(
+            reader,
+            profile,
+            budget,
+            storage.capacities(),
+            scratch,
+            &mut Noop,
+        )
+    }
+
+    pub(in crate::gamestate) fn publish(
         start: &BodyReader<'_>,
         profile: BaselineProtocol,
         budget: GameStateBudget,
@@ -85,18 +86,20 @@ impl<'storage> GameStatePlan<'storage> {
             },
         )?;
         Ok(Self {
-            profile,
-            bytes: &storage.configstring_bytes[..layout.counts.text_bytes],
-            strings: &storage.configstring_slots[..layout.counts.configstrings],
-            entities: &storage.entity_slots[..layout.counts.entities],
-            clients: &storage.client_slots[..layout.counts.clients],
+            records: GameStateRecords::published(profile, storage, layout.counts),
             layout,
         })
     }
     /// Returns the explicit reviewed baseline profile.
     #[must_use]
     pub fn profile(&self) -> BaselineProtocol {
-        self.profile
+        self.records.profile()
+    }
+    /// Borrows complete cooked records independently of this protocol's trailer.
+    /// Retained records keep their final storage borrowed after the plan is released.
+    #[must_use]
+    pub fn records(&self) -> GameStateRecords<'storage> {
+        self.records
     }
     /// Returns the server command baseline's uninterpreted 32-bit sequence.
     #[must_use]
@@ -131,44 +134,40 @@ impl<'storage> GameStatePlan<'storage> {
     /// Returns explicit patches across all blocks, preserving wire order and duplicates.
     #[must_use]
     pub fn configstring_count(&self) -> usize {
-        self.strings.len()
+        self.records.configstring_count()
     }
     /// Returns native configstring blocks, whose default scopes must remain distinct.
     #[must_use]
     pub fn configstring_block_count(&self) -> usize {
-        self.layout.counts.configstring_blocks
+        self.records.configstring_block_count()
     }
     /// Returns retained normalized text bytes, excluding NULs.
     #[must_use]
     pub fn text_bytes(&self) -> usize {
-        self.bytes.len()
+        self.records.text_bytes()
     }
     /// Returns entity baseline records.
     #[must_use]
     pub fn entity_count(&self) -> usize {
-        self.entities.len()
+        self.records.entity_count()
     }
     /// Returns client identity records, including repeated identifiers.
     #[must_use]
     pub fn client_record_count(&self) -> usize {
-        self.clients.len()
+        self.records.client_record_count()
     }
     /// Iterates explicit patches and original block starts, preserving native default scopes.
     #[must_use]
     pub fn configstrings(&self) -> impl ExactSizeIterator<Item = ConfigString<'_>> {
-        self.strings.iter().map(|slot| ConfigString {
-            index: slot.index,
-            bytes: &self.bytes[slot.offset..slot.offset + slot.length],
-            first_in_block: slot.first_in_block,
-        })
+        self.records.configstrings()
     }
     /// Iterates owned validated baselines without allocating an engine entity table.
     pub fn entities(&self) -> impl Iterator<Item = &EntityBaseline> {
-        self.entities.iter().filter_map(|slot| slot.value.as_ref())
+        self.records.entities()
     }
     /// Iterates owned client patches without applying sequence or engine state.
     pub fn client_records(&self) -> impl Iterator<Item = &ClientData> {
-        self.clients.iter().filter_map(|slot| slot.value.as_ref())
+        self.records.client_records()
     }
 }
 

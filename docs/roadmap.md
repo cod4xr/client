@@ -29,6 +29,9 @@ layouts, with shared index handling and owned semantic words. Complete protocol-
 gamestate constituents now validate all records/trailers before output publication.
 Complete reliable gamestate bodies now validate their wrapper/tail before output,
 with real UDP coverage across reordered frames and explicit application rejection.
+Ordinary gamestate carriers now validate surrounding controls and both EOFs before
+all six output areas publish, preserving outer control order around the baseline.
+Coherent cooked records are separate from protocol-specific trailer metadata.
 Prepared owner handles now couple typed validation to one retained frame, with
 exclusive inspection, cancellation and explicit commit/release counters.
 Reviewed installed-client defaults now import through a separate deterministic
