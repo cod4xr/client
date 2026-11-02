@@ -10,6 +10,10 @@
   "more_records_bit_address": "0x00473342",
   "absolute_six_bit_index_read_address": "0x00473397",
   "matching_prior_delta_call_address": "0x00473516",
+  "prior_unchanged_copy_address": "0x00473434",
+  "new_client_zero_reference_address": "0x004735ae",
+  "new_client_delta_call_address": "0x004735ec",
+  "remaining_prior_tail_copy_address": "0x00473684",
   "generic_delta_reader_address": "0x00506cb0",
   "removed_bit_read_address": "0x00506cc1",
   "no_delta_copy_address": "0x00506d1d",
@@ -33,7 +37,11 @@
     "no_delta_copies_complete_prior_state",
     "five_bit_prefix_count_accepts_zero_through_24",
     "shared_integer_and_float_field_value_reader",
-    "omitted_fields_copy_complete_prior_words"
+    "omitted_fields_copy_complete_prior_words",
+    "unmentioned_prior_clients_copy_before_each_update",
+    "matching_prior_client_supplies_complete_delta_reference",
+    "unknown_removal_does_not_publish_a_client",
+    "remaining_prior_clients_copy_after_zero_end_bit"
   ],
   "source_binding": {
     "repository": "https://github.com/callofduty4x/CoD4x_Client_pub.git",

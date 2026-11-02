@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 use super::super::EntityState;
 use super::{ENTITY_STREAM_TERMINATOR, EntityStreamError, SnapshotEntitySlot};
+use crate::entities::ordered::{OrderedSource, valid_source};
 use std::fmt;
 
 #[derive(Clone, Copy)]
@@ -48,19 +49,9 @@ impl<'storage> EntityStateSource<'storage> {
                 EntityStreamError::PreviousBudget
             });
         }
-        let mut previous = None;
-        for index in 0..self.len() {
-            let state = self
-                .get(index)
-                .ok_or(EntityStreamError::Source { baseline })?;
-            let number = state.number();
-            if number > ENTITY_STREAM_TERMINATOR
-                || (!baseline && number == ENTITY_STREAM_TERMINATOR)
-                || previous.is_some_and(|previous| previous >= number)
-            {
-                return Err(EntityStreamError::Source { baseline });
-            }
-            previous = Some(number);
+        let maximum = ENTITY_STREAM_TERMINATOR - u32::from(!baseline);
+        if !valid_source(&self, maximum) {
+            return Err(EntityStreamError::Source { baseline });
         }
         Ok(())
     }
@@ -76,6 +67,15 @@ impl<'storage> EntityStateSource<'storage> {
             }
         }
         None
+    }
+}
+impl OrderedSource for EntityStateSource<'_> {
+    type State = EntityState;
+    fn len(&self) -> usize {
+        Self::len(*self)
+    }
+    fn get(&self, index: usize) -> Option<&EntityState> {
+        Self::get(*self, index)
     }
 }
 impl fmt::Debug for EntityStateSource<'_> {

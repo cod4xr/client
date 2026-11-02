@@ -8,6 +8,7 @@ mod error;
 mod prepared;
 mod record;
 mod state;
+pub mod stream;
 mod table;
 mod word;
 

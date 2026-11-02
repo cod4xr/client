@@ -4,7 +4,10 @@ use super::{
     ENTITY_STREAM_TERMINATOR, EntityStreamBudget, EntityStreamError, EntityStreamSources,
     EntityStreamStats, sink::Sink,
 };
-use crate::{entities::EntityDecodeContext, message_body::BodyReader};
+use crate::{
+    entities::{EntityDecodeContext, ordered::Cursor},
+    message_body::BodyReader,
+};
 use cod4x_protocol::{LegacyIndexDecoder, LegacyIndexKind};
 
 #[derive(Clone, Copy)]
@@ -22,7 +25,7 @@ pub(super) fn walk(
 ) -> Result<EntityStreamStats, EntityStreamError> {
     let mut indices = LegacyIndexDecoder::new(LegacyIndexKind::Entity);
     let mut stats = EntityStreamStats::default();
-    let mut cursor = 0;
+    let mut cursor = Cursor::new(input.sources.previous);
     loop {
         if stats.wire_records >= input.budget.max_wire_records {
             return Err(EntityStreamError::RecordBudget);
@@ -32,30 +35,22 @@ pub(super) fn walk(
         if number == ENTITY_STREAM_TERMINATOR {
             break;
         }
-        while let Some(previous) = input.sources.previous.get(cursor) {
-            if previous.number() >= number {
-                break;
-            }
+        while let Some(previous) = cursor.before(number) {
             emit(previous.clone(), &input, &mut stats, sink)?;
             stats.unchanged_entities += 1;
-            cursor += 1;
         }
-        let previous = input
-            .sources
-            .previous
-            .get(cursor)
-            .filter(|state| state.number() == number);
+        let previous = cursor.matching(number);
         let reference = if previous.is_some() {
             previous
         } else {
             input.sources.baselines.lookup(number)
         };
-        if previous.is_some() {
-            cursor += 1;
-        } else if reference.is_some() {
-            stats.baseline_references += 1;
-        } else {
-            stats.zero_references += 1;
+        if previous.is_none() {
+            if reference.is_some() {
+                stats.baseline_references += 1;
+            } else {
+                stats.zero_references += 1;
+            }
         }
         stats.updates += 1;
         match record::read(
@@ -70,10 +65,9 @@ pub(super) fn walk(
         }
     }
     // Native terminator retains every remaining old entity without reading fields.
-    while let Some(previous) = input.sources.previous.get(cursor) {
+    while let Some(previous) = cursor.remaining() {
         emit(previous.clone(), &input, &mut stats, sink)?;
         stats.unchanged_entities += 1;
-        cursor += 1;
     }
     Ok(stats)
 }

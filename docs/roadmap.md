@@ -50,7 +50,7 @@ from new server commands with cancel/commit semantics and actual next-frame UDP 
 coverage. Applying session, content, UI or restart effects remains host work.
 Individual protocol-21 entity delta records now accept explicit nonzero references,
 return owned states/removals and preserve both reader/index owners on failure.
-Complete snapshots, remaining player/client fields and native peer traces remain
+Complete snapshots, remaining player-state sections and native peer traces remain
 transport gates before simulation or gameplay admission.
 Initial protocol-6 baseline coordinates now use checked explicit map-center context
 with native precision/bias rules and the same atomic reader/index admission. Legacy
@@ -61,12 +61,14 @@ Complete entity substreams now merge prior states, baselines, updates and remova
 through the native terminator before final publication. Shared wire code lives in
 the dedicated `entities` module, with compatibility imports retained. Caller-owned
 results can retain more total entity states than the native ring; full snapshots,
-client/player streams and epoch-bound history remain separate work.
+player-state sections and epoch-bound history remain separate work.
 Individual snapshot client-state records now decode all twenty-four native fields
 for either baseline profile, with raw packed names, explicit prior selection and
 joint framing/index/field rollback. The independent more-records bit preserves
-client 63 as valid. Complete client-state sparse merging and player-state decoding
-remain gates before whole-snapshot admission and epoch-bound history.
+client 63 as valid. Complete client-state substreams now merge prior/zero references
+and removals before atomic final publication, sharing the entity sparse cursor and
+supporting cooked-source reuse. Player-state decoding remains a gate before
+whole-snapshot admission and epoch-bound history.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 

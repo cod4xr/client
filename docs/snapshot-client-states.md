@@ -43,8 +43,9 @@ ordering failures and 128 modeled update traces per profile. Compile-fail exampl
 prevent mutating either leased owner during prior-state selection. Debug/error
 output contains only structural metadata.
 
-This record decoder does not merge a complete client-state substream against a
-prior snapshot or admit a complete snapshot/message. Player-state decoding,
+[Complete client-state substreams](snapshot-client-streams.md) now merge these
+records against explicit prior sources with whole-output publication. Individual
+records still do not admit a complete snapshot/message. Player-state decoding,
 epoch-bound reference history, typed resource validation, identity reconciliation
 and gameplay application remain separate. Six-bit indices and field widths are
 legacy wire constraints, not engine-wide allocation limits or extension promises.

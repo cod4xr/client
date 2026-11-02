@@ -70,7 +70,8 @@ The public [assembly entry point](https://github.com/callofduty4x/CoD4x_Client_p
 and [individual entity writer](https://github.com/callofduty4x/CoD4x_Client_pub/blob/17182c7bf04b859dea5c0db4acdb0b83c28d6dd2/src/msg.c#L2517)
 remain hash-locked. No executable bytes or disassembly are included.
 
-Player-state and client-state streams, complete snapshot framing, source epoch/
+[Complete client-state substreams](snapshot-client-streams.md) now have separate
+coverage. Player-state sections, complete snapshot framing, source epoch/
 sequence ownership, message ACK admission, interpolation/prediction and engine
 application remain separate gates. A containing parser must preflight those sibling
 resources before treating this cooked data as an accepted snapshot. No native peer

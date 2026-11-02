@@ -55,6 +55,7 @@ and the exact reviewed native routines recorded in
 [audit metadata](legacy-coordinate-reader-evidence.json). The implementation uses
 their reader semantics, including prior truncation, rather than inferring nonzero
 behavior from the zero-reference case. No binary or disassembly is included in Git.
-Complete legacy gamestates, per-block effective `CS12` integration, full snapshot
-framing/terminators, player/client records, engine application and native peer
+Complete entity and client-state substreams now have separate coverage. Complete
+legacy gamestates, per-block effective `CS12` integration, full snapshot
+framing, player-state sections, engine application and native peer
 traces remain separate work. These are record codecs, not a playable client.

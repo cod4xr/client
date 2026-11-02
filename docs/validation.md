@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 515 tests pass in both debug and release on the pinned
+Latest local checkpoint: 529 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (525 source files, 6 crates; all checked source
+formatting and repository policy pass (538 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,22 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 498-test entity-stream checkpoint passed hosted Windows/Linux CI in
-[run 41489101515](https://github.com/cod4xr/client/actions/runs/41489101515), including
-locked sources and table reproduction. Hosted client-state-record validation will
+The 515-test client-state-record checkpoint passed hosted Windows/Linux CI in
+[run 41492019597](https://github.com/cod4xr/client/actions/runs/41492019597), including
+locked sources and table reproduction. Hosted client-state-stream validation will
 follow its commit. These changes edit only the client repository and consume the
 published shared revision.
+
+Thirteen complete client-state substream tests add native end-bit framing, client
+63, cached/following fields, all sixty-four clients with exact header budgets,
+prior/zero references, sparse merge/removal/tail rules, full source validation,
+independent budgets and late dirty-output rollback. Cooked-only lifetimes, reusable
+source views, 128 ordered-map traces per profile and forty results retaining 2,560
+states exercise owned storage beyond the native global ring. A compile-fail example
+protects borrowed cooked cells. Entity/client substreams share their closed ordered
+validator and merge cursor; existing entity-stream tests continue to pass.
+[Client-state substreams](snapshot-client-streams.md) remain separate from complete
+snapshots, player-state sections, host reference epochs and message admission.
 
 Fifteen client-state record tests add all twenty-four fields, physical byte vectors,
 both baseline profiles, prior XOR and omitted-word retention, raw packed names,
@@ -28,8 +39,9 @@ full-record prefix with cached bits and 128 modeled traces per profile. Two
 compile-fail examples protect leased reader/index owners. The reproduced catalog
 also matches all twenty-four offsets, widths and hints in the reviewed native
 image; [audit metadata](snapshot-client-state-reader-evidence.json) records that
-comparison. Whole client-state merging, player-state decoding and full snapshot
-admission remain open; see [client-state records](snapshot-client-states.md).
+comparison. Complete client-state merging now has separate coverage; player-state
+decoding and full snapshot admission remain open; see
+[client-state records](snapshot-client-states.md).
 
 Fifteen complete entity-substream tests add native terminator/framing bytes, maximum
 index termination, valid existing cached bits and following fields, full sparse
@@ -41,7 +53,7 @@ budgets/capacities and unchanged final tails. Cooked-only lifetimes/source reuse
 example prevents overwriting borrowed cooked input cells. Shared codecs moved to
 `entities`, preserving compatibility imports and source-table reproduction.
 [Audit metadata](snapshot-entity-reader-evidence.json) binds stream rules to the
-reviewed native reader. Complete snapshots, client/player streams and native peers
+reviewed native reader. Complete snapshots, player-state sections and native peers
 remain open; see [entity substreams](snapshot-entity-streams.md).
 
 Eleven nonzero legacy-delta tests add explicit coordinate-profile ownership, all

@@ -163,6 +163,13 @@ zero more bit commits stream termination independently of client index 63. Packe
 names remain raw bytes outside Debug output. No global client ring, implicit
 identity reconciliation or engine resource application is introduced.
 
+Complete client-state substreams use the same closed source validation and sparse
+merge cursor as entity substreams. Their own walker preserves the separate end bit,
+zero-reference policy and client field schema. Private two-pass validation/replay
+checks late retention and final tails before committing any caller cells or reader
+cursors. Cooked source views retain only final storage; connection/generation and
+snapshot-history admission remain host responsibilities.
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

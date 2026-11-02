@@ -78,7 +78,9 @@ records its exact image hash, addresses and reviewed rules, without binary bytes
 disassembly. The sixteenth client source hash binds its public assembly entry point.
 Protocol-21 coordinate behavior follows the public C reader/writer; the stock
 installed coordinate routines retain their distinct legacy representation.
-Complete snapshot framing, remaining client/player streams,
-player-state/client-state deltas, host snapshot storage, interpolation/prediction and
+[Complete entity substreams](snapshot-entity-streams.md) and
+[client-state substreams](snapshot-client-streams.md) now have separate merged-output
+coverage. Complete snapshot framing, player-state sections,
+host snapshot storage, interpolation/prediction and
 engine application remain separate work. Individual record success never advances a
 network ACK, admits a complete snapshot or makes the client playable.
