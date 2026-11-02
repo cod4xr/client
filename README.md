@@ -49,6 +49,9 @@ the remaining gameplay lifecycle are still required for live sessions.
 [Server-command history](docs/server-command-history.md) now supports configurable
 retention beyond the native 128 entries, full command text and preflighted updates
 that can be cancelled before commit.
+[Typed pre-game controls](docs/pre-game-controls.md) now stage disconnect, map-change
+and fast-restart notices only from newly admitted commands. Commit retains history
+and returns inert typed notices for later host application.
 
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add

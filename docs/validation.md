@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 428 tests pass in both debug and release on the pinned
+Latest local checkpoint: 445 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (461 source files, 6 crates; all checked source
+formatting and repository policy pass (473 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,22 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 415-test identity-state checkpoint passed hosted Windows/Linux CI in
-[run 41464846806](https://github.com/cod4xr/client/actions/runs/41464846806), including
-locked sources and table reproduction. Hosted mixed-service validation will
+The 428-test mixed-service checkpoint passed hosted Windows/Linux CI in
+[run 41471111963](https://github.com/cod4xr/client/actions/runs/41471111963), including
+locked sources and table reproduction. Hosted typed pre-game validation will
 follow its commit. These changes edit only the client repository and consume the
 published shared revision.
+
+Fifteen typed pre-game tests add new-command-only disconnect/map/restart notices,
+native raw-prefix/token/copy-boundary rules, normalization and raw bytes, all
+control-byte categories, truncated quote/comment forms, unknown-key retention,
+slot collisions, source/history lifetimes, independent byte/event budgets and
+late cancellation. A compile-fail example protects exclusive history ownership.
+One actual UDP test rejects a third notice on budget, cancels/retries preparation,
+then returns all notices after history/ACK commit despite one retained slot. Its
+peer decodes the next frame with message ACK 7, command ACK 3 and key `m`. The
+fifteenth client-reference source hash now pins the tokenizer. No console, script,
+UI, filesystem or session effects execute. See [typed controls](pre-game-controls.md).
 
 Twelve mixed-service core tests add complete protocol-21 command/identity/NOP/EOF
 streams, independent identity counts beyond the command window, source/workspace

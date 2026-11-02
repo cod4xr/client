@@ -79,7 +79,22 @@ impl<'buffers> ServerCommandHistory<'buffers> {
     }
 }
 
-impl PreparedServerCommands<'_, '_, '_> {
+impl<'plan> PreparedServerCommands<'_, 'plan, '_> {
+    /// Borrows only the new commands selected by this preparation, in wire order.
+    /// Older/duplicate records are excluded, even when a later record reuses their
+    /// retention slot. Views retain the validated plan bytes, not this owner lease.
+    /// They are preflight data; applying effects still requires committing the update.
+    #[must_use]
+    pub fn new_commands(
+        &self,
+    ) -> impl ExactSizeIterator<Item = crate::service_controls::ServerCommand<'plan>> + '_ {
+        self.commands[..self.summary.new_commands]
+            .iter()
+            .map(|command| {
+                crate::service_controls::ServerCommand::from_stored(command.sequence, command.bytes)
+            })
+    }
+
     /// Returns proposed counters without applying them or exposing private data.
     #[must_use]
     pub fn summary(&self) -> ServerCommandUpdate {

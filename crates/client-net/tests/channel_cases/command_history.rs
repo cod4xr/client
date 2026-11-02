@@ -58,7 +58,7 @@ fn serve(socket: &UdpSocket) {
     assert_eq!(reader.read_bits(3).expect("Complete EOF"), 3);
 }
 
-fn send_next(
+pub(super) fn send_next(
     channel: &mut ClientChannel<'_>,
     client: &mut LegacyClientCommands<'_>,
     server: &ServerCommandHistory<'_>,

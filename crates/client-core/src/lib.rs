@@ -16,6 +16,7 @@ pub mod gamestate;
 pub mod handshake;
 mod info_response;
 pub mod message_body;
+pub mod pre_game;
 mod profile;
 mod request;
 pub mod server_commands;

@@ -13,6 +13,7 @@ does not prove a playable connection.
 | UDP runtime | Real loopback responder/process tests; noise, endpoint, size, timeout/budget checks | Ordinary CoD4X server trials |
 | No-auth connect | Owned challenge/connect/acknowledged socket transitions, retry stability, inert refusals and bounded state | Clean disconnect and ordinary peer traces |
 | Channel/snapshots | Ordinary transport, control/payload/service validation, configurable command histories and socket/clock/endpoint ownership with paced UDP I/O | Game loop, typed execution, snapshot deltas, input replay and ordinary peer sessions |
+| Typed pre-game controls | New-command-only disconnect/map/restart notices, native token/copy rules, budget cancellation and next-frame UDP key/ACK coverage | Session/content/UI effects, remaining typed handlers and ordinary peer captures |
 | Gamestate configstring blocks | Independent vectors for both profiles, whole-block validation, caller-funded storage, complete namespaces and large bodies | Engine application and ordinary peer captures |
 | Client identity records | Owned protocol-21 gamestate/update vectors, exact text capacities, sequence-bit preservation and whole mixed-message rollback | Legacy adapters, remaining services and ordinary peer captures |
 | Client identity state | Atomic gamestate replacement, exact-next batches, local generations, ordered-map traces, joint UDP frame/identity commit and mixed-message staging | Sibling session resources, legacy configstring adapters and real peer captures |

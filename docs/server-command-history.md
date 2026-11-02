@@ -44,6 +44,11 @@ Updates return bounded counters for host logging without command text. No typed
 execution, gamestate seeding/reset, separate reliable transport or ordinary gameplay
 session is implemented by this storage owner.
 
+`new_commands` exposes precisely the staged new records, independently of retention
+slot collisions. [Typed pre-game preparation](pre-game-controls.md) consumes that
+selection, adds bounded inert disconnect/map/restart notices and returns them only
+after history commit. It preserves cancellation and keeps unknown commands as keys.
+
 The same preparation API accepts [mixed service plans](mixed-service-controls.md).
 One UDP test stages commands and identities from the same complete plan, then
 commits the checked outgoing acknowledgement and both owners. Its next frame proves

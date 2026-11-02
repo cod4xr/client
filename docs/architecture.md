@@ -181,6 +181,14 @@ partial output/application. Transport delivery sequence and host-validated messa
 sequence are distinct; only a complete validated message can advance the latter.
 Typed execution, gamestate and session policy remain host work.
 
+Typed pre-game preparation wraps a selected server-command update, inspecting only
+new records and borrowing cooked plan bytes. Explicit byte/event budgets precede
+history commit. Returned disconnect/map/restart notices retain full normalized
+tokens and separate native copy-prefix views; they do not invoke console, scripts,
+filesystem, UI or session effects. Unknown commands remain retained, including their
+outgoing key. Hosts preflight sibling resources and commit the checked client ACK
+before the prepared history; cancellation leaves both unchanged.
+
 Server-command history retains full normalized records in caller-selected slots,
 including capacities above 128. Exact sequence tags protect reused slots. Preparation
 checks profile/message order and selects newer records without mutation; an exclusive

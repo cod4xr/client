@@ -45,6 +45,9 @@ with atomic sequence/table publication. A joint lease commits the retained netwo
 frame and identity baseline together. Whole mixed ordinary messages now stage both
 commands and identity batches, with next-frame UDP acknowledgement coverage. Sibling
 session resources, typed execution and engine application remain open.
+Typed pre-game preparation now selects disconnect/map-change/fast-restart notices
+from new server commands with cancel/commit semantics and actual next-frame UDP key
+coverage. Applying session, content, UI or restart effects remains host work.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 
