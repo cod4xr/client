@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 398 tests pass in both debug and release on the pinned
+Latest local checkpoint: 415 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (435 source files, 6 crates; all checked source
+formatting and repository policy pass (450 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,9 +14,9 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 383-test fastfile checkpoint passed hosted Windows/Linux CI in
-[run 41454877366](https://github.com/cod4xr/client/actions/runs/41454877366), including
-locked sources and table reproduction. Hosted zone-directory validation will
+The 398-test zone-directory checkpoint passed hosted Windows/Linux CI in
+[run 41459174563](https://github.com/cod4xr/client/actions/runs/41459174563), including
+locked sources and table reproduction. Hosted identity-state validation will
 follow its commit. These changes edit only the client repository and consume the
 published shared revision.
 
@@ -221,6 +221,18 @@ the two inert non-inline sound-driver fields. Every cooked-string SHA-256, type/
 distribution, prefix extent and full-container hash matched independent Python.
 [Directory evidence](installed-zone5-evidence.json) contains aggregate metadata only. Child
 assets, serialized targets, registry resources and playable rendering remain open.
+
+Seventeen identity-state checks add fourteen integration tests, local generation
+exhaustion, exclusive-owner compile-fail coverage and a real UDP joint-commit test.
+They cover explicit baseline initialization, last duplicate wins, exact wrapping
+successors, gaps/duplicates, full sequence bits, independent budgets/capacities,
+late rollback, cancellation, replacement epochs, dirty workspace reuse, unchanged
+tails and source-free retained records. A 256-trace ordered-map model checks
+thousands of batches. Reordered malformed/valid UDP frames prove that wire failure,
+staging failure and joint cancellation preserve the correct frame/identity owners;
+joint commit retains data after all source/work buffers are cleared. Fourteen
+locked client-reference hashes verify without reading a server checkout. Whole
+ordinary-message identity dispatch and remaining session/engine resources are open.
 
 Eight new independent loopback tests exercise the reusable network crate: one
 source socket across challenge/connect/retries/handoff, exact cookie/protocol/qport

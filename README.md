@@ -108,6 +108,10 @@ untyped serialized body. Asset interpretation and playable map loading remain op
 directory publication over checked containers. Child payloads and serialized offset
 targets remain separate from this metadata layer.
 
+[Client identity state](docs/client-identity-state.md) now stages gamestate replacements
+and exact-next update batches atomically. A joint network transaction commits the
+retained gamestate frame and identity baseline together after host preflight.
+
 ## Run
 
 Rust 1.95 is pinned. On this workstation, reuse the existing Cargo target:

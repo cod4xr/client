@@ -25,13 +25,15 @@ any cached bits. Failure preserves both original cursors. Debug and errors expos
 only identifiers, sequence bits, lengths and validation categories, never text.
 
 Updates retain all native 32-bit sequence bits without choosing a wrapping,
-ordering or acknowledgement policy. A later session admission step must compare
-against its accepted config-data sequence and validate the whole enclosing
-message before applying a patch. Neither parsing function mutates engine state,
+ordering or acknowledgement policy. The separate [identity state](client-identity-state.md)
+now provides exact-next batch admission and joint gamestate/frame commit. The host
+must validate the whole enclosing ordinary message before applying update batches.
+Neither parsing function mutates engine state,
 dispatches commands or proves a player identity.
 
 Six focused tests cover independent vectors, maximum/empty/raw fields, normalization,
 owned data after input release, records beyond 128 KiB, every truncation, strict
 length and identifier failures, unsupported profiles, all sequence high-bit cases,
-cached-bit preservation and private debug output. Full service/gamestate dispatch,
-sequence admission and live gameplay interoperability remain open.
+cached-bit preservation and private debug output. The newer identity-state tests
+cover sequence/table transactions separately. Ordinary service dispatch, remaining
+session/engine state and live gameplay interoperability remain open.

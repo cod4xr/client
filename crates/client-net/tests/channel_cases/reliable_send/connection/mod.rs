@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 mod failures;
 mod gamestate;
+mod gamestate_identities;
 mod gamestate_preparation;
 mod gamestate_preparation_errors;
 mod lifecycle;

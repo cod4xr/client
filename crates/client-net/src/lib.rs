@@ -32,6 +32,6 @@ pub use error::NetworkError;
 pub use outcome::{AcknowledgedSocket, ConnectOutcome, ConnectSummary};
 pub use reliable_connection::{
     ConnectionReceive, ConnectionSend, GameStateFrameError, OrdinaryConnectionSender,
-    PreparedGameStateFrame, ReliableConnection, ReliableConnectionStats, ReliableRejection,
-    ReliableUsage,
+    PreparedGameStateFrame, PreparedIdentityGameStateFrame, ReliableConnection,
+    ReliableConnectionStats, ReliableRejection, ReliableUsage,
 };

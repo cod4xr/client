@@ -125,8 +125,12 @@ exact admitted counts and validates its actual published catalog before reportin
 Client identity records have one owned representation shared by gamestate patches
 and ordinary sequenced updates. Their small arrays are explicit native field
 capacities, without imposing a player-table allocation on the engine. Parsing
-retains raw normalized text and sequence bits; session admission and whole-message
-application remain separate. Neither logs nor debug formatting contains that text.
+retains raw normalized text and sequence bits. A separate caller-owned identity
+state stages complete gamestate replacements and exact-next update batches before
+atomic commit. A combined network-frame/identity lease commits both owners together
+or cancels both, with local baseline generations and no source-buffer retention.
+Whole ordinary-message dispatch and sibling session/content admission remain
+separate. Neither logs nor debug formatting contains that text.
 
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
