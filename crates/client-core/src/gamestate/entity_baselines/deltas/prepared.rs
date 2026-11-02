@@ -48,6 +48,9 @@ impl PreparedEntityDelta<'_, '_, '_> {
     /// Rejects reference-number mismatch, malformed counts/fields and truncation.
     /// Compact float forms reject prior values outside the writer's finite integer
     /// range; raw forms preserve arbitrary prior/target words, including NaNs.
+    /// Changed legacy origins reject nonfinite prior values; full origin forms also
+    /// require a truncated prior value representable in signed 32 bits. Short forms
+    /// add to the finite prior float without imposing that integer-conversion bound.
     /// Every failure preserves both original owners, including cached unread bits.
     pub fn decode(
         mut self,
@@ -57,7 +60,13 @@ impl PreparedEntityDelta<'_, '_, '_> {
         if reference.is_some_and(|state| state.number() != self.number) {
             return Err(EntityDeltaError::ReferenceNumber);
         }
-        let result = record::read(&mut self.candidate, self.number, reference, time)?;
+        let result = record::read(
+            &mut self.candidate,
+            self.number,
+            reference,
+            time,
+            self.owner.map_center,
+        )?;
         self.owner.indices = self.indices;
         *self.reader = self.candidate;
         Ok(result)

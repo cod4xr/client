@@ -54,7 +54,9 @@ Complete snapshots, remaining player/client fields and native peer traces remain
 transport gates before simulation or gameplay admission.
 Initial protocol-6 baseline coordinates now use checked explicit map-center context
 with native precision/bias rules and the same atomic reader/index admission. Legacy
-gamestate context integration and nonzero legacy records remain separate gates.
+gamestate context integration remains a separate gate. Individual nonzero legacy
+records now use explicit owned context, native short/full origin behavior and the
+same prepared reader/index transaction as modern records.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 

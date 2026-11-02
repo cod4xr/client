@@ -21,7 +21,7 @@ fn physical_legacy_coordinate_vectors_use_all_three_axes_and_signed_native_biase
         for (bits, expected) in [-92, -91, -90].into_iter().zip(expected) {
             let mut reader = BodyReader::try_new(input, input.len()).expect("Physical field");
             assert_eq!(
-                legacy_coordinates::read_zero(&mut reader, bits, center).expect("Legacy field"),
+                legacy_coordinates::read(&mut reader, bits, center, 0).expect("Legacy field"),
                 expected.to_bits()
             );
             assert_eq!(reader.remaining_bytes(), 0);
@@ -35,7 +35,7 @@ fn every_truncated_physical_coordinate_vector_rejects_without_guessing_a_wider_p
     for input in [b"\xfe".as_slice(), &[0xff, 0xff, 1], &[1, 0, 1]] {
         for end in 0..input.len() {
             let mut reader = BodyReader::try_new(&input[..end], input.len()).expect("Truncated");
-            assert!(legacy_coordinates::read_zero(&mut reader, -92, center).is_err());
+            assert!(legacy_coordinates::read(&mut reader, -92, center, 0).is_err());
         }
     }
 }

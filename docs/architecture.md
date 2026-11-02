@@ -33,7 +33,7 @@ gamestate constituents use one private two-pass walker, validating all records,
 trailers and capacities before publishing any final output. The complete auxiliary
 gamestate wrapper validates its prefix, reserved tail and byte exhaustion before
 that same publication pass. Other message admission and engine application remain
-later boundaries, including complete legacy gamestates, nonzero legacy deltas,
+later boundaries, including complete legacy gamestates,
 session/content application and complete snapshots.
 
 The network owner can prepare a whole typed gamestate over its original ready
@@ -134,12 +134,15 @@ Whole mixed ordinary-message plans now feed the same identity staging rules and
 server-command history. Sibling session/content admission remains separate.
 Neither logs nor debug formatting contains that text.
 
-Individual protocol-21 entity deltas reuse the generated baseline field catalogs
+Individual entity deltas reuse the generated baseline field catalogs
 and one context-aware value reader. Index preparation exclusively retains both
 original decoder/reader owners, allowing caller reference lookup by checked number
 before complete record decode. Failure/drop rolls back both; success returns owned
 inert state/removal and commits both cursors. No fixed entity table, snapshot
-framing, host snapshot mutation or engine authority is part of this layer.
+framing, host snapshot mutation or engine authority is part of this layer. Protocol
+6 requires explicit checked map-center context, and its shared coordinate reader
+distinguishes short prior-float addition from full prior-integer biased XOR. Context
+stays on the exclusive index owner through preparation and commit.
 
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or

@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 471 tests pass in both debug and release on the pinned
+Latest local checkpoint: 482 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (493 source files, 6 crates; all checked source
+formatting and repository policy pass (499 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,21 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 460-test entity-delta checkpoint passed hosted Windows/Linux CI in
-[run 41477571953](https://github.com/cod4xr/client/actions/runs/41477571953), including
-locked sources and table reproduction. Hosted legacy-baseline validation will
+The 471-test legacy-baseline checkpoint passed hosted Windows/Linux CI in
+[run 41480721403](https://github.com/cod4xr/client/actions/runs/41480721403), including
+locked sources and table reproduction. Hosted legacy-delta validation will
 follow its commit. These changes edit only the client repository and consume the
 published shared revision.
+
+Eleven nonzero legacy-delta tests add explicit coordinate-profile ownership, all
+short values against prior state, fractional short/full distinctions, all eighteen
+target layouts, native signed-wrap/binary32-rounding boundaries, context replacement
+and reset, no-delta/removal handling, owned lifetimes, every truncated prefix with
+cached bits, cancellation and late invalid-reference rollback. Nonfinite changed
+origins reject; full forms additionally check signed-32 prior conversion, while
+finite short forms keep native float addition. Existing baseline fixtures now share
+one support module. Complete snapshots and native peer traces remain open; see
+[legacy entity records](legacy-entity-deltas.md).
 
 Nine legacy-baseline integration tests and two physical field tests add explicit
 protocol-6 map-center context, all 128 short values on each axis, sixteen-bit full

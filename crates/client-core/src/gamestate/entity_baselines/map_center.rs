@@ -2,7 +2,7 @@
 use super::EntityBaselineError;
 use std::fmt;
 
-/// Explicit checked native coordinate biases for protocol-6 initial baselines.
+/// Explicit checked native coordinate biases for protocol-6 entity records.
 /// Values are inert geometry metadata, not authority to load a map or select a profile.
 #[derive(Clone, Copy, Eq, PartialEq)]
 pub struct LegacyMapCenter {

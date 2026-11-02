@@ -57,6 +57,7 @@ previously reviewed installed image and coordinate-reader addresses, including i
 precise half-addition and integer truncation. No executable or disassembly is stored.
 
 Complete legacy gamestate framing, effective `CS12` context updates inside those
-plans, nonzero-reference legacy deltas and native peer traces remain separate work.
+plans and native peer traces remain separate work. Individual
+[nonzero legacy deltas](legacy-entity-deltas.md) now share the same coordinate reader.
 The complete gamestate/reliable wrappers continue to require protocol 21. This
 record codec does not establish a playable or broadly interoperable client.

@@ -6,7 +6,7 @@ use std::{error::Error, fmt};
 /// Fixed delta-record failures without state words, coordinates or source bytes.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum EntityDeltaError {
-    /// Only the reviewed protocol-21 coordinate profile is supported here.
+    /// This constructor/operation lacks the selected profile's explicit context.
     UnsupportedProfile,
     /// The supplied prior state belongs to another entity number.
     ReferenceNumber,
@@ -17,17 +17,21 @@ pub enum EntityDeltaError {
     /// A compact float delta has a nonfinite/out-of-range prior integer component.
     /// The reviewed writer uses its raw form for these prior states.
     ReferenceFloat,
+    /// A changed legacy origin has a nonfinite prior value or its full form cannot
+    /// convert the truncated prior value to signed 32 bits without native overflow.
+    ReferenceCoordinate,
     /// Shared primitive/index reading failed before record commit.
     Body(BodyReadError),
 }
 impl fmt::Display for EntityDeltaError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(match self {
-            Self::UnsupportedProfile => "entity delta requires the reviewed protocol-21 profile",
+            Self::UnsupportedProfile => "entity delta unsupported by selected coordinate context",
             Self::ReferenceNumber => "entity delta reference number mismatch",
             Self::FieldCount => "invalid entity delta changed-field count",
             Self::FieldEncoding => "unsupported static entity delta field rule",
             Self::ReferenceFloat => "entity delta compact float reference is invalid",
+            Self::ReferenceCoordinate => "entity delta legacy coordinate reference is invalid",
             Self::Body(_) => "invalid or truncated entity delta record",
         })
     }
@@ -51,6 +55,7 @@ impl From<FieldReadError> for EntityDeltaError {
             FieldReadError::Body(error) => Self::Body(error),
             FieldReadError::Encoding => Self::FieldEncoding,
             FieldReadError::ReferenceFloat => Self::ReferenceFloat,
+            FieldReadError::ReferenceCoordinate => Self::ReferenceCoordinate,
         }
     }
 }

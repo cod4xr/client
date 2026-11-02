@@ -1,12 +1,12 @@
-# Protocol-21 entity delta records
+# Explicit-profile entity delta records
 
 `entity_deltas::EntityDeltaDecoder` decodes individual protocol-21 entity records
-against a caller-selected prior state. It shares the existing generated eighteen
+against a caller-selected prior state. Protocol 6 also has
+[explicit legacy context](legacy-entity-deltas.md). Both profiles share the generated eighteen
 field catalogs, primitive readers and checked ordered-index codec with initial
 baselines. No second wire codec, entity table, C struct layout or native pointer
-cast is introduced. Protocol 6 remains unsupported for nonzero-reference records;
-its [initial baseline coordinates](legacy-baseline-coordinates.md) now have a
-separate explicit-context decoder.
+cast is introduced. Protocol 6 requires checked map-center context through
+`with_legacy_map_center`; the original constructor rejects a missing context.
 
 `prepare` reads the next index into private candidate reader/index state, retaining
 exclusive borrows of both originals. Its number lets the host look up a prior state

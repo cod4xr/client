@@ -7,6 +7,7 @@ pub(super) enum FieldReadError {
     Body(BodyReadError),
     Encoding,
     ReferenceFloat,
+    ReferenceCoordinate,
 }
 impl From<BodyReadError> for FieldReadError {
     fn from(error: BodyReadError) -> Self {
@@ -17,7 +18,9 @@ impl From<FieldReadError> for EntityBaselineError {
     fn from(error: FieldReadError) -> Self {
         match error {
             FieldReadError::Body(error) => Self::Body(error),
-            FieldReadError::Encoding | FieldReadError::ReferenceFloat => Self::FieldEncoding,
+            FieldReadError::Encoding
+            | FieldReadError::ReferenceFloat
+            | FieldReadError::ReferenceCoordinate => Self::FieldEncoding,
         }
     }
 }

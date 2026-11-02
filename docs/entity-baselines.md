@@ -63,5 +63,5 @@ These are source-grounded conformance fixtures, not captures from a live native 
 Complete protocol-21 gamestate constituents now have a separate transactional
 plan. Reviewed native constants and effective default/wire merging have separate
 content/snapshot APIs. Complete legacy gamestates, other enclosing-message admission,
-nonzero legacy deltas, complete snapshots, engine interpretation and ordinary-server
+complete snapshots, engine interpretation and ordinary-server
 interoperability remain open. A baseline parse alone does not establish a playable connection.

@@ -53,10 +53,12 @@ that can be cancelled before commit.
 and fast-restart notices only from newly admitted commands. Commit retains history
 and returns inert typed notices for later host application.
 [Entity delta records](docs/entity-deltas.md) now decode against explicit prior
-protocol-21 state with joint reader/index rollback, shared native field tables and
+state with joint reader/index rollback, shared native field tables and
 owned results. Complete snapshot framing and engine application remain separate.
 [Legacy baseline coordinates](docs/legacy-baseline-coordinates.md) now add explicit
 checked map-center context, native precision/bias rules and atomic record admission.
+[Nonzero legacy deltas](docs/legacy-entity-deltas.md) share that context and the
+prepared update path, including native fractional and integer-boundary behavior.
 
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add

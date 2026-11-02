@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-//! Owned protocol-21 individual entity updates against an explicit prior state.
+//! Owned explicit-profile entity updates against a caller-selected prior state.
 //! This is a record codec, not snapshot framing, stream termination or engine state.
 
 mod decoder;
