@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 631 tests pass in both debug and release on the pinned
+Latest local checkpoint: 638 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (614 source files, 6 crates; all checked source
+formatting and repository policy pass (617 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,17 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 614-test live player-scalar checkpoint passed hosted Windows/Linux CI in
-[run 41508380597](https://github.com/cod4xr/client/actions/runs/41508380597), including
-locked sources and table reproduction. Hosted whole live player-state validation
-will follow its commit. These changes edit only the client repository and consume
-the published shared revision.
+The 631-test whole live player-state checkpoint passed hosted Windows/Linux CI in
+[run 41509698263](https://github.com/cod4xr/client/actions/runs/41509698263), including
+locked sources and table reproduction. Hosted snapshot-header validation will
+follow its commit. These changes edit only the client repository and consume the
+published shared revision.
+
+Seven native snapshot-header cases cover physical time/distance/flag vectors,
+every nonzero delta distance and flag pattern, all truncated headers, cached-bit
+preservation, following bytes, owned/private metadata and immediate/straddling
+player-state handoff. Reference history and full snapshot/message admission remain
+open; see [snapshot headers](snapshot-headers.md).
 
 Fifteen complete live player-state cases cover native section composition, both
 profiles, independent empty-state vectors, following byte/cached-bit operations,

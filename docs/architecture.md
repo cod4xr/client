@@ -207,6 +207,12 @@ preserves the original reader; no unreconciled state escapes. Host-scoped predic
 queues, reference epochs, whole snapshots and message/ACK admission remain separate.
 See [live player-state transactions](live-player-state.md).
 
+Snapshot headers preserve the native six-byte time/distance/flag framing. Their
+byte reads preserve preexisting cached bits for player-state decoding. The owned
+raw full/delta selector performs no implicit sequence math, reference substitution
+or history admission; all nonzero wire distances survive independently of old
+engine ring sizes. See [snapshot framing](snapshot-headers.md).
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

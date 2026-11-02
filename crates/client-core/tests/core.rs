@@ -39,4 +39,5 @@ mod service_controls;
 mod service_support;
 mod snapshot_clients;
 mod snapshot_entities;
+mod snapshot_headers;
 mod system_info;

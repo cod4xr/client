@@ -24,6 +24,7 @@ mod request;
 pub mod server_commands;
 pub mod server_payload;
 pub mod service_controls;
+pub mod snapshots;
 pub mod system_info;
 
 pub use challenge::QueryChallenge;

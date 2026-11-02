@@ -85,6 +85,11 @@ sections with an exclusive reader lease, exact prediction-sample matching or
 explicit native prior fallback. Whole snapshot/history/message admission and
 prediction production remain open.
 
+[Native snapshot headers](docs/snapshot-headers.md) now preserve the complete
+six-byte framing, full/delta selector and all flag/time bits, with cached-bit
+rollback and immediate player-state handoff. Reference history and enclosing
+snapshot/message admission remain separate.
+
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add
 caller-funded fragment retention, selective metadata and bounded stream reads.
