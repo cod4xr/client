@@ -40,6 +40,7 @@ mod service_support;
 mod snapshot_clients;
 mod snapshot_entities;
 mod snapshot_headers;
+mod snapshot_support;
 mod snapshots;
 mod system_info;
 mod user_commands;

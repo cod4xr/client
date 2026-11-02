@@ -102,8 +102,10 @@ header before complete publication, with real protocol-21 UDP full/delta coverag
 Native full-form user-command fields now encode through checked wire inputs and
 atomic caller output. Native movement packet batches now share owned control framing,
 derive original native keys, retain all inputs through compression retry and use
-the original socket context, with real UDP/ACK coverage. Input history and engine
-input/prediction lifecycle remain open.
+the original socket context, with real UDP/ACK coverage. Caller-funded input history
+now supports 64-bit world-bound IDs, exact replay ranges, backup sends and separate
+transmission/retirement. Engine input sampling, prediction and authoritative
+reconciliation remain open.
 Connection-wide gameplay/history ownership and broader routing remain open.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.

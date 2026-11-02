@@ -46,8 +46,9 @@ and compatibility transforms are reused.
 `user_command_count` separately reports movement records. Construction marks neither
 kind transmitted and releases no ACK. Reliable transmission is admitted only after
 the same owned frame completes outgoing I/O; acknowledgement requires a complete
-validated response. Input history, backup selection and authoritative input-send/
-prediction bookkeeping remain separate host work.
+validated response. [Input history](input-command-history.md) now separately retains
+checked inputs and leases transmission admission through complete I/O. Backup
+scheduling, prediction production and authoritative reconciliation remain host work.
 
 Seven core cases cover both profiles, one/two/thirty-two inputs, ASCII/high-byte
 packet keys, reliable prefixes and shared-decoder reconstruction of every field,

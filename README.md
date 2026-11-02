@@ -123,7 +123,9 @@ priors from actual packet headers, with protocol-21 UDP full/delta coverage.
 [Native user-command encoding](docs/user-command-encoding.md) now supplies checked
 full-form movement/action fields with atomic output. [Movement packets](docs/movement-packets.md)
 compose complete batches and prediction reports through the original socket context;
-input history, prediction production and gameplay simulation remain open.
+[input history](docs/input-command-history.md) now separates retained, transmitted
+and retired prefixes with original-owner I/O leases. Prediction production,
+authoritative reconciliation and gameplay simulation remain open.
 
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add

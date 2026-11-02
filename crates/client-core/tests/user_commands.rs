@@ -4,6 +4,8 @@
     clippy::expect_used,
     reason = "Bounded command fixtures and exact assertions."
 )]
+#[path = "user_command_cases/history/mod.rs"]
+mod history;
 #[path = "user_command_cases/limits.rs"]
 mod limits;
 #[path = "user_command_cases/vectors.rs"]

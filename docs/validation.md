@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 738 tests pass in both debug and release on the pinned
+Latest local checkpoint: 749 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (720 source files, 6 crates; all checked source
+formatting and repository policy pass (735 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,20 @@ Reliable gamestate bodies now have whole-frame admission coverage. Mixed-message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 729-test full-form command checkpoint passed hosted Windows/Linux CI in
-[run 41530485121](https://github.com/cod4xr/client/actions/runs/41530485121), including
-locked sources and table reproduction. The preceding actual-header/history checkpoint
-also passed [run 41528203245](https://github.com/cod4xr/client/actions/runs/41528203245).
+The 738-test movement-packet checkpoint passed hosted Windows/Linux CI in
+[run 41534071481](https://github.com/cod4xr/client/actions/runs/41534071481), including
+locked sources and table reproduction. The preceding full-form command checkpoint
+also passed [run 41530485121](https://github.com/cod4xr/client/actions/runs/41530485121).
 These changes edit only the client repository and consume the published shared revision.
+
+Nine input-history integration cases cover 257 retained inputs, exact local IDs,
+backups, send cancellation, sent-only retirement, constant-time logical reset,
+storage lifetimes and world/profile binding. An independent queue model checks 512
+operations at four capacities in both profiles. A private case crosses 32-bit local
+sequence boundaries and exhausts 64 bits without wrap; a compile-fail example
+protects the original owner. The existing UDP movement case retains its input lease
+through complete I/O and confirms reliable ACKs do not retire inputs. See
+[input command history](input-command-history.md).
 
 Seven complete movement-packet cases cover both profiles, full one/two/thirty-two
 input batches, signed native keys, shared-decoder field reconstruction, raw prediction
@@ -34,7 +43,8 @@ all key bits, timestamp signs/extremes, nonzero references, canonical axes/actio
 raw location bytes, native widths/presence, exact/short capacities and private Debug.
 One private unit case checks every initial cached-bit width and following fields.
 They reuse the published shared decoder; [writer evidence](user-command-encoding.md)
-contains metadata only. Complete movement packet/input/send ownership remains open.
+contains metadata only. Complete packet and input/send ownership now compose through
+the separate movement builder and input history; engine sampling remains open.
 
 Seven history-assisted mixed decoding cases cover actual-header reference selection
 in both profiles, owned scratch/history lifetimes, full/cancel/retry behavior, exact

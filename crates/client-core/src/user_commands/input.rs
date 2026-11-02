@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+use super::UserCommandEncodeError;
 use std::fmt;
 
 /// Canonical native wire movement axis, without engine velocity or keyboard ownership.
@@ -55,6 +56,26 @@ pub struct UserCommandInput {
     pub selected_location: Option<[u8; 2]>,
     /// Native melee fields, present exactly when button bit two is set.
     pub melee: Option<UserCommandMelee>,
+}
+impl UserCommandInput {
+    pub(crate) fn validate(self) -> Result<(), UserCommandEncodeError> {
+        if self.buttons >= 0x0020_0000 {
+            return Err(UserCommandEncodeError::Buttons);
+        }
+        if self.weapon >= 128 {
+            return Err(UserCommandEncodeError::Weapon);
+        }
+        if self.offhand >= 128 {
+            return Err(UserCommandEncodeError::Offhand);
+        }
+        if self.selected_location.is_some() != (self.buttons & 0x10000 != 0) {
+            return Err(UserCommandEncodeError::SelectedLocation);
+        }
+        if self.melee.is_some() != (self.buttons & 4 != 0) {
+            return Err(UserCommandEncodeError::Melee);
+        }
+        Ok(())
+    }
 }
 impl fmt::Debug for UserCommandInput {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {

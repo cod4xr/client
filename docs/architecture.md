@@ -283,6 +283,13 @@ through reliable prefixes, every input and the prediction trailer; exact bit/byt
 sizing and compression retries preserve all requested movement records. The same
 network context guard and I/O path are used. See [movement packets](movement-packets.md).
 
+Caller-funded input history now retains checked commands beyond the native ring
+with epoch/profile-bound 64-bit local IDs and constant-time exact lookup. Prepared
+ranges copy a complete native batch while leasing the original owner through I/O;
+transmission and explicit retirement remain separate from reliable-command ACKs.
+Logical reset invalidates old records without clearing physical slots. See
+[input command history](input-command-history.md).
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

@@ -2,7 +2,9 @@
 //! Bounded native movement/action command encoding, before packet or I/O admission.
 //! Wire widths do not define future engine asset/input storage or extension limits.
 
+mod batch;
 mod error;
+pub mod history;
 mod input;
 mod plan;
 mod write;
@@ -10,6 +12,7 @@ mod write;
 #[cfg(test)]
 mod cached;
 
+pub use batch::MovementBatch;
 pub use error::UserCommandEncodeError;
 pub use input::{MovementAxis, UserCommandInput, UserCommandMelee};
 pub use plan::AbsoluteUserCommandPlan;
@@ -17,3 +20,7 @@ pub use plan::AbsoluteUserCommandPlan;
 /// Maximum full-form command bytes when starting a fresh native bit cursor.
 /// This excludes movement opcode/count, packet headers, prediction trailer and EOF.
 pub const MAX_ABSOLUTE_COMMAND_BYTES: usize = 22;
+
+/// Native commands per legacy-compatible packet, independent of input history capacity.
+/// Wider negotiated profiles require a separate implemented wire contract.
+pub const MAX_PACKET_USER_COMMANDS: usize = 32;

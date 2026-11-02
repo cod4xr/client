@@ -6,10 +6,13 @@ use crate::{channel_support::acknowledged, support::server};
 use cod4xr_client_core::{
     BaselineProtocol,
     commands::{LEGACY_COMMAND_SLOT_BYTES, LegacyClientCommands},
-    control::{ClientControlHeader, ControlMessagePlan, MovementBatch},
+    control::{ClientControlHeader, ControlMessagePlan},
     player_state::{PredictionSample, PredictionWords},
     server_commands::{SERVER_COMMAND_SLOT_BYTES, ServerCommandHistory, ServerCommandSlot},
-    user_commands::{MovementAxis, UserCommandInput},
+    user_commands::{
+        MovementAxis, UserCommandInput,
+        history::{InputCommandHistory, InputCommandSlot},
+    },
 };
 use std::{
     thread,
@@ -39,18 +42,17 @@ fn owned_movement_uses_original_socket_context_and_admitted_high_byte_key_before
     )
     .expect("Incoming owner");
     receive::admit(&mut channel, &mut outgoing, &mut incoming);
-    assert_eq!(
-        (incoming.last_message_sequence(), incoming.newest_sequence()),
-        (7, 9)
-    );
-    assert_eq!(
-        incoming
-            .latest_key()
-            .expect("Admitted high-byte key")
-            .as_bytes(),
-        b"\x92"
-    );
-    let input = commands();
+    assert_admitted_key(&incoming);
+    let mut input_cells = vec![InputCommandSlot::default(); 4];
+    let mut inputs = InputCommandHistory::new(7, BaselineProtocol::Cod4x21, &mut input_cells)
+        .expect("Original input owner");
+    let ids: Vec<_> = commands()
+        .into_iter()
+        .map(|input| inputs.enqueue(input).expect("Queued input"))
+        .collect();
+    let prepared_inputs = inputs
+        .prepare_range(ids[0], ids[2])
+        .expect("Original copied input range");
     let header = ClientControlHeader::Cod4x21 {
         server_id: 0x1122_3344,
         message_acknowledge: incoming.last_message_sequence(),
@@ -62,12 +64,9 @@ fn owned_movement_uses_original_socket_context_and_admitted_high_byte_key_before
         header,
         channel.context().server_challenge(),
         &outgoing,
-        MovementBatch {
-            commands: &input,
-            checksum_feed: wire::FEED,
-            prediction: report,
-            snapshot: None,
-        },
+        prepared_inputs
+            .movement(wire::FEED, report, None)
+            .expect("Input profile and original world"),
     )
     .expect("Owned movement frame");
     assert_eq!((plan.command_count(), plan.user_command_count()), (1, 3));
@@ -78,18 +77,12 @@ fn owned_movement_uses_original_socket_context_and_admitted_high_byte_key_before
         ),
         (0, 0)
     );
-    {
-        let mut sender = channel.split().sender;
-        let mut message = sender
-            .begin_control(&plan)
-            .expect("Same original context guard");
-        let deadline = Instant::now() + Duration::from_secs(3);
-        while message
-            .send_next(deadline)
-            .expect("Actual packet I/O")
-            .is_some()
-        {}
-    }
+    send(&mut channel, &plan);
+    let transmission = prepared_inputs.commit_transmission();
+    assert_eq!(
+        (transmission.through, transmission.newly_transmitted),
+        (ids[2], 3)
+    );
     outgoing
         .mark_transmitted(
             plan.last_command_sequence()
@@ -111,6 +104,10 @@ fn owned_movement_uses_original_socket_context_and_admitted_high_byte_key_before
     assert_eq!(
         (incoming.last_message_sequence(), incoming.newest_sequence()),
         (8, 9)
+    );
+    assert_eq!(
+        (inputs.len(), inputs.pending_count(), inputs.retired_id()),
+        (3, 0, None)
     );
     responder
         .join()
@@ -139,4 +136,31 @@ fn prediction() -> PredictionSample {
         132,
         PredictionWords::new(wire::ORIGIN, [0; 3], [0; 3], 0, 0),
     )
+}
+
+fn send(channel: &mut cod4xr_client_net::ClientChannel<'_>, plan: &ControlMessagePlan) {
+    let mut sender = channel.split().sender;
+    let mut message = sender
+        .begin_control(plan)
+        .expect("Same original context guard");
+    let deadline = Instant::now() + Duration::from_secs(3);
+    while message
+        .send_next(deadline)
+        .expect("Actual packet I/O")
+        .is_some()
+    {}
+}
+
+fn assert_admitted_key(incoming: &ServerCommandHistory<'_>) {
+    assert_eq!(
+        (incoming.last_message_sequence(), incoming.newest_sequence()),
+        (7, 9)
+    );
+    assert_eq!(
+        incoming
+            .latest_key()
+            .expect("Admitted high-byte key")
+            .as_bytes(),
+        b"\x92"
+    );
 }

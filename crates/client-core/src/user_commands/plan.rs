@@ -20,21 +20,7 @@ impl AbsoluteUserCommandPlan {
     /// # Errors
     /// Rejects oversized buttons/weapon/offhand and mismatched action presence.
     pub fn new(key: u32, input: UserCommandInput) -> Result<Self, UserCommandEncodeError> {
-        if input.buttons >= 0x0020_0000 {
-            return Err(UserCommandEncodeError::Buttons);
-        }
-        if input.weapon >= 128 {
-            return Err(UserCommandEncodeError::Weapon);
-        }
-        if input.offhand >= 128 {
-            return Err(UserCommandEncodeError::Offhand);
-        }
-        if input.selected_location.is_some() != (input.buttons & 0x10000 != 0) {
-            return Err(UserCommandEncodeError::SelectedLocation);
-        }
-        if input.melee.is_some() != (input.buttons & 4 != 0) {
-            return Err(UserCommandEncodeError::Melee);
-        }
+        input.validate()?;
         Ok(Self { key, input })
     }
     /// Returns the exact byte length at a fresh bit cursor, excluding packet framing.

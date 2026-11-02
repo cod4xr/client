@@ -29,8 +29,9 @@ Standalone command byte slices cannot be concatenated into a native batch: cache
 bit bytes span interleaved byte fields and adjacent commands. The same private
 writer implementation is now used by [complete packet assembly](movement-packets.md),
 including batch count, packet-derived key, prediction trailer and reliable prefix.
-Input history, authoritative input-send bookkeeping, prediction production, compact
-forms and playable sessions remain separate work.
+[Input history](input-command-history.md) now retains checked commands and separates
+transmission admission from retirement. Prediction production, compact forms,
+device sampling, authoritative reconciliation and playable sessions remain open.
 
 Six integration cases cover an independent physical full-zero vector, all key bits,
 both timestamp signs/extremes, nonzero baselines, all canonical axis pairs, every
