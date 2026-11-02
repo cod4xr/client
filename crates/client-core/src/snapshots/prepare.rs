@@ -17,6 +17,16 @@ pub(super) fn prepare<'reader, 'body, 'source, 'storage>(
     input: SnapshotInput<'source>,
     output: SnapshotOutput<'storage>,
 ) -> Result<PreparedSnapshot<'reader, 'body, 'source, 'storage>, SnapshotError> {
+    let candidate = reader.clone();
+    prepare_at(reader, candidate, input, output)
+}
+
+pub(super) fn prepare_at<'reader, 'body, 'source, 'storage>(
+    reader: &'reader mut BodyReader<'body>,
+    mut candidate: BodyReader<'body>,
+    input: SnapshotInput<'source>,
+    output: SnapshotOutput<'storage>,
+) -> Result<PreparedSnapshot<'reader, 'body, 'source, 'storage>, SnapshotError> {
     check_bindings(input)?;
     let profile = input.context.profile();
     let entity_sources = EntityStreamSources {
@@ -39,7 +49,6 @@ pub(super) fn prepare<'reader, 'body, 'source, 'storage>(
     client_source
         .validate(input.budget.clients.max_previous_clients)
         .map_err(SnapshotError::Clients)?;
-    let mut candidate = reader.clone();
     let header = SnapshotHeader::parse(&mut candidate, profile).map_err(SnapshotError::Body)?;
     check_reference(header, input)?;
     let player = PendingPlayerState::decode_candidate(

@@ -9,6 +9,10 @@ mod ownership;
 mod prediction;
 #[path = "snapshot_cases/rollback.rs"]
 mod rollback;
+#[path = "snapshot_cases/service_failures.rs"]
+mod service_failures;
+#[path = "snapshot_cases/service_vectors.rs"]
+mod service_vectors;
 #[path = "snapshot_cases/source_limits.rs"]
 mod source_limits;
 #[path = "snapshot_cases/support.rs"]

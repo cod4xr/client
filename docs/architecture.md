@@ -223,6 +223,13 @@ the original reader; failure/drop preserves all outputs and cursors. No native
 history ring is reproduced. Enclosing message/ACK admission and host session/
 history ownership remain separate; see [snapshot transactions](snapshot-bodies.md).
 
+The specialized snapshot service carrier scans NOP/opcode framing and logical EOF
+around the same private snapshot candidate. No final output write or prediction
+commit precedes EOF. The enclosing lease advances through service bytes while
+keeping the cooked snapshot's native body consumption distinct. Unsupported mixed
+services are rejected, never skipped; wider routing/ACK ownership remains separate.
+See [snapshot services](snapshot-services.md).
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

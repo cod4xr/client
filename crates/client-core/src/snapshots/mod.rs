@@ -9,6 +9,7 @@ mod message;
 mod plan;
 mod prepare;
 mod prepared;
+pub mod services;
 mod source;
 mod transaction;
 

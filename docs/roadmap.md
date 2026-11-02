@@ -83,7 +83,9 @@ Native six-byte snapshot headers now preserve full/delta selectors and raw flags
 without native ring limits; byte/cache continuity with player state is covered.
 Complete snapshot wire transactions now validate all constituents, exact cooked
 message/epoch references and prediction before atomic reader/two-output publication.
-Host history/session ownership and enclosing message/ACK admission remain open.
+Snapshot-only service carriers now validate NOP/snapshot/EOF framing before any
+publication, rejecting unsupported mixed services without skipping their bodies.
+Host history/session ownership, combined routing and payload/ACK admission remain open.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 

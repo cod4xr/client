@@ -96,6 +96,10 @@ resolution and complete validation precede both output writes. Caller-funded
 cooked storage replaces fixed native history rings. Enclosing message/ACK admission
 and a host gameplay/history owner remain open.
 
+[Snapshot-only service carriers](docs/snapshot-services.md) now check NOP/snapshot/EOF
+framing before publishing either snapshot output. Unsupported mixed services are
+rejected, and native padding after logical EOF remains uninterpreted.
+
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add
 caller-funded fragment retention, selective metadata and bounded stream reads.

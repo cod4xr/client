@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 663 tests pass in both debug and release on the pinned
+Latest local checkpoint: 673 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (634 source files, 6 crates; all checked source
+formatting and repository policy pass (641 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,18 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 638-test snapshot-header checkpoint passed hosted Windows/Linux CI in
-[run 41510937137](https://github.com/cod4xr/client/actions/runs/41510937137), including
-locked sources and table reproduction. Hosted complete snapshot-body validation
-will follow its commit. These changes edit only the client repository and consume
-the published shared revision.
+The 663-test complete snapshot-body checkpoint passed hosted Windows/Linux CI in
+[run 41512913165](https://github.com/cod4xr/client/actions/runs/41512913165), including
+locked sources and table reproduction. Hosted snapshot-service validation will
+follow its commit. These changes edit only the client repository and consume the
+published shared revision.
+
+Nine snapshot-only service cases add independent framing/EOF vectors, native
+padding, cached-bit continuity, owned cooked references, all tested truncations,
+unsupported prefix/tail services, exact record budgets, missing EOF/snapshot,
+cancellation and failed/successful prediction selection. A compile-fail example
+protects the enclosing reader lease. Combined service routing and payload/ACK/
+history ownership remain open; see [snapshot services](snapshot-services.md).
 
 Twenty-two complete snapshot wire cases cover independent physical framing, both
 profiles, full/delta sparse merges, explicit coherent message/epoch references,
