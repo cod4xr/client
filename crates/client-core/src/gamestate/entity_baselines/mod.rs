@@ -3,9 +3,14 @@
 //! These inert wire values are not validated engine objects or snapshot deltas.
 
 mod decoder;
+#[cfg(test)]
+mod delta_field_cases;
+pub mod deltas;
 mod error;
 #[cfg(test)]
 mod field_cases;
+mod field_error;
+mod field_values;
 mod fields;
 mod state;
 mod tables;

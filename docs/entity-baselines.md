@@ -18,7 +18,11 @@ baseline rules compose those primitives for integer residual bits followed by by
 fields, signed movement directions, positive/negative zero, compact integer floats,
 full float words, angles, single-bit/full flags, relative/absolute time, ground
 references, event bytes and protocol-21 raw coordinate words. It deliberately does
-not reuse a zero-reference rule for later snapshot deltas with nonzero references.
+not treat later entity records as zero-reference baselines. The shared field reader
+now accepts explicit prior-word/time context for [individual deltas](entity-deltas.md);
+initial baseline decoding continues to supply zeros and preserves its exact vectors.
+Angles convert a signed 16-bit turn to degrees, including negative values in the
+high half of the wire word, as confirmed by the reviewed native reader audit.
 
 Raw float payloads, including NaNs and large coordinates, retain their exact bits.
 They are inert wire state, requiring separate engine geometry/resource validation.
@@ -58,5 +62,5 @@ These are source-grounded conformance fixtures, not captures from a live native 
 Complete protocol-21 gamestate constituents now have a separate transactional
 plan. Reviewed native constants now have a separate content importer. Default/wire
 merging, other enclosing-message admission, legacy
-coordinates, snapshot deltas, engine interpretation and ordinary-server
+coordinates, complete snapshots, engine interpretation and ordinary-server
 interoperability remain open. A baseline parse alone does not establish a playable connection.

@@ -1,0 +1,39 @@
+{
+  "operation": "read_only_installed_entity_reader_audit",
+  "file_name": "iw3mp.exe",
+  "sha256": "f50f8a520581754e73cb7cae67b02adcbad5f2e71aaa412a013bb3ef57a391a5",
+  "image_bytes": 3330048,
+  "preferred_image_base": "0x00400000",
+  "entity_reader_address": "0x00506e20",
+  "field_reader_address": "0x005067c0",
+  "flag_reader_address": "0x00506560",
+  "ground_reader_address": "0x00506490",
+  "integer_reference_mask_address": "0x00506bb0",
+  "angle_reader_address": "0x00505910",
+  "signed_short_reader_address": "0x00505690",
+  "audited_rules": [
+    "removal_and_no_delta_control_bits",
+    "six_bit_changed_field_count",
+    "type_field_then_target_layout_selection",
+    "changed_field_flag_and_hint_two_omission",
+    "signed_zero_and_raw_xor_float_forms",
+    "compact_float_prior_integer_bias_xor",
+    "integer_prior_width_mask_before_xor",
+    "negative_width_sign_extension",
+    "single_flag_toggle_and_absolute_24_bit_flags",
+    "message_relative_and_absolute_time",
+    "absolute_ground_event_and_angle_forms",
+    "signed_16_bit_angle_conversion",
+    "remaining_target_layout_field_copy"
+  ],
+  "coordinate_scope": "Protocol-21 coordinates follow the locked public msg.c reader and writer; this installed native reader retains its stock legacy coordinate routines.",
+  "source_binding": {
+    "repository": "https://github.com/callofduty4x/CoD4x_Client_pub.git",
+    "revision": "17182c7bf04b859dea5c0db4acdb0b83c28d6dd2",
+    "files": ["src/callbacks.asm", "src/msg.c"]
+  },
+  "binary_or_disassembly_included": false,
+  "game_data_values_recorded": false,
+  "publisher_authentication_claimed": false,
+  "gameplay_session_tested": false
+}

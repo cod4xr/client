@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 445 tests pass in both debug and release on the pinned
+Latest local checkpoint: 460 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (473 source files, 6 crates; all checked source
+formatting and repository policy pass (486 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,24 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 428-test mixed-service checkpoint passed hosted Windows/Linux CI in
-[run 41471111963](https://github.com/cod4xr/client/actions/runs/41471111963), including
-locked sources and table reproduction. Hosted typed pre-game validation will
+The 445-test typed pre-game checkpoint passed hosted Windows/Linux CI in
+[run 41473368799](https://github.com/cod4xr/client/actions/runs/41473368799), including
+locked sources and table reproduction. Hosted entity-delta validation will
 follow its commit. These changes edit only the client repository and consume the
 published shared revision.
+
+Ten entity-delta integration tests and three field tests add nonzero references,
+all eighteen target layouts, type changes, signed/XOR/absolute field distinctions,
+message-relative time, owned states/removals, wrong-reference rejection, cancellation,
+all record truncations, cached-bit rollback, compact-float reference bounds and
+stream ordering/reset. A 1,024-record trace checks repeated no/full/partial changes.
+Two compile-fail examples protect both reader and index owners. A read-only audit
+of the reviewed installed native reader identified the narrow integer reference
+mask and signed 16-bit angle conversion; the latter also corrects initial baseline
+decoding and has new high-angle vectors. The sixteenth client source hash binds the
+native entry point. [Evidence](entity-delta-reader-evidence.json) contains metadata
+only. Complete snapshots and native peer sessions remain open; see
+[individual delta records](entity-deltas.md).
 
 Fifteen typed pre-game tests add new-command-only disconnect/map/restart notices,
 native raw-prefix/token/copy-boundary rules, normalization and raw bytes, all

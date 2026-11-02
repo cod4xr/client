@@ -52,6 +52,9 @@ that can be cancelled before commit.
 [Typed pre-game controls](docs/pre-game-controls.md) now stage disconnect, map-change
 and fast-restart notices only from newly admitted commands. Commit retains history
 and returns inert typed notices for later host application.
+[Entity delta records](docs/entity-deltas.md) now decode against explicit prior
+protocol-21 state with joint reader/index rollback, shared native field tables and
+owned results. Complete snapshot framing and engine application remain separate.
 
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add

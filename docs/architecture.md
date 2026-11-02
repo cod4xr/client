@@ -133,6 +133,13 @@ Whole mixed ordinary-message plans now feed the same identity staging rules and
 server-command history. Sibling session/content admission remains separate.
 Neither logs nor debug formatting contains that text.
 
+Individual protocol-21 entity deltas reuse the generated baseline field catalogs
+and one context-aware value reader. Index preparation exclusively retains both
+original decoder/reader owners, allowing caller reference lookup by checked number
+before complete record decode. Failure/drop rolls back both; success returns owned
+inert state/removal and commits both cursors. No fixed entity table, snapshot
+framing, host snapshot mutation or engine authority is part of this layer.
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

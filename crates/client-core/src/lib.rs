@@ -26,6 +26,8 @@ pub mod system_info;
 
 pub use challenge::QueryChallenge;
 pub use error::DiscoveryError;
+/// Protocol-21 individual entity deltas sharing the reviewed baseline wire catalog.
+pub use gamestate::entity_baselines::deltas as entity_deltas;
 pub use info_response::{InfoResponse, MAX_INFO_DATAGRAM_BYTES};
 pub use profile::BaselineProtocol;
 pub use request::INFO_REQUEST_BYTES;
