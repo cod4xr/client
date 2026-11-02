@@ -9,6 +9,18 @@ mod ack_failures;
 mod ack_vectors;
 #[path = "snapshot_cases/bindings.rs"]
 mod bindings;
+#[path = "snapshot_cases/mixed_failures.rs"]
+mod mixed_failures;
+#[path = "snapshot_cases/mixed_framing.rs"]
+mod mixed_framing;
+#[path = "snapshot_cases/mixed_limits.rs"]
+mod mixed_limits;
+#[path = "snapshot_cases/mixed_owners.rs"]
+mod mixed_owners;
+#[path = "snapshot_cases/mixed_support.rs"]
+mod mixed_support;
+#[path = "snapshot_cases/mixed_vectors.rs"]
+mod mixed_vectors;
 #[path = "snapshot_cases/ownership.rs"]
 mod ownership;
 #[path = "snapshot_cases/payload_failures.rs"]

@@ -6,6 +6,7 @@ mod error;
 mod header;
 mod input;
 mod message;
+pub mod mixed_services;
 mod plan;
 mod prepare;
 mod prepared;

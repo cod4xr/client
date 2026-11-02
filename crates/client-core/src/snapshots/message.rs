@@ -13,6 +13,10 @@ pub struct SnapshotMessage {
     command_sequence: u32,
 }
 impl SnapshotMessage {
+    pub(crate) fn with_server_command_sequence(mut self, sequence: u32) -> Self {
+        self.command_sequence = sequence;
+        self
+    }
     /// Associates a positive shared-codec ordinary sequence with a world epoch and
     /// the server-command sequence preceding this snapshot in its enclosing message.
     /// No time or sequence is inferred from arrival order or a native ring index.

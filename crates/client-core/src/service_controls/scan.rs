@@ -6,22 +6,110 @@ use crate::message_body::BodyReader;
 use cod4x_protocol::MessageStringLimit;
 
 #[derive(Clone, Copy, Default)]
-pub(super) struct CommandDescriptor {
-    pub(super) sequence: u32,
-    pub(super) source: usize,
-    pub(super) destination: usize,
-    pub(super) length: usize,
+pub(crate) struct CommandDescriptor {
+    pub sequence: u32,
+    pub source: usize,
+    pub destination: usize,
+    pub length: usize,
 }
-
-pub(super) struct Layout {
-    pub(super) commands: [CommandDescriptor; MAX_BASELINE_SERVER_COMMANDS],
-    pub(super) command_count: usize,
-    pub(super) record_count: u32,
-    pub(super) byte_count: usize,
-    pub(super) logical_bytes: usize,
-    pub(super) client_update_count: usize,
+pub(crate) struct Layout {
+    pub commands: [CommandDescriptor; MAX_BASELINE_SERVER_COMMANDS],
+    pub command_count: usize,
+    pub record_count: u32,
+    pub byte_count: usize,
+    pub logical_bytes: usize,
+    pub client_update_count: usize,
 }
-
+impl Layout {
+    pub(crate) fn new(budget: ServiceControlBudget) -> Result<Self, ServiceControlError> {
+        if budget.max_records == 0 {
+            return Err(ServiceControlError::InvalidBudget);
+        }
+        Ok(Self {
+            commands: [CommandDescriptor::default(); MAX_BASELINE_SERVER_COMMANDS],
+            command_count: 0,
+            record_count: 0,
+            byte_count: 0,
+            logical_bytes: 0,
+            client_update_count: 0,
+        })
+    }
+    pub(crate) fn next(
+        &mut self,
+        reader: &mut BodyReader<'_>,
+        budget: ServiceControlBudget,
+    ) -> Result<u8, ServiceControlError> {
+        if self.record_count >= budget.max_records {
+            return Err(ServiceControlError::RecordBudget);
+        }
+        if reader.remaining_bytes() == 0 {
+            return Err(ServiceControlError::MissingEof);
+        }
+        let opcode = reader.read_u8().map_err(ServiceControlError::from)?;
+        self.record_count += 1;
+        Ok(opcode)
+    }
+    pub(crate) fn control(
+        &mut self,
+        opcode: u8,
+        reader: &mut BodyReader<'_>,
+        scratch: &mut [u8],
+        capacity: usize,
+        clients: &mut Clients<'_>,
+    ) -> Result<bool, ServiceControlError> {
+        match opcode {
+            0 => {}
+            4 => self.command(reader, scratch, capacity)?,
+            7 => {
+                self.logical_bytes = reader.byte_position();
+                return Ok(true);
+            }
+            11 => {
+                clients.read(self.client_update_count, reader)?;
+                self.client_update_count += 1;
+            }
+            other => return Err(ServiceControlError::UnsupportedService(other)),
+        }
+        Ok(false)
+    }
+    fn command(
+        &mut self,
+        reader: &mut BodyReader<'_>,
+        scratch: &mut [u8],
+        capacity: usize,
+    ) -> Result<(), ServiceControlError> {
+        if self.command_count == MAX_BASELINE_SERVER_COMMANDS {
+            return Err(ServiceControlError::CommandBudget);
+        }
+        let sequence = reader.read_i32().map_err(ServiceControlError::from)?;
+        if sequence <= 0 {
+            return Err(ServiceControlError::Sequence);
+        }
+        let source = reader.byte_position();
+        let length = reader
+            .read_legacy_string(scratch, MessageStringLimit::Big)
+            .map_err(ServiceControlError::from)?;
+        let end = self
+            .byte_count
+            .checked_add(length)
+            .filter(|&end| end <= capacity)
+            .ok_or(ServiceControlError::OutputCapacity)?;
+        self.commands[self.command_count] = CommandDescriptor {
+            sequence: sequence.cast_unsigned(),
+            source,
+            destination: self.byte_count,
+            length,
+        };
+        self.command_count += 1;
+        self.byte_count = end;
+        Ok(())
+    }
+    pub(crate) fn newest_command(&self, initial: u32) -> u32 {
+        self.commands[..self.command_count]
+            .iter()
+            .fold(initial, |newest, command| newest.max(command.sequence))
+    }
+}
 pub(super) fn scan(
     body: &[u8],
     budget: ServiceControlBudget,
@@ -29,64 +117,12 @@ pub(super) fn scan(
     capacity: usize,
     clients: &mut Clients<'_>,
 ) -> Result<Layout, ServiceControlError> {
-    if budget.max_records == 0 {
-        return Err(ServiceControlError::InvalidBudget);
-    }
+    let mut layout = Layout::new(budget)?;
     let mut reader = BodyReader::try_new(body, body.len()).map_err(ServiceControlError::from)?;
-    let mut layout = Layout {
-        commands: [CommandDescriptor::default(); MAX_BASELINE_SERVER_COMMANDS],
-        command_count: 0,
-        record_count: 0,
-        byte_count: 0,
-        logical_bytes: 0,
-        client_update_count: 0,
-    };
     loop {
-        if layout.record_count == budget.max_records {
-            return Err(ServiceControlError::RecordBudget);
-        }
-        if reader.remaining_bytes() == 0 {
-            return Err(ServiceControlError::MissingEof);
-        }
-        let opcode = reader.read_u8().map_err(ServiceControlError::from)?;
-        layout.record_count += 1;
-        match opcode {
-            0 => {}
-            4 => {
-                if layout.command_count == MAX_BASELINE_SERVER_COMMANDS {
-                    return Err(ServiceControlError::CommandBudget);
-                }
-                let sequence = reader.read_i32().map_err(ServiceControlError::from)?;
-                if sequence <= 0 {
-                    return Err(ServiceControlError::Sequence);
-                }
-                let source = body.len() - reader.remaining_bytes();
-                let length = reader
-                    .read_legacy_string(scratch, MessageStringLimit::Big)
-                    .map_err(ServiceControlError::from)?;
-                let end = layout
-                    .byte_count
-                    .checked_add(length)
-                    .filter(|&end| end <= capacity)
-                    .ok_or(ServiceControlError::OutputCapacity)?;
-                layout.commands[layout.command_count] = CommandDescriptor {
-                    sequence: u32::try_from(sequence).map_err(|_| ServiceControlError::Sequence)?,
-                    source,
-                    destination: layout.byte_count,
-                    length,
-                };
-                layout.command_count += 1;
-                layout.byte_count = end;
-            }
-            7 => {
-                layout.logical_bytes = body.len() - reader.remaining_bytes();
-                return Ok(layout);
-            }
-            11 => {
-                clients.read(layout.client_update_count, &mut reader)?;
-                layout.client_update_count += 1;
-            }
-            other => return Err(ServiceControlError::UnsupportedService(other)),
+        let opcode = layout.next(&mut reader, budget)?;
+        if layout.control(opcode, &mut reader, scratch, capacity, clients)? {
+            return Ok(layout);
         }
     }
 }

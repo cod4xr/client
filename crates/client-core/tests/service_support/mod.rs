@@ -72,3 +72,49 @@ pub(crate) fn append_command(output: &mut Vec<u8>, sequence: i32, text: &[u8]) {
     output.extend_from_slice(text);
     output.push(0);
 }
+
+// Same empty native baseline used by control/identity and snapshot-owner fixtures.
+pub(crate) fn seed_identities(
+    state: &mut cod4xr_client_core::client_identities::ClientIdentityState<'_>,
+    sequence: u32,
+) {
+    use cod4xr_client_core::{
+        client_identities::ClientIdentityBudget,
+        gamestate::{GameStateBudget, GameStateStorage, ReliableGameStatePlan},
+    };
+    let mut input = vec![1, 0, 0, 0, 1, 0, 0, 0, 0, 7];
+    for value in [sequence, 3, 0x1234_5678, 0] {
+        input.extend_from_slice(&value.to_le_bytes());
+    }
+    let plan = ReliableGameStatePlan::parse(
+        &input,
+        BaselineProtocol::Cod4x21,
+        input.len(),
+        GameStateBudget {
+            max_services: 1,
+            max_configstrings: 0,
+            max_text_bytes: 0,
+            max_entities: 0,
+            max_client_records: 0,
+        },
+        &mut [],
+        GameStateStorage {
+            configstring_bytes: &mut [],
+            configstring_slots: &mut [],
+            entity_slots: &mut [],
+            client_slots: &mut [],
+        },
+    )
+    .expect("Whole empty baseline");
+    let _ = state
+        .prepare_game_state(
+            &plan,
+            ClientIdentityBudget {
+                max_clients: 2,
+                max_records: 0,
+            },
+            &mut [],
+        )
+        .expect("Seed state")
+        .commit();
+}

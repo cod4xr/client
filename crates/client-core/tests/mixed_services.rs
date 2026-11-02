@@ -15,7 +15,6 @@ use cod4xr_client_core::{
         ClientIdentityBudget, ClientIdentityError, ClientIdentitySlot, ClientIdentityState,
     },
     commands::{LEGACY_COMMAND_SLOT_BYTES, LegacyClientCommands},
-    gamestate::{GameStateBudget, GameStateStorage, ReliableGameStatePlan},
     service_controls::{
         ClientDataUpdateSlot, ClientServiceBudget, ClientServiceStorage, LegacyServicePlan,
         ServiceControlBudget, ServiceControlError,
@@ -90,39 +89,5 @@ fn mixed() -> Vec<u8> {
     source
 }
 fn seed(state: &mut ClientIdentityState<'_>, sequence: u32) {
-    let mut input = vec![1, 0, 0, 0, 1, 0, 0, 0, 0, 7];
-    for value in [sequence, 3, 0x1234_5678, 0] {
-        input.extend_from_slice(&value.to_le_bytes());
-    }
-    let plan = ReliableGameStatePlan::parse(
-        &input,
-        BaselineProtocol::Cod4x21,
-        input.len(),
-        GameStateBudget {
-            max_services: 1,
-            max_configstrings: 0,
-            max_text_bytes: 0,
-            max_entities: 0,
-            max_client_records: 0,
-        },
-        &mut [],
-        GameStateStorage {
-            configstring_bytes: &mut [],
-            configstring_slots: &mut [],
-            entity_slots: &mut [],
-            client_slots: &mut [],
-        },
-    )
-    .expect("Whole empty baseline");
-    let _ = state
-        .prepare_game_state(
-            &plan,
-            ClientIdentityBudget {
-                max_clients: 2,
-                max_records: 0,
-            },
-            &mut [],
-        )
-        .expect("Seed state")
-        .commit();
+    service_support::seed_identities(state, sequence);
 }

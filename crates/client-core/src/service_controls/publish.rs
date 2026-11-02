@@ -2,7 +2,7 @@
 use super::{ServiceControlError, scan::Layout};
 use cod4x_protocol::{MessageReader, MessageStringLimit};
 
-pub(super) fn commands(
+pub(crate) fn commands(
     body: &[u8],
     layout: &Layout,
     output: &mut [u8],

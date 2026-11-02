@@ -25,6 +25,18 @@ pub struct SnapshotPayloadPlan<'storage> {
     client_acknowledge: u32,
 }
 impl<'storage> SnapshotPayloadPlan<'storage> {
+    pub(crate) fn check_binding(
+        payload: &DecodedServerPayload<'_, '_>,
+        input: SnapshotInput<'_>,
+    ) -> Result<(), SnapshotPayloadError> {
+        if input.context.profile() != payload.profile() {
+            return Err(SnapshotPayloadError::Profile);
+        }
+        if input.message.sequence() != payload.sequence() {
+            return Err(SnapshotPayloadError::MessageSequence);
+        }
+        Ok(())
+    }
     /// Binds context to the original payload profile/sequence before any output write,
     /// then validates the complete specialized carrier and explicit prediction choice.
     /// The result retains neither payload/key-history nor sample/source borrows.
@@ -43,12 +55,7 @@ impl<'storage> SnapshotPayloadPlan<'storage> {
         output: SnapshotOutput<'storage>,
         prediction: SnapshotPrediction<'_>,
     ) -> Result<Self, SnapshotPayloadError> {
-        if input.context.profile() != payload.profile() {
-            return Err(SnapshotPayloadError::Profile);
-        }
-        if input.message.sequence() != payload.sequence() {
-            return Err(SnapshotPayloadError::MessageSequence);
-        }
+        Self::check_binding(payload, input)?;
         let mut reader = BodyReader::try_new(payload.body(), MAX_MESSAGE_BYTES)
             .map_err(SnapshotPayloadError::Body)?;
         let prepared = SnapshotServicePlan::prepare(&mut reader, input, budget, output)

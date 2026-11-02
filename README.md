@@ -109,6 +109,10 @@ keeps the checked outgoing command key retained through cooked snapshot decoding
 and host preflight. Cancellation leaves the ACK unchanged; consuming commitment
 copies the checked key before its pending slot becomes reusable.
 
+[Mixed snapshot services](docs/mixed-snapshot-services.md) now validate commands and
+protocol-21 identities on both sides of one snapshot through EOF. All four final
+buffers publish only after complete validation and prediction selection.
+
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add
 caller-funded fragment retention, selective metadata and bounded stream reads.

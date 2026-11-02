@@ -245,6 +245,14 @@ Commit copies the prechecked key without a fallible operation; dropping cancels
 ACK release. Connection-wide session/history ownership and mixed routing remain
 separate; see [snapshot acknowledgements](snapshot-acknowledgements.md).
 
+Mixed snapshot carriers reuse private incremental control scanning around the same
+snapshot transaction, retaining command offsets into the immutable original body.
+The saved snapshot command sequence captures only the monotonic prefix before it;
+tail controls stay in the complete cooked control plan. Complete EOF/prediction
+validation precedes all four output publications. Existing command/identity owner
+preflight consumes the cooked controls; mixed ACK/session ownership remains
+separate. See [mixed snapshot services](mixed-snapshot-services.md).
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

@@ -2,7 +2,7 @@
 use super::{ClientDataUpdateSlot, ServiceControlError};
 use crate::{BaselineProtocol, client_data::ClientDataUpdate, message_body::BodyReader};
 
-pub(super) enum Clients<'scratch> {
+pub(crate) enum Clients<'scratch> {
     Reject,
     Accept {
         maximum: usize,

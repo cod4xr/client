@@ -3,13 +3,13 @@
 //! Gamestate/snapshots/downloads need their own decoders and are not skipped here.
 
 mod client_plan;
-mod client_scan;
+pub(crate) mod client_scan;
 mod client_storage;
 mod command;
 mod error;
 mod plan;
-mod publish;
-mod scan;
+pub(crate) mod publish;
+pub(crate) mod scan;
 
 pub use client_storage::{ClientDataUpdateSlot, ClientServiceBudget, ClientServiceStorage};
 pub use command::ServerCommand;

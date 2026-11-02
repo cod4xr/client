@@ -48,11 +48,29 @@ impl<'commands> LegacyServicePlan<'commands> {
         output: &'commands [u8],
         client_updates: &'commands [ClientDataUpdateSlot],
     ) -> Self {
+        Self::from_parts(
+            payload.profile(),
+            payload.sequence(),
+            payload.client_command_acknowledge(),
+            layout,
+            output,
+            client_updates,
+        )
+    }
+
+    pub(crate) fn from_parts(
+        profile: BaselineProtocol,
+        message_sequence: u32,
+        client_acknowledge: u32,
+        layout: Layout,
+        output: &'commands [u8],
+        client_updates: &'commands [ClientDataUpdateSlot],
+    ) -> Self {
         let bytes = &output[..layout.byte_count];
         Self {
-            profile: payload.profile(),
-            message_sequence: payload.sequence(),
-            client_acknowledge: payload.client_command_acknowledge(),
+            profile,
+            message_sequence,
+            client_acknowledge,
             layout,
             bytes,
             client_updates,
