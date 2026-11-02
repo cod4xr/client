@@ -62,6 +62,9 @@ prepared update path, including native fractional and integer-boundary behavior.
 [Snapshot entity substreams](docs/snapshot-entity-streams.md) now merge complete
 ordered updates before publication, with caller-funded storage and reusable cooked
 sources. Shared wire code lives in `entities` while existing imports remain available.
+[Snapshot client-state records](docs/snapshot-client-states.md) now preserve all
+twenty-four native fields against explicit prior state, including packed raw names,
+with transactional framing/index/field reads for both baseline profiles.
 
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add

@@ -43,6 +43,8 @@ jobs:
           python tools/verify_upstream.py reference-client reference-server
       - name: Verify generated entity baseline catalogs
         run: python tools/import_entity_baseline_tables.py reference-client
+      - name: Verify generated snapshot client-state schema
+        run: python tools/import_client_state_table.py reference-client
       - name: Verify immutable image format references
         run: python tools/verify_iwi_sources.py
       - name: Reproduce wavelet codeword catalogs

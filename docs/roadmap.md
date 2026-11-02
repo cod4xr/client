@@ -62,6 +62,11 @@ through the native terminator before final publication. Shared wire code lives i
 the dedicated `entities` module, with compatibility imports retained. Caller-owned
 results can retain more total entity states than the native ring; full snapshots,
 client/player streams and epoch-bound history remain separate work.
+Individual snapshot client-state records now decode all twenty-four native fields
+for either baseline profile, with raw packed names, explicit prior selection and
+joint framing/index/field rollback. The independent more-records bit preserves
+client 63 as valid. Complete client-state sparse merging and player-state decoding
+remain gates before whole-snapshot admission and epoch-bound history.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 

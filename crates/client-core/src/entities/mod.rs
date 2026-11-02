@@ -3,6 +3,7 @@
 //! Baselines and deltas share value rules and native field catalogs. Whole-message
 //! admission, snapshot ownership and geometry/resource interpretation remain separate.
 
+pub mod clients;
 mod context;
 mod decoder;
 #[cfg(test)]

@@ -10,6 +10,11 @@ use crate::message_body::BodyReader;
 #[derive(Clone, Copy)]
 pub(super) struct FieldSpec {
     pub word: BaselineWord,
+    value: ValueSpec,
+}
+
+#[derive(Clone, Copy)]
+pub(super) struct ValueSpec {
     bits: i16,
     unconditional: bool,
 }
@@ -17,6 +22,12 @@ pub(super) struct FieldSpec {
 pub(super) const fn f(word: BaselineWord, bits: i16, unconditional: bool) -> FieldSpec {
     FieldSpec {
         word,
+        value: v(bits, unconditional),
+    }
+}
+
+pub(super) const fn v(bits: i16, unconditional: bool) -> ValueSpec {
+    ValueSpec {
         bits,
         unconditional,
     }
@@ -49,6 +60,16 @@ pub(super) fn read_legacy(
 pub(super) fn read_delta_in_context(
     reader: &mut BodyReader<'_>,
     field: FieldSpec,
+    reference: u32,
+    time: u32,
+    legacy_center: Option<LegacyMapCenter>,
+) -> Result<u32, FieldReadError> {
+    read_value(reader, field.value, reference, time, legacy_center)
+}
+
+pub(super) fn read_value(
+    reader: &mut BodyReader<'_>,
+    field: ValueSpec,
     reference: u32,
     time: u32,
     legacy_center: Option<LegacyMapCenter>,

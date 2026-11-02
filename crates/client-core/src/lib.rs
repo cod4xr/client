@@ -26,6 +26,8 @@ pub mod service_controls;
 pub mod system_info;
 
 pub use challenge::QueryChallenge;
+/// Owned snapshot client-state records, distinct from protocol-21 identity updates.
+pub use entities::clients as client_states;
 /// Explicit-profile entity deltas sharing the reviewed baseline wire catalog.
 pub use entities::deltas as entity_deltas;
 /// Complete native entity substreams with transactional merged output.

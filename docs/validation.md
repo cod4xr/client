@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 498 tests pass in both debug and release on the pinned
+Latest local checkpoint: 515 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (512 source files, 6 crates; all checked source
+formatting and repository policy pass (525 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,22 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 482-test legacy-delta checkpoint passed hosted Windows/Linux CI in
-[run 41484203668](https://github.com/cod4xr/client/actions/runs/41484203668), including
-locked sources and table reproduction. Hosted entity-stream validation will
+The 498-test entity-stream checkpoint passed hosted Windows/Linux CI in
+[run 41489101515](https://github.com/cod4xr/client/actions/runs/41489101515), including
+locked sources and table reproduction. Hosted client-state-record validation will
 follow its commit. These changes edit only the client repository and consume the
 published shared revision.
+
+Fifteen client-state record tests add all twenty-four fields, physical byte vectors,
+both baseline profiles, prior XOR and omitted-word retention, raw packed names,
+signed-zero/raw/compact floats, all sixty-four client indices, separate end framing,
+owned lifetimes, cancellation, invalid references/counts/order, every truncated
+full-record prefix with cached bits and 128 modeled traces per profile. Two
+compile-fail examples protect leased reader/index owners. The reproduced catalog
+also matches all twenty-four offsets, widths and hints in the reviewed native
+image; [audit metadata](snapshot-client-state-reader-evidence.json) records that
+comparison. Whole client-state merging, player-state decoding and full snapshot
+admission remain open; see [client-state records](snapshot-client-states.md).
 
 Fifteen complete entity-substream tests add native terminator/framing bytes, maximum
 index termination, valid existing cached bits and following fields, full sparse

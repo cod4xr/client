@@ -155,6 +155,14 @@ reuse final cells without repacking or retaining prior inputs. Host budgets repl
 the native global parse-entity ring; full snapshot/epoch/message admission remains
 separate from these inert substream results.
 
+Snapshot client-state records share position-independent field value rules with
+entities, but use their own semantic word catalog and six-bit index namespace.
+Preparation leases the leading more bit, index and both reader cursors. Explicit
+prior lookup returns owned state/removal only after complete field decoding; a
+zero more bit commits stream termination independently of client index 63. Packed
+names remain raw bytes outside Debug output. No global client ring, implicit
+identity reconciliation or engine resource application is introduced.
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,
