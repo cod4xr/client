@@ -1,0 +1,32 @@
+{
+  "purpose": "Synthetic native movement-key hash fixtures and source identity; no executable or assembly",
+  "source": {
+    "repository": "https://github.com/callofduty4x/CoD4x_Client_pub.git",
+    "revision": "17182c7bf04b859dea5c0db4acdb0b83c28d6dd2",
+    "file": "src/common.c",
+    "function_line": 519,
+    "normalized_sha256": "fd7b46f7ad876510aa5872a129c9e6f8e2cd90a87dc2dd374ba414499deb9238",
+    "packet_use": "src/cl_main.c:4352",
+    "native_count_limit": "src/qcommon.h:134",
+    "prediction_vector": "src/msg.c:283"
+  },
+  "semantics": {
+    "maximum_key_bytes": 32,
+    "character": "signed native x86 char, expressed explicitly as i8",
+    "sum": "character times (119 + byte position)",
+    "fold": "original signed sum XOR arithmetic shift by ten XOR arithmetic shift by twenty",
+    "packet_key": "checksum feed XOR admitted message ACK XOR native command hash",
+    "incoming_0x92": "preserved"
+  },
+  "fixture_generation": {
+    "compiler": "GCC 16.1.0",
+    "target": "x86_64-w64-mingw32",
+    "method": "Original immutable C algorithm evaluated by C++14 constexpr; generated constant-return assembly inspected without execution or saving",
+    "evaluation_only_changes": ["constexpr specifier", "readonly string pointer", "initializing locals overwritten before use"],
+    "static_assertions": ["char 255 is negative", "negative signed right shift is arithmetic"],
+    "constant_validation": "Every fixture reduced to an immediate EAX return or zero EAX return, additionally cross-checked against signed-byte integer arithmetic",
+    "fixture_file": "crates/client-core/tests/fixtures/movement_key_vectors.txt",
+    "fixtures": 9
+  },
+  "scope": "Native-profile key semantics and synthetic packet evidence; session provenance and ordinary native peer interoperability remain separate"
+}

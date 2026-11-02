@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 729 tests pass in both debug and release on the pinned
+Latest local checkpoint: 738 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (704 source files, 6 crates; all checked source
+formatting and repository policy pass (720 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,20 @@ Reliable gamestate bodies now have whole-frame admission coverage. Mixed-message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 722-test actual-header/history checkpoint passed hosted Windows/Linux CI in
-[run 41528203245](https://github.com/cod4xr/client/actions/runs/41528203245), including
-locked sources and table reproduction. The preceding whole-history checkpoint also
-passed [run 41525874749](https://github.com/cod4xr/client/actions/runs/41525874749).
+The 729-test full-form command checkpoint passed hosted Windows/Linux CI in
+[run 41530485121](https://github.com/cod4xr/client/actions/runs/41530485121), including
+locked sources and table reproduction. The preceding actual-header/history checkpoint
+also passed [run 41528203245](https://github.com/cod4xr/client/actions/runs/41528203245).
 These changes edit only the client repository and consume the published shared revision.
+
+Seven complete movement-packet cases cover both profiles, full one/two/thirty-two
+input batches, signed native keys, shared-decoder field reconstruction, raw prediction
+reports, mode/reference binding, native limits, atomic output and compression retry
+that defers the final reliable record while preserving every input. A private hash
+case covers nine compiler-evaluated fixtures. A real UDP case admits a high-byte
+server key, sends the complete batch through the original socket, and releases its
+reliable record only after the peer's fully validated response. All seventeen pinned
+public-client source hashes verify locally. See [movement packets](movement-packets.md).
 
 Six native user-command integration cases cover an independent physical vector,
 all key bits, timestamp signs/extremes, nonzero references, canonical axes/actions,

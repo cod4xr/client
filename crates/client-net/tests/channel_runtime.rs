@@ -13,6 +13,8 @@ mod control;
 mod limits;
 #[path = "channel_cases/mixed_services/mod.rs"]
 mod mixed_services;
+#[path = "channel_cases/movement/mod.rs"]
+mod movement;
 #[path = "channel_cases/pre_game.rs"]
 mod pre_game;
 #[path = "channel_cases/receive.rs"]

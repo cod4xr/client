@@ -6,6 +6,8 @@
 )]
 #[path = "control_cases/limits.rs"]
 mod limits;
+#[path = "control_cases/movement/mod.rs"]
+mod movement;
 #[path = "control_cases/wire.rs"]
 mod wire;
 

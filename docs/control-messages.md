@@ -3,8 +3,10 @@
 `ControlMessagePlan` builds baseline idle/ordinary-client-command bodies before
 channel packetization. It owns the resulting private bytes, so caller command/key
 storage can change or disappear afterward. Construction never marks a command
-transmitted or commits a received acknowledgement. Movement, inbound decoding,
-gamestate and CoD4X's separate reliable transport remain outside this boundary.
+transmitted or commits a received acknowledgement. The
+[movement constructor](movement-packets.md) adds complete native input batches to
+this same owner. Inbound decoding, gamestate and the auxiliary reliable transport
+remain separate boundaries.
 
 The host chooses `ClientControlHeader::Legacy6` or `Cod4x21` explicitly. Discovery
 protocol 6 and challenge marker 18 never select a layout. The legacy header has
@@ -28,6 +30,8 @@ wire budget, construction rebuilds a shorter complete prefix, bounded by the
 A single command that could not fit would fail explicitly instead of silently
 deferring all work. Deferred commands remain pending for a subsequent frame.
 The result reports included count and last sequence for later transmit admission.
+Movement packets separately report their user-command count and may defer the last
+reliable command when compression expansion requires it, preserving every movement input.
 
 `ServerCommandKey::from_retained` validates representation only; the host must
 obtain it from validated incoming history. Native incoming string reading maps

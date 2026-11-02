@@ -1,0 +1,12 @@
+# Compiler-evaluated immutable public-client src/common.c Com_HashKey, maxlen 32.
+# Revision 17182c7bf04b859dea5c0db4acdb0b83c28d6dd2; signed char and arithmetic shift.
+# Original algorithm evaluated using C++14 constexpr; no generated code executed.
+empty - 0
+ascii 507269766174652e4166746572 159243
+high80 80 4294952078
+high92 92 4294954194
+highff ff 4294967177
+mixed 4180429243ff 4294962358
+first32 808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9f 4294485654
+tail_ignored 808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9f5441494c 4294485654
+nul_stop 6162630069676e6f726564 35312

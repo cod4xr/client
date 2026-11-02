@@ -1,25 +1,22 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 use std::fmt;
 
-use cod4x_protocol::{
-    MessageStringLimit, MessageWriter,
-    compression::{self, CompressionError},
-    obfuscation,
-};
-
 use crate::commands::LegacyClientCommands;
 
-use super::{ClientControlHeader, ControlMessageError, MAX_CONTROL_MESSAGE_BYTES};
+use super::{
+    ClientControlHeader, ControlMessageError, MAX_CONTROL_MESSAGE_BYTES, MovementBatch, assemble,
+};
 
-/// Owned command/idle frame, before channel headers and without gameplay movement.
+/// Owned reliable-command/idle/movement frame before channel headers and input admission.
 /// Construction never marks commands transmitted or commits peer acknowledgements.
 pub struct ControlMessagePlan {
-    bytes: [u8; MAX_CONTROL_MESSAGE_BYTES],
-    length: usize,
-    protocol: i32,
-    command_count: u32,
-    last_command: Option<u32>,
-    challenge: i32,
+    pub(super) bytes: [u8; MAX_CONTROL_MESSAGE_BYTES],
+    pub(super) length: usize,
+    pub(super) protocol: i32,
+    pub(super) command_count: u32,
+    pub(super) user_command_count: u8,
+    pub(super) last_command: Option<u32>,
+    pub(super) challenge: i32,
 }
 
 impl ControlMessagePlan {
@@ -35,43 +32,31 @@ impl ControlMessagePlan {
         challenge: i32,
         history: &LegacyClientCommands<'_>,
     ) -> Result<Self, ControlMessageError> {
-        if header.message_acknowledge() > 0x7fff_ffff {
-            return Err(ControlMessageError::Header);
-        }
-        let mut count = select_prefix(header.encoded_len(), history)?;
-        let mut staging = [0; MAX_CONTROL_MESSAGE_BYTES];
-        let mut plan = Self {
-            bytes: [0; MAX_CONTROL_MESSAGE_BYTES],
-            length: 0,
-            protocol: header.requested_protocol(),
-            command_count: 0,
-            last_command: None,
-            challenge,
-        };
-        loop {
-            let length = write_plain(header, history, count, &mut staging)?;
-            let offset = header.encoded_len();
-            plan.bytes[..offset].copy_from_slice(&staging[..offset]);
-            match compression::compress(&staging[offset..length], &mut plan.bytes[offset..]) {
-                Ok(compressed) => {
-                    plan.length = offset + compressed;
-                    break;
-                }
-                Err(CompressionError::OutputCapacity) if count > 1 => count -= 1,
-                Err(error) => return Err(ControlMessageError::Compression(error)),
-            }
-        }
-        obfuscation::apply_client_payload(
-            &mut plan.bytes[header.encoded_len()..plan.length],
-            u32::from_le_bytes(challenge.to_le_bytes()),
-            header.server_id(),
-            header.message_acknowledge(),
-            header.server_command().as_bytes(),
-        )
-        .map_err(ControlMessageError::Obfuscation)?;
-        plan.command_count = count;
-        plan.last_command = (count > 0).then(|| history.acknowledged_sequence() + count);
-        Ok(plan)
+        assemble::build(header, challenge, history, None)
+    }
+
+    /// Builds a complete native movement packet with the oldest fitting reliable
+    /// command prefix. Movement input is retained in full; counts are not clamped.
+    /// Packet-derived keys, native profile binding and shared writer/compression/
+    /// transform precede ownership of the complete private frame. This marks no
+    /// input or reliable command transmitted and commits no peer acknowledgement.
+    ///
+    /// # Errors
+    /// Rejects invalid header, movement count/fields/profile/reference binding,
+    /// unavailable reliable history and shared primitive/codec exhaustion.
+    pub fn with_movement(
+        header: ClientControlHeader<'_>,
+        challenge: i32,
+        history: &LegacyClientCommands<'_>,
+        movement: MovementBatch<'_, '_>,
+    ) -> Result<Self, ControlMessageError> {
+        assemble::build(header, challenge, history, Some(movement))
+    }
+
+    /// Returns included native movement commands, independent of reliable commands.
+    #[must_use]
+    pub fn user_command_count(&self) -> u8 {
+        self.user_command_count
     }
 
     /// Returns the explicit frame profile for checking against the owning connection.
@@ -120,65 +105,13 @@ impl ControlMessagePlan {
     }
 }
 
-fn select_prefix(
-    header_bytes: usize,
-    history: &LegacyClientCommands<'_>,
-) -> Result<u32, ControlMessageError> {
-    let mut count = 0_u32;
-    let mut fields = 0;
-    for sequence in history.acknowledged_sequence() + 1..=history.latest_sequence() {
-        let command = history
-            .command(sequence)
-            .map_err(ControlMessageError::History)?;
-        let candidate_fields = fields + 4 + command.as_bytes().len() + 1;
-        let bit_bytes = (3
-            * (usize::try_from(count).map_err(|_| ControlMessageError::Header)? + 2))
-            .div_ceil(8);
-        if header_bytes + candidate_fields + bit_bytes > MAX_CONTROL_MESSAGE_BYTES {
-            break;
-        }
-        fields = candidate_fields;
-        count += 1;
-    }
-    Ok(count)
-}
-
-fn write_plain(
-    header: ClientControlHeader<'_>,
-    history: &LegacyClientCommands<'_>,
-    count: u32,
-    output: &mut [u8],
-) -> Result<usize, ControlMessageError> {
-    let mut writer = MessageWriter::try_new(output).map_err(ControlMessageError::Message)?;
-    header
-        .write(&mut writer)
-        .map_err(ControlMessageError::Message)?;
-    for sequence in history.acknowledged_sequence() + 1..=history.acknowledged_sequence() + count {
-        let command = history
-            .command(sequence)
-            .map_err(ControlMessageError::History)?;
-        writer
-            .write_bits(2, 3)
-            .map_err(ControlMessageError::Message)?;
-        writer
-            .write_bytes(&sequence.to_le_bytes())
-            .map_err(ControlMessageError::Message)?;
-        writer
-            .write_legacy_string(command.as_bytes(), MessageStringLimit::Normal)
-            .map_err(ControlMessageError::Message)?;
-    }
-    writer
-        .write_bits(3, 3)
-        .map_err(ControlMessageError::Message)?;
-    Ok(writer.len())
-}
-
 impl fmt::Debug for ControlMessagePlan {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
         formatter
             .debug_struct("ControlMessagePlan")
             .field("protocol", &self.protocol)
             .field("commands", &self.command_count)
+            .field("user_commands", &self.user_command_count)
             .field("bytes", &self.length)
             .finish_non_exhaustive()
     }

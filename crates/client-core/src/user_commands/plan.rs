@@ -40,10 +40,14 @@ impl AbsoluteUserCommandPlan {
     /// Returns the exact byte length at a fresh bit cursor, excluding packet framing.
     #[must_use]
     pub fn encoded_len(&self) -> usize {
+        let (bytes, bits) = self.wire_size();
+        bytes + bits.div_ceil(8)
+    }
+    pub(crate) fn wire_size(&self) -> (usize, usize) {
         let selection = usize::from(self.input.selected_location.is_some());
         let melee = usize::from(self.input.melee.is_some());
         let bit_count = 49 + 2 * selection + 10 * melee;
-        10 + 2 * selection + 2 * melee + bit_count.div_ceil(8)
+        (10 + 2 * selection + 2 * melee, bit_count)
     }
     /// Publishes a complete standalone command at a fresh bit cursor atomically.
     /// Existing output tails stay unchanged. Encoded command byte slices cannot be

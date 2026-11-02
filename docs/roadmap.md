@@ -100,7 +100,10 @@ binary lookup, independent sparse capacities, epoch reset and joint owner prefli
 History-assisted mixed decoding now selects the exact prior from the actual packet
 header before complete publication, with real protocol-21 UDP full/delta coverage.
 Native full-form user-command fields now encode through checked wire inputs and
-atomic caller output. Batch/packet/key composition and input/send ownership follow.
+atomic caller output. Native movement packet batches now share owned control framing,
+derive original native keys, retain all inputs through compression retry and use
+the original socket context, with real UDP/ACK coverage. Input history and engine
+input/prediction lifecycle remain open.
 Connection-wide gameplay/history ownership and broader routing remain open.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.

@@ -1,13 +1,17 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-//! Owned baseline control frames; gameplay movement and inbound decoding remain separate.
+//! Owned baseline control/movement frames, before channel I/O and input admission.
 
+mod assemble;
 mod error;
 mod header;
+mod movement;
+mod plain;
 mod plan;
 mod server_key;
 
 pub use error::ControlMessageError;
 pub use header::ClientControlHeader;
+pub use movement::{MAX_PACKET_USER_COMMANDS, MovementBatch, MovementMessageError};
 pub use plan::ControlMessagePlan;
 pub use server_key::ServerCommandKey;
 

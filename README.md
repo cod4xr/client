@@ -121,7 +121,9 @@ Cancellation preserves ACK/history; commitment copies the checked key.
 priors from actual packet headers, with protocol-21 UDP full/delta coverage.
 
 [Native user-command encoding](docs/user-command-encoding.md) now supplies checked
-full-form movement/action fields with atomic output; packet/send integration remains open.
+full-form movement/action fields with atomic output. [Movement packets](docs/movement-packets.md)
+compose complete batches and prediction reports through the original socket context;
+input history, prediction production and gameplay simulation remain open.
 
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add

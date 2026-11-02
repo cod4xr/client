@@ -274,7 +274,14 @@ distance or partial-message authority escapes. See [history-assisted decoding](h
 Native user-command encoding now supplies a checked full-form field plan over shared
 message writers and the pinned command decoder. Explicit wire turns and canonical
 axes avoid implicit engine conversions; private staging precedes atomic final output.
-Packet composition/input/send ownership remains separate. See [user commands](user-command-encoding.md).
+Input lifecycle remains separate. See [user commands](user-command-encoding.md).
+
+The existing owned control frame now also composes complete movement batches.
+Private preparation binds profiles, selects native delta/no-delta mode and derives
+the signed-character packet key. One shared writer preserves cache continuity
+through reliable prefixes, every input and the prediction trailer; exact bit/byte
+sizing and compression retries preserve all requested movement records. The same
+network context guard and I/O path are used. See [movement packets](movement-packets.md).
 
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or

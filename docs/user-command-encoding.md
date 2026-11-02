@@ -27,10 +27,10 @@ inventory IDs, axes and action values. Libraries install no logging subscriber.
 
 Standalone command byte slices cannot be concatenated into a native batch: cached
 bit bytes span interleaved byte fields and adjacent commands. The same private
-writer implementation can be used by later complete packet assembly. Batch
-opcode/count, packet-derived key selection, prediction trailer, reliable-command
-composition, input history, send admission and compact forms remain separate work.
-This codec alone does not send movement or make the client playable.
+writer implementation is now used by [complete packet assembly](movement-packets.md),
+including batch count, packet-derived key, prediction trailer and reliable prefix.
+Input history, authoritative input-send bookkeeping, prediction production, compact
+forms and playable sessions remain separate work.
 
 Six integration cases cover an independent physical full-zero vector, all key bits,
 both timestamp signs/extremes, nonzero baselines, all canonical axis pairs, every
