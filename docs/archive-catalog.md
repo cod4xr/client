@@ -31,9 +31,9 @@ layer neither normalizes them into virtual keys nor authorizes extraction. Archi
 attributes and alternate Unicode extra fields acquire no mount or symlink authority.
 
 Declared sizes/CRCs and a checked compressed span do not establish integrity.
-Payload decompression with exact output length/CRC validation, virtual-path policy,
-duplicate precedence, mount order, pure checksums and engine asset loading remain
-separate gates. The independent Deflate fixture was emitted by Python's standard
+[Checked payload decoding](zip-payloads.md) now supplies exact output length/CRC
+validation in a separate layer. Virtual-path policy, duplicate precedence, mount
+order, pure checksums and engine asset loading remain separate gates. The independent Deflate fixture was emitted by Python's standard
 ZIP writer; deliberately invalid compressed fixtures verify that cataloging does
 not accidentally claim decompression success.
 

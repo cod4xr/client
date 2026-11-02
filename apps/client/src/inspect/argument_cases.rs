@@ -30,6 +30,9 @@ fn duplicate_excessive_unknown_or_missing_arguments_reject_without_echoing_input
         vec!["--archive", ""],
         vec!["--archive", "image", "--log-format"],
         vec!["--archive", "image", "--log-format", "json", "extra"],
+        vec!["--verify-archive"],
+        vec!["--verify-archive", ""],
+        vec!["--verify-archive", "image", "--log-format", "json", "extra"],
     ] {
         let result = parse(values.into_iter().map(OsString::from).collect());
         assert!(result.is_err());
@@ -57,11 +60,16 @@ fn non_unicode_os_paths_are_preserved_instead_of_lossily_converted() {
         .expect("Native path")
         .expect("Inspection");
     assert_eq!(options.path.into_os_string(), path);
-    let options = parse(vec!["--archive".into(), path.clone()])
-        .expect("Native archive path")
-        .expect("Inspection");
-    assert_eq!(options.kind, Kind::Archive);
-    assert_eq!(options.path.into_os_string(), path);
+    for (flag, kind) in [
+        ("--archive", Kind::Archive),
+        ("--verify-archive", Kind::VerifiedArchive),
+    ] {
+        let options = parse(vec![flag.into(), path.clone()])
+            .expect("Native archive path")
+            .expect("Inspection");
+        assert_eq!(options.kind, kind);
+        assert_eq!(options.path.into_os_string(), path);
+    }
 }
 
 #[test]

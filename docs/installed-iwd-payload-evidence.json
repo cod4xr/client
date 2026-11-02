@@ -1,0 +1,17 @@
+{
+  "release": {
+    "archives": 21,
+    "verified_entries": 24243,
+    "verified_uncompressed_bytes": 3999040612
+  },
+  "debug": {
+    "mode": "debug",
+    "scope": "smallest installed main IWD by file size",
+    "archives": 1,
+    "verified_entries": 7,
+    "verified_uncompressed_bytes": 844144
+  },
+  "payload_integrity": "crc32_verified",
+  "writes_extracted_files": false,
+  "gameplay_compatibility": "unverified"
+}

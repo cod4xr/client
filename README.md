@@ -85,6 +85,8 @@ blocks with native restoration rules, bounded work and source-independent output
 retain unknown fields as inert bytes, without applying remote engine variables.
 [Classic archive catalogs](docs/archive-catalog.md) validate IWD directory/local
 records with caller-funded storage; inspector archive mode reports metadata only.
+[Checked archive payloads](docs/zip-payloads.md) now decode stored/Deflate data with
+exact lengths, CRC32 and rollback; explicit verification mode checks entries in memory.
 
 ## Run
 

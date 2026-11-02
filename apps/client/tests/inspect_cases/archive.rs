@@ -2,15 +2,19 @@
 use super::{Command, Fixture, OpenOptions, Output, fs};
 
 fn run(fixture: &Fixture, format: &str) -> Output {
+    run_mode(fixture, format, "--archive")
+}
+
+pub(super) fn run_mode(fixture: &Fixture, format: &str, mode: &str) -> Output {
     Command::new(env!("CARGO_BIN_EXE_cod4xr-client-inspect"))
-        .arg("--archive")
+        .arg(mode)
         .arg(&fixture.0)
         .args(["--log-format", format])
         .output()
         .expect("Archive inspector")
 }
 
-fn valid_bytes() -> Vec<u8> {
+pub(super) fn valid_bytes() -> Vec<u8> {
     // Independently generated Python stdlib ZIP containing a.txt / hello, plus a comment.
     let hex = concat!(
         "504b03041400000008000000215086a61036070000000500000005000000612e747874cb48cdc9c90700",
@@ -63,7 +67,7 @@ fn archive_success_reports_counts_without_paths_names_comments_or_integrity_clai
                     .any(|event| event["fields"]["event"] == "content.inspect.completed")
             );
         } else {
-            assert!(stderr.contains("Classic archive metadata cataloged"));
+            assert!(stderr.contains("Classic archive inspection completed"));
         }
     }
 }

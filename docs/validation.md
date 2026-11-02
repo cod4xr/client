@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 300 tests pass in both debug and release on the pinned
+Latest local checkpoint: 313 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (334 source files, 5 crates; all checked source
+formatting and repository policy pass (345 source files, 5 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,9 +14,9 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 279-test system-info checkpoint passed hosted Windows/Linux CI in
-[run 41407742188](https://github.com/cod4xr/client/actions/runs/41407742188), including
-locked sources and table reproduction. Hosted archive-catalog validation will
+The 300-test archive-catalog checkpoint passed hosted Windows/Linux CI in
+[run 41409025932](https://github.com/cod4xr/client/actions/runs/41409025932), including
+locked sources and table reproduction. Hosted payload-verification validation will
 follow its commit. These
 changes edit only the client repository and consume the published shared revision.
 
@@ -116,6 +116,20 @@ contains no game values or file names. Payload integrity, extraction, virtual mo
 pure checksums and asset loading remain open. The additional native filesystem
 reference is hash-locked from the read-only client checkout; no local server source
 was accessed or changed.
+
+Eleven payload tests add independent stored/fixed/dynamic Deflate vectors, empty
+streams, outputs beyond 32 KiB, all short prefixes and appended byte values, false
+lengths/CRCs, input mutations, exact host/caller bounds and dirty state reuse.
+Checked output survives original archive/metadata/codec/scratch release, with final
+storage unchanged on errors. Two additional process tests cover all-entry aggregate
+verification, human/JSON logs, false metadata and oversized declarations before
+payload allocations. Pinned Deflate/CRC libraries have default allocation helpers
+disabled. The debug verifier also checked all seven entries / 844,144 decoded bytes
+in the smallest installed main IWD. Release verification checked all 21 installed
+main IWDs: 24,243 entries / 3,999,040,612 decoded bytes passed exact lengths and CRCs.
+[Payload evidence](installed-iwd-payload-evidence.json) records only aggregate
+metadata. Virtual mount policy, native pure checksums and gameplay remain separate
+unimplemented gates.
 
 Eight new independent loopback tests exercise the reusable network crate: one
 source socket across challenge/connect/retries/handoff, exact cookie/protocol/qport

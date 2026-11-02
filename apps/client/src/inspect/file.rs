@@ -20,10 +20,27 @@ pub(super) fn read(path: &Path, maximum: usize) -> Result<Vec<u8>, InspectError>
         .checked_add(1)
         .and_then(|value| u64::try_from(value).ok())
         .ok_or(InspectError::FileBudget)?;
-    let mut bytes = Vec::with_capacity(capacity);
+    let mut bytes = Vec::new();
+    bytes
+        .try_reserve_exact(capacity)
+        .map_err(|_| InspectError::Capacity)?;
     file.take(limit).read_to_end(&mut bytes)?;
     if bytes.len() > maximum {
         return Err(InspectError::FileBudget);
     }
     Ok(bytes)
+}
+
+pub(super) fn resize<T: Clone>(
+    buffer: &mut Vec<T>,
+    length: usize,
+    fill: T,
+) -> Result<(), InspectError> {
+    if length > buffer.len() {
+        buffer
+            .try_reserve_exact(length - buffer.len())
+            .map_err(|_| InspectError::Capacity)?;
+    }
+    buffer.resize(length, fill);
+    Ok(())
 }

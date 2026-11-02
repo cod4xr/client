@@ -4,6 +4,7 @@ mod arguments;
 mod error;
 mod file;
 mod report;
+mod verify;
 
 use cod4x_observability::{LogConfig, LogRuntime};
 use cod4xr_content::defaults::{DefaultSlot, DefaultsBudget, ImportedDefaults};
@@ -42,8 +43,11 @@ pub(crate) fn run() -> Result<ExitCode, InspectError> {
 }
 
 fn execute(options: &arguments::Options) -> Result<(), InspectError> {
-    if options.kind == arguments::Kind::Archive {
-        return archive::execute(&options.path);
+    if options.kind != arguments::Kind::ClientImage {
+        return archive::execute(
+            &options.path,
+            options.kind == arguments::Kind::VerifiedArchive,
+        );
     }
     let started = Instant::now();
     let budget = DefaultsBudget {

@@ -46,8 +46,9 @@ Capture compatible ordinary-peer traces before claiming broad interoperability.
 
 Classic stored/Deflate IWD catalogs now have checked metadata, caller-funded
 descriptors and an inspector mode. Installed archive counts match an independent
-ZIP reader. Next content gates are exact payload decompression/CRC verification,
-virtual path/mount policy and native pure checksums before resource loading.
+ZIP reader. Stored/raw-Deflate payloads now have exact stream/length/CRC validation
+and an explicit in-memory verification command. Next content gates are virtual
+path/mount policy and native pure checksums before resource loading.
 
 Features that remove asset/model/image/entity/configstring limits need both
 internal storage/resource design and a negotiated extended wire/content profile.

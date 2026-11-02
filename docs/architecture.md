@@ -69,7 +69,11 @@ Content archive catalogs retain original central-directory order over immutable
 caller bytes. A private descriptor workspace validates local spans and rejects
 overlap before publishing final metadata. Entry views carry no path or integrity
 authority. Host file I/O and metadata reporting stay in the existing inspector;
-decompression, CRC verification and virtual mount policy remain separate layers.
+payload decoding and virtual mount policy remain separate layers.
+Payload decoding owns reusable inline Deflate state but no allocator. Caller scratch
+holds a guarded complete output; exact stream/length/CRC validation precedes final
+copying. Checked results borrow only final storage. Host verification reuses entry
+buffers, performs fallible reservations and reports only complete aggregate results.
 
 Client identity records have one owned representation shared by gamestate patches
 and ordinary sequenced updates. Their small arrays are explicit native field
