@@ -5,8 +5,10 @@ use std::{error::Error, fmt};
 /// Fixed entity-baseline failures, excluding raw entity state.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum EntityBaselineError {
-    /// Coordinate encoding for this selected profile has not been reviewed here.
+    /// This constructor/operation lacks the selected profile's explicit context.
     UnsupportedProfile,
+    /// A map-center component cannot form a finite native signed-32 coordinate bias.
+    InvalidMapCenter,
     /// A gamestate baseline cannot remove an entity from its zero reference.
     Removed,
     /// The last changed field is zero or outside the selected entity layout.
@@ -21,6 +23,7 @@ impl fmt::Display for EntityBaselineError {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
         formatter.write_str(match self {
             Self::UnsupportedProfile => "entity baseline unsupported by selected profile",
+            Self::InvalidMapCenter => "invalid legacy entity map-center component",
             Self::Removed => "gamestate entity baseline cannot be a removal",
             Self::FieldCount => "invalid entity baseline changed-field count",
             Self::FieldEncoding => "unsupported static entity baseline field rule",

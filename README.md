@@ -55,6 +55,8 @@ and returns inert typed notices for later host application.
 [Entity delta records](docs/entity-deltas.md) now decode against explicit prior
 protocol-21 state with joint reader/index rollback, shared native field tables and
 owned results. Complete snapshot framing and engine application remain separate.
+[Legacy baseline coordinates](docs/legacy-baseline-coordinates.md) now add explicit
+checked map-center context, native precision/bias rules and atomic record admission.
 
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add

@@ -26,14 +26,15 @@ view cap without turning that cap into an engine memory or asset limit.
 Typed gamestate constituents live under client-core's `gamestate` module. Explicit
 configstring blocks use independent wire namespace and host work/storage budgets.
 Validation precedes publication into caller-owned text and metadata; plans borrow
-only cooked output. Protocol-21 zero-reference entity baselines now have a separate
-owned semantic-word representation and shared ordered-index state. Complete
+only cooked output. Initial entity baselines now have a separate owned semantic-word
+representation and shared ordered-index state. Protocol 21 uses raw coordinates;
+protocol 6 requires checked explicit map-center context. Complete
 gamestate constituents use one private two-pass walker, validating all records,
 trailers and capacities before publishing any final output. The complete auxiliary
 gamestate wrapper validates its prefix, reserved tail and byte exhaustion before
 that same publication pass. Other message admission and engine application remain
-later boundaries, with native constant
-defaults, legacy coordinate fields and nonzero-reference snapshot deltas still open.
+later boundaries, including complete legacy gamestates, nonzero legacy deltas,
+session/content application and complete snapshots.
 
 The network owner can prepare a whole typed gamestate over its original ready
 frame. An exclusive handle prevents concurrent frame replacement while the host

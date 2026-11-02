@@ -1,10 +1,11 @@
-# Protocol-21 entity baselines
+# Initial entity baselines
 
 `gamestate::entity_baselines::EntityBaselineDecoder` parses initial
 `svc_baseline` records from a zero reference, including the preceding ordered
-entity index. It currently requires the explicit protocol-21 profile. Protocol 6
-rejects at construction until its distinct coordinate/map-center representation
-has separate conformance evidence. Discovery advertisements do not select a profile.
+entity index. Protocol 21 uses explicit raw-coordinate context; protocol 6 now has
+[checked map-center context](legacy-baseline-coordinates.md) through
+`with_legacy_map_center`. The original protocol-6 constructor rejects missing context.
+Discovery advertisements do not select a profile.
 
 The locked public client's `src/msg.c` supplies eighteen entity field lists and
 their writer rules. All lists begin with the same changed/8-bit entity-type field;
@@ -60,7 +61,7 @@ removal rejection, private debug output and rollback of existing cache/index sta
 These are source-grounded conformance fixtures, not captures from a live native peer.
 
 Complete protocol-21 gamestate constituents now have a separate transactional
-plan. Reviewed native constants now have a separate content importer. Default/wire
-merging, other enclosing-message admission, legacy
-coordinates, complete snapshots, engine interpretation and ordinary-server
+plan. Reviewed native constants and effective default/wire merging have separate
+content/snapshot APIs. Complete legacy gamestates, other enclosing-message admission,
+nonzero legacy deltas, complete snapshots, engine interpretation and ordinary-server
 interoperability remain open. A baseline parse alone does not establish a playable connection.

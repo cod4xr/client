@@ -1,0 +1,32 @@
+{
+  "operation": "read_only_installed_legacy_coordinate_reader_audit",
+  "file_name": "iw3mp.exe",
+  "sha256": "f50f8a520581754e73cb7cae67b02adcbad5f2e71aaa412a013bb3ef57a391a5",
+  "image_bytes": 3330048,
+  "preferred_image_base": "0x00400000",
+  "xy_reader_address": "0x005065f0",
+  "z_reader_address": "0x00506680",
+  "xy_half_addition_address": "0x00506633",
+  "z_half_addition_address": "0x005066b8",
+  "exact_half_constant_address": "0x0070ace8",
+  "integer_conversion_address": "0x0068b360",
+  "audited_rules": [
+    "seven_bit_small_delta_with_negative_64_bias",
+    "sixteen_bit_full_coordinate_xor",
+    "axis_specific_map_center",
+    "precise_x87_half_addition_before_integer_conversion",
+    "prior_integer_truncation",
+    "complete_prior_bias_bits_before_xor",
+    "signed_32_bit_register_arithmetic",
+    "binary32_result_storage"
+  ],
+  "source_binding": {
+    "repository": "https://github.com/callofduty4x/CoD4x_Client_pub.git",
+    "revision": "17182c7bf04b859dea5c0db4acdb0b83c28d6dd2",
+    "files": ["src/msg.c", "src/callbacks.asm", "CMakeLists.txt"]
+  },
+  "binary_or_disassembly_included": false,
+  "game_data_values_recorded": false,
+  "publisher_authentication_claimed": false,
+  "gameplay_session_tested": false
+}

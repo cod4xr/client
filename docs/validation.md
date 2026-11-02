@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 460 tests pass in both debug and release on the pinned
+Latest local checkpoint: 471 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (486 source files, 6 crates; all checked source
+formatting and repository policy pass (493 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,23 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 445-test typed pre-game checkpoint passed hosted Windows/Linux CI in
-[run 41473368799](https://github.com/cod4xr/client/actions/runs/41473368799), including
-locked sources and table reproduction. Hosted entity-delta validation will
+The 460-test entity-delta checkpoint passed hosted Windows/Linux CI in
+[run 41477571953](https://github.com/cod4xr/client/actions/runs/41477571953), including
+locked sources and table reproduction. Hosted legacy-baseline validation will
 follow its commit. These changes edit only the client repository and consume the
 published shared revision.
+
+Nine legacy-baseline integration tests and two physical field tests add explicit
+protocol-6 map-center context, all 128 short values on each axis, sixteen-bit full
+coordinate windows, all eighteen layouts, native half-bias/truncation precision,
+signed conversion bounds, nonfinite rejection, context replacement without index
+reset, context-preserving reset, source ownership, all record truncations and late
+cached-bit rollback. A native x87 audit verified precise addition before integer
+conversion, avoiding an incorrect intermediate binary32 rounding. Existing modern
+baseline/delta vectors remain covered. [Metadata evidence](legacy-coordinate-reader-evidence.json)
+contains no binary bytes or disassembly. Complete legacy gamestates, nonzero legacy
+records and native peer traces remain separate; see
+[legacy baseline coordinates](legacy-baseline-coordinates.md).
 
 Ten entity-delta integration tests and three field tests add nonzero references,
 all eighteen target layouts, type changes, signed/XOR/absolute field distinctions,

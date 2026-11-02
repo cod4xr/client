@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 use super::{
-    BaselineWord, EntityBaselineError,
+    BaselineWord, EntityBaselineError, LegacyMapCenter,
     field_error::FieldReadError,
     field_values::{flags, float, ground, integer, raw},
+    legacy_coordinates,
 };
 use crate::message_body::BodyReader;
 
@@ -34,6 +35,24 @@ pub(super) fn read_delta(
     reference: u32,
     time: u32,
 ) -> Result<u32, FieldReadError> {
+    read_in_context(reader, field, reference, time, None)
+}
+
+pub(super) fn read_legacy(
+    reader: &mut BodyReader<'_>,
+    field: FieldSpec,
+    center: LegacyMapCenter,
+) -> Result<u32, EntityBaselineError> {
+    read_in_context(reader, field, 0, 0, Some(center)).map_err(EntityBaselineError::from)
+}
+
+fn read_in_context(
+    reader: &mut BodyReader<'_>,
+    field: FieldSpec,
+    reference: u32,
+    time: u32,
+    legacy_baseline: Option<LegacyMapCenter>,
+) -> Result<u32, FieldReadError> {
     if !field.unconditional && reader.read_bits(1)? == 0 {
         return Ok(reference);
     }
@@ -58,8 +77,11 @@ pub(super) fn read_delta(
         }
         -96 => ground(reader)?,
         -94 | -93 => u32::from(reader.read_u8()?),
-        // Protocol 21 writes coordinates directly as binary32, without legacy map bias.
-        -92..=-90 => raw(reader)?,
+        -92..=-90 => match legacy_baseline {
+            Some(center) => legacy_coordinates::read_zero(reader, field.bits, center)?,
+            // Protocol 21 writes absolute binary32 without legacy map bias.
+            None => raw(reader)?,
+        },
         -8 => {
             if reader.read_bits(1)? == 0 {
                 0

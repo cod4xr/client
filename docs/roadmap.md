@@ -37,7 +37,7 @@ original block starts for correct per-block native default restoration. Effectiv
 sparse snapshots now merge defaults/wire values with bounded work and transactional
 publication. Read-only system-info views now validate full-width native server IDs
 without applying arbitrary remote engine settings. Next are session/engine
-application, other message admission, legacy coordinates, application dispatch and
+application, other message admission, complete legacy gamestates, application dispatch and
 the engine's ongoing game loop. Snapshot deltas remain separate.
 Owned protocol-21 client identity records now cover gamestate and ordinary sequenced
 forms. Identity state now stages gamestate replacements and exact-next update batches
@@ -52,6 +52,9 @@ Individual protocol-21 entity delta records now accept explicit nonzero referenc
 return owned states/removals and preserve both reader/index owners on failure.
 Complete snapshots, remaining player/client fields and native peer traces remain
 transport gates before simulation or gameplay admission.
+Initial protocol-6 baseline coordinates now use checked explicit map-center context
+with native precision/bias rules and the same atomic reader/index admission. Legacy
+gamestate context integration and nonzero legacy records remain separate gates.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 

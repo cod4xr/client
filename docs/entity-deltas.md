@@ -4,8 +4,9 @@
 against a caller-selected prior state. It shares the existing generated eighteen
 field catalogs, primitive readers and checked ordered-index codec with initial
 baselines. No second wire codec, entity table, C struct layout or native pointer
-cast is introduced. Protocol 6 remains unsupported until its coordinate/map-center
-reader has separate conformance evidence.
+cast is introduced. Protocol 6 remains unsupported for nonzero-reference records;
+its [initial baseline coordinates](legacy-baseline-coordinates.md) now have a
+separate explicit-context decoder.
 
 `prepare` reads the next index into private candidate reader/index state, retaining
 exclusive borrows of both originals. Its number lets the host look up a prior state

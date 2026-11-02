@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-//! Protocol-21 initial entity baselines, decoded from a zero reference state.
+//! Explicit-profile initial entity baselines, decoded from a zero reference state.
 //! These inert wire values are not validated engine objects or snapshot deltas.
 
 mod decoder;
@@ -12,12 +12,17 @@ mod field_cases;
 mod field_error;
 mod field_values;
 mod fields;
+mod legacy_coordinates;
+#[cfg(test)]
+mod legacy_field_cases;
+mod map_center;
 mod state;
 mod tables;
 mod word;
 
 pub use decoder::EntityBaselineDecoder;
 pub use error::EntityBaselineError;
+pub use map_center::LegacyMapCenter;
 pub use state::EntityBaseline;
 pub use word::BaselineWord;
 

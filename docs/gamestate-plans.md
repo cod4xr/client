@@ -6,7 +6,9 @@ sequence. Its inner loop admits configstring blocks, entity baselines and client
 identities through EOF. Its trailer is config-data sequence, checked own-client
 index and checksum-feed bits. The schema follows locked `src/cl_main.c`,
 `CL_ParseGamestateX`, without the optional, undefined `FALLBACK_SIGNALING` build path.
-Protocol 6 remains explicitly unsupported here pending its map-center coordinates.
+Protocol 6 remains explicitly unsupported here pending its complete carrier and
+effective per-block map-center integration. Individual
+[legacy baseline coordinates](legacy-baseline-coordinates.md) now have explicit context.
 
 This is a constituent of an ordinary service message or reliable application
 command. `ReliableGameStatePlan` now validates the complete reviewed auxiliary
