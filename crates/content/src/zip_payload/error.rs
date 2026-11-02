@@ -6,6 +6,8 @@ use std::{error::Error, fmt};
 pub enum ZipPayloadError {
     /// Compressed input exceeds the host inspection budget.
     InputBudget,
+    /// Supplied source bytes differ in length from the catalog's compressed declaration.
+    InputLength,
     /// Declared output exceeds the host work/output budget.
     OutputBudget,
     /// A declared output or its guard byte cannot be represented on this host.
@@ -27,6 +29,7 @@ impl fmt::Display for ZipPayloadError {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
         formatter.write_str(match self {
             Self::InputBudget => "ZIP payload input budget exhausted",
+            Self::InputLength => "ZIP payload source length disagrees with catalog metadata",
             Self::OutputBudget => "ZIP payload output budget exhausted",
             Self::HostSize => "ZIP payload output extent unrepresentable on host",
             Self::ScratchCapacity => "ZIP payload private scratch capacity insufficient",

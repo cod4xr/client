@@ -89,6 +89,8 @@ records with caller-funded storage; inspector archive mode reports metadata only
 exact lengths, CRC32 and rollback; explicit verification mode checks entries in memory.
 [Virtual file keys](docs/asset-keys.md) now provide canonical, caller-funded asset
 names with explicit budgets and atomic validation, before mount or filesystem policy.
+[Copied archive metadata](docs/archive-entry-metadata.md) allows later bounded
+payload reads without retaining the original whole-archive buffer.
 
 ## Run
 

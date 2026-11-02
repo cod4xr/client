@@ -78,6 +78,10 @@ Strict virtual file keys normalize native ASCII case/slashes into caller-owned b
 with independent byte/component budgets and full validation before publication.
 They are lookup data, without physical path or extraction authority. Native request
 sanitation, archive ownership and mount/duplicate policy remain separate boundaries.
+Copied entry metadata contains numeric spans/declarations without borrowed ZIP bytes.
+The payload decoder accepts a separately supplied exact byte range through the same
+stream/length/CRC checks. Future virtual indexes can retain copied keys/metadata;
+the host must own the original archive handles, epochs and bounded I/O.
 
 Client identity records have one owned representation shared by gamestate patches
 and ordinary sequenced updates. Their small arrays are explicit native field

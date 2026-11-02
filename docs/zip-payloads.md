@@ -7,6 +7,11 @@ storage. A failure preserves final output; private scratch/codec state may chang
 Success returns only the initialized final prefix, which can outlive the archive,
 catalog, metadata, decoder and scratch.
 
+[Copied entry metadata](archive-entry-metadata.md) also supports separately supplied
+payload bytes through `decode_bytes`, with an exact source-length gate and the same
+stream/length/CRC checks. Hosts can release original ZIP images before later bounded
+reads, while retaining responsibility for archive-handle/epoch binding.
+
 The content crate delegates Deflate and IEEE CRC32 to exact pinned `miniz_oxide`
 0.9.1 and `crc32fast` 1.5.4 dependencies. Default features are disabled; the Deflate
 allocator/vector helpers are excluded. The only new transitive package is `adler2`

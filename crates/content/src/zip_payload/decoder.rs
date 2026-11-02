@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 use super::{CheckedZipPayload, ZipPayloadBudget, ZipPayloadError};
-use crate::zip32::{Zip32Compression, Zip32Entry};
+use crate::zip32::{Zip32Compression, Zip32Entry, Zip32EntryMetadata};
 use miniz_oxide::inflate::{
     TINFLStatus,
     core::{DecompressorOxide, decompress, inflate_flags},
@@ -37,11 +37,39 @@ impl ZipPayloadDecoder {
         scratch: &mut [u8],
         output: &'output mut [u8],
     ) -> Result<CheckedZipPayload<'output>, ZipPayloadError> {
-        let input = entry.compressed_bytes();
-        if input.len() > budget.max_compressed_bytes {
+        self.decode_bytes(
+            entry.metadata(),
+            entry.compressed_bytes(),
+            budget,
+            scratch,
+            output,
+        )
+    }
+
+    /// Checks bytes supplied separately from copied metadata, without retaining a ZIP image.
+    /// The source must have exactly the catalog's compressed length. Hosts own archive
+    /// handle/epoch binding and bounded file reads; this layer validates bytes only.
+    /// All stream/length/CRC rules and rollback guarantees match [`Self::decode`].
+    ///
+    /// # Errors
+    /// Rejects source-length mismatch before decoding, plus all [`Self::decode`] errors.
+    pub fn decode_bytes<'output>(
+        &mut self,
+        metadata: Zip32EntryMetadata,
+        input: &[u8],
+        budget: ZipPayloadBudget,
+        scratch: &mut [u8],
+        output: &'output mut [u8],
+    ) -> Result<CheckedZipPayload<'output>, ZipPayloadError> {
+        if input.len() > budget.max_compressed_bytes
+            || metadata.compressed_byte_count() > budget.max_compressed_bytes
+        {
             return Err(ZipPayloadError::InputBudget);
         }
-        let declared = entry.declared_uncompressed_bytes();
+        if input.len() != metadata.compressed_byte_count() {
+            return Err(ZipPayloadError::InputLength);
+        }
+        let declared = metadata.declared_uncompressed_bytes();
         if declared > budget.max_uncompressed_bytes {
             return Err(ZipPayloadError::OutputBudget);
         }
@@ -49,7 +77,7 @@ impl ZipPayloadDecoder {
         if output.len() < expected {
             return Err(ZipPayloadError::OutputCapacity);
         }
-        let decoded = match entry.compression() {
+        let decoded = match metadata.compression() {
             Zip32Compression::Stored => input,
             Zip32Compression::Deflate => {
                 let capacity = expected.checked_add(1).ok_or(ZipPayloadError::HostSize)?;
@@ -79,7 +107,7 @@ impl ZipPayloadDecoder {
         if decoded.len() != expected {
             return Err(ZipPayloadError::OutputLength);
         }
-        if crc32fast::hash(decoded) != entry.declared_crc32() {
+        if crc32fast::hash(decoded) != metadata.declared_crc32() {
             return Err(ZipPayloadError::Checksum);
         }
         output[..expected].copy_from_slice(decoded);

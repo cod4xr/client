@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 318 tests pass in both debug and release on the pinned
+Latest local checkpoint: 321 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (349 source files, 5 crates; all checked source
+formatting and repository policy pass (351 source files, 5 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,11 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 313-test payload-verification checkpoint passed hosted Windows/Linux CI in
-[run 41410156585](https://github.com/cod4xr/client/actions/runs/41410156585), including
-locked sources and table reproduction. Hosted virtual-key validation will
-follow its commit. These
-changes edit only the client repository and consume the published shared revision.
+The 318-test virtual-key checkpoint passed hosted Windows/Linux CI in
+[run 41411065523](https://github.com/cod4xr/client/actions/runs/41411065523), including
+locked sources and table reproduction. Hosted copied-metadata validation will
+follow its commit. These changes edit only the client repository and consume the
+published shared revision.
 
 Ten configstring-block tests add independent legacy packed-index and protocol-21
 32-bit vectors; normalized/raw/empty strings; cooked-only plan lifetimes; both full
@@ -138,6 +138,13 @@ every short output, byte/component budgets, a 65,536-byte host-funded key,
 source-independent ownership and 2,816 deterministic single-byte mutations. This
 does not implement native request sanitation, OS paths, mount/duplicate policy or
 physical asset resolution.
+
+Three copied-metadata tests add exact compressed-span routing, declarations after
+original archive/catalog release, metadata-only Debug, all short/extra source
+lengths, catalog-budget precedence and same-sized corrupted replacement bytes.
+The existing borrowed-entry decoder now delegates through the same separate-source
+implementation, retaining all stream/length/CRC and final-output rollback coverage.
+No file provider, handle/epoch owner or virtual mount index is claimed yet.
 
 Eight new independent loopback tests exercise the reusable network crate: one
 source socket across challenge/connect/retries/handoff, exact cookie/protocol/qport

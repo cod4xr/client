@@ -8,6 +8,8 @@ mod bounds;
 mod dynamic;
 #[path = "zip_cases/fixture.rs"]
 mod fixture;
+#[path = "payload_cases/metadata.rs"]
+mod metadata;
 #[path = "payload_cases/streams.rs"]
 mod streams;
 #[path = "payload_cases/views.rs"]

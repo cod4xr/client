@@ -51,6 +51,8 @@ and an explicit in-memory verification command. Next content gates are virtual
 mount policy and native pure checksums before resource loading. Strict canonical
 virtual file keys now cover native ASCII case/slash equivalence without OS path
 authority; native request sanitation and physical resolution remain separate.
+Copied numeric entry metadata and separate-source decoding now allow later payload
+reads without retaining whole ZIP buffers. Host handle/epoch ownership remains open.
 
 Features that remove asset/model/image/entity/configstring limits need both
 internal storage/resource design and a negotiated extended wire/content profile.

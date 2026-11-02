@@ -9,12 +9,14 @@ mod entry;
 mod error;
 mod extra;
 mod local;
+mod metadata;
 mod read;
 mod slot;
 
 pub use directory::Zip32Directory;
 pub use entry::Zip32Entry;
 pub use error::Zip32Error;
+pub use metadata::Zip32EntryMetadata;
 pub use slot::Zip32EntrySlot;
 
 /// Supported entry compression identifiers, without implying verified payloads.

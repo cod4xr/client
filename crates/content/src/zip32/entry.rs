@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-use super::{Zip32Compression, Zip32EntrySlot};
+use super::{Zip32Compression, Zip32EntryMetadata, Zip32EntrySlot};
 use std::fmt;
 
 /// One bounded catalog entry. Payload integrity, decompression and path policy are separate.
@@ -10,6 +10,18 @@ pub struct Zip32Entry<'archive> {
 }
 
 impl<'archive> Zip32Entry<'archive> {
+    /// Copies compact declarations without retaining the archive, name or descriptors.
+    /// A future host can retain this metadata with its original archive handle/epoch.
+    #[must_use]
+    pub fn metadata(&self) -> Zip32EntryMetadata {
+        Zip32EntryMetadata {
+            data_offset: self.slot.data_offset,
+            compressed_bytes: self.slot.compressed_bytes,
+            uncompressed_bytes: u64::from(self.slot.uncompressed_bytes),
+            crc32: self.slot.crc32,
+            compression: self.slot.compression,
+        }
+    }
     /// Returns original name bytes without decoding, normalization or path authority.
     #[must_use]
     pub fn name(&self) -> &'archive [u8] {
