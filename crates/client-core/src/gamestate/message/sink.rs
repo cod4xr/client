@@ -8,14 +8,14 @@ use crate::{
 // Private typed sinks share one wire walker. No external callback can observe partial
 // validation. Writer is used only after a complete identical Noop walk succeeds.
 pub(super) trait Sink {
-    fn configstring(&mut self, index: u32, bytes: &[u8]);
+    fn configstring(&mut self, index: u32, bytes: &[u8], first_in_block: bool);
     fn entity(&mut self, value: EntityBaseline);
     fn client(&mut self, value: ClientData);
 }
 
 pub(super) struct Noop;
 impl Sink for Noop {
-    fn configstring(&mut self, _index: u32, _bytes: &[u8]) {}
+    fn configstring(&mut self, _index: u32, _bytes: &[u8], _first_in_block: bool) {}
     fn entity(&mut self, _value: EntityBaseline) {}
     fn client(&mut self, _value: ClientData) {}
 }
@@ -26,7 +26,7 @@ pub(super) struct Writer<'writer, 'storage> {
 }
 
 impl Sink for Writer<'_, '_> {
-    fn configstring(&mut self, index: u32, bytes: &[u8]) {
+    fn configstring(&mut self, index: u32, bytes: &[u8], first_in_block: bool) {
         let offset = self.written.text_bytes;
         let end = offset + bytes.len();
         self.storage.configstring_bytes[offset..end].copy_from_slice(bytes);
@@ -34,9 +34,11 @@ impl Sink for Writer<'_, '_> {
             index,
             offset,
             length: bytes.len(),
+            first_in_block,
         };
         self.written.text_bytes = end;
         self.written.configstrings += 1;
+        self.written.configstring_blocks += usize::from(first_in_block);
     }
     fn entity(&mut self, value: EntityBaseline) {
         self.storage.entity_slots[self.written.entities].value = Some(value);

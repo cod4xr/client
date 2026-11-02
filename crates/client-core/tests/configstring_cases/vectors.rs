@@ -31,6 +31,8 @@ fn independent_legacy_vector_keeps_bit_cache_across_strings_and_following_opcode
         assert_eq!(plan.profile(), BaselineProtocol::Legacy6);
         assert_eq!(plan.text_bytes(), 6);
         assert_eq!(records.len(), 2);
+        assert!(records[0].starts_block());
+        assert!(!records[1].starts_block());
         assert_eq!((records[0].index(), records[0].bytes()), (0, &b"one"[..]));
         assert_eq!((records[1].index(), records[1].bytes()), (17, &b"two"[..]));
         assert!(plan.record(2).is_none());

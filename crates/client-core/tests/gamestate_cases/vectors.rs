@@ -35,6 +35,7 @@ fn independent_minimal_constituent_owns_its_output_and_stops_before_outer_servic
     assert_eq!(plan.service_count(), 1);
     assert_eq!(plan.consumed_bytes(), 17);
     assert_eq!(plan.configstrings().len(), 0);
+    assert_eq!(plan.configstring_block_count(), 0);
     assert_eq!(plan.entities().count(), 0);
     assert_eq!(plan.client_records().count(), 0);
     assert!(!format!("{plan:?}").contains("287454020"));
@@ -69,6 +70,13 @@ fn mixed_blocks_keep_global_text_offsets_index_order_and_repeated_client_records
     assert_eq!(plan.checksum_feed(), 0xaabb_ccdd);
     assert_eq!(plan.service_count(), 7);
     assert_eq!(plan.configstring_count(), 3);
+    assert_eq!(plan.configstring_block_count(), 2);
+    assert_eq!(
+        plan.configstrings()
+            .map(|entry| entry.starts_block())
+            .collect::<Vec<_>>(),
+        [true, false, true]
+    );
     assert_eq!(plan.text_bytes(), 7);
     assert_eq!(plan.entity_count(), 2);
     assert_eq!(plan.client_record_count(), 2);

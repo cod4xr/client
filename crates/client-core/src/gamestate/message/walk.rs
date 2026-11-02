@@ -105,7 +105,8 @@ fn configstrings(
         capacities.configstrings - counts.configstrings,
     )?;
     let mut previous = None;
-    for _ in 0..count {
+    counts.configstring_blocks += 1;
+    for position in 0..count {
         let (index, length) = scan::entry(reader, profile, &mut previous, scratch)?;
         counts.text_bytes = scan::text_size(
             counts.text_bytes,
@@ -117,7 +118,7 @@ fn configstrings(
             capacities.text,
         )?;
         counts.configstrings += 1;
-        sink.configstring(index, &scratch[..length]);
+        sink.configstring(index, &scratch[..length], position == 0);
     }
     Ok(())
 }

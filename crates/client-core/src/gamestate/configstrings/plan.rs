@@ -42,7 +42,7 @@ impl<'storage> ConfigStringBlockPlan<'storage> {
         let mut replay = start;
         let mut previous = None;
         let mut offset = 0;
-        for slot in &mut slots[..count] {
+        for (position, slot) in slots[..count].iter_mut().enumerate() {
             // Identical immutable input, starting cursors, profile and scratch capacity.
             // Preflight proved all reads, lengths and destination extents before writes.
             let (index, length) = scan::entry(&mut replay, profile, &mut previous, scratch)?;
@@ -51,6 +51,7 @@ impl<'storage> ConfigStringBlockPlan<'storage> {
                 index,
                 offset,
                 length,
+                first_in_block: position == 0,
             };
             offset += length;
         }
@@ -91,6 +92,7 @@ impl<'storage> ConfigStringBlockPlan<'storage> {
         ConfigString {
             index: slot.index,
             bytes: &self.bytes[slot.offset..slot.offset + slot.length],
+            first_in_block: slot.first_in_block,
         }
     }
 }

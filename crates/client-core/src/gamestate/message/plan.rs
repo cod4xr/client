@@ -133,6 +133,11 @@ impl<'storage> GameStatePlan<'storage> {
     pub fn configstring_count(&self) -> usize {
         self.strings.len()
     }
+    /// Returns native configstring blocks, whose default scopes must remain distinct.
+    #[must_use]
+    pub fn configstring_block_count(&self) -> usize {
+        self.layout.counts.configstring_blocks
+    }
     /// Returns retained normalized text bytes, excluding NULs.
     #[must_use]
     pub fn text_bytes(&self) -> usize {
@@ -148,12 +153,13 @@ impl<'storage> GameStatePlan<'storage> {
     pub fn client_record_count(&self) -> usize {
         self.clients.len()
     }
-    /// Iterates explicit patches; native constant defaults require separate importing.
+    /// Iterates explicit patches and original block starts, preserving native default scopes.
     #[must_use]
     pub fn configstrings(&self) -> impl ExactSizeIterator<Item = ConfigString<'_>> {
         self.strings.iter().map(|slot| ConfigString {
             index: slot.index,
             bytes: &self.bytes[slot.offset..slot.offset + slot.length],
+            first_in_block: slot.first_in_block,
         })
     }
     /// Iterates owned validated baselines without allocating an engine entity table.
@@ -172,6 +178,7 @@ impl fmt::Debug for GameStatePlan<'_> {
             .debug_struct("GameStatePlan")
             .field("services", &self.service_count())
             .field("configstrings", &self.configstring_count())
+            .field("configstring_blocks", &self.configstring_block_count())
             .field("text_bytes", &self.text_bytes())
             .field("entities", &self.entity_count())
             .field("client_records", &self.client_record_count())

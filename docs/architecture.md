@@ -49,6 +49,10 @@ imports into prefunded buffers and reports metadata through the shared logger.
 Game binaries and default values are not distributed. Native default importing
 is separate from merging or applying a validated gamestate to an engine.
 
+Validated configstring views preserve original block starts and a total block count.
+Native constants are reapplied for each block; these boundaries keep later default
+merging source-independent without silently changing omission/reset semantics.
+
 Client identity records have one owned representation shared by gamestate patches
 and ordinary sequenced updates. Their small arrays are explicit native field
 capacities, without imposing a player-table allocation on the engine. Parsing

@@ -16,7 +16,8 @@ Strings use the pinned shared big-string reader, preserving non-UTF-8 bytes and
 normalizing percent to period. The additional native gamestate check admits at
 most 8190 bytes excluding NUL, one fewer than the general big-string field bound.
 Empty values are valid. Packed output omits terminators and can share offsets for
-empty entries. Public views retain wire identifiers as `u32` and expose only used
+empty entries. Each view also retains whether it starts its original native block.
+Public views retain wire identifiers as `u32` and expose only used
 records/bytes. Debug and error formatting never includes private string contents.
 
 The caller supplies a record/work budget, combined text budget, reusable private

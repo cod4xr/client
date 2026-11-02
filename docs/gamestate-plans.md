@@ -21,7 +21,15 @@ budgets. Service work includes EOF. Native identifiers/field capacities remain w
 constraints; they do not allocate fixed engine player/entity tables or native global
 string arenas. Repeated client IDs and configstring IDs across separate blocks remain
 in original order. Ordering within each configstring block and the entity baseline
-stream remains checked by the existing decoders.
+stream remains checked by the existing decoders. Per-record `starts_block()` metadata
+and the plan's block count preserve native default scopes after source-frame release.
+
+The native client reapplies its constants for every configstring block. An earlier
+explicit value for a default ID therefore resets when a later block omits that ID;
+an omitted ID without a native default retains its earlier explicit value. Applying
+defaults once and then treating all patches as one flat stream would lose this
+behavior. Empty gamestates with no blocks apply no implicit constants. No engine
+updates occur merely from retaining these boundaries.
 
 One private typed walker implements the format. Its first pass uses a no-output
 sink, checking every constituent, trailer, budget and final extent. Only after that

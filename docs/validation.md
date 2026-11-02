@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 261 tests pass in both debug and release on the pinned
+Latest local checkpoint: 262 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (296 source files, 5 crates; all checked source
+formatting and repository policy pass (297 source files, 5 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,9 +14,9 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 240-test prepared-frame checkpoint passed hosted Windows/Linux CI in
-[run 41400219750](https://github.com/cod4xr/client/actions/runs/41400219750), including
-locked sources and table reproduction. Hosted validation for content imports will follow their commit. These
+The 261-test content-import checkpoint passed hosted Windows/Linux CI in
+[run 41403460257](https://github.com/cod4xr/client/actions/runs/41403460257), including
+locked sources and table reproduction. Hosted validation for block scopes will follow their commit. These
 changes edit only the client repository and consume the published shared revision.
 
 Ten configstring-block tests add independent legacy packed-index and protocol-21
@@ -80,6 +80,12 @@ runs against the reviewed installed client both imported 832 records/18,813 valu
 bytes; [metadata evidence](client-image-defaults-evidence.json) records its identity.
 No game binary or values are included in fixtures or Git. Game-state merging,
 engine/content application, maps/rendering and playable sessions remain open.
+
+One block-scope regression verifies native default restoration across multiple
+blocks without erasing earlier nondefault IDs. Existing standalone/mixed/minimal
+tests also verify original start markers and exact block counts, with no source
+frame retained or additional wire field. Existing failure tests continue to cover
+whole-output rollback, including this metadata.
 
 Eight new independent loopback tests exercise the reusable network crate: one
 source socket across challenge/connect/retries/handoff, exact cookie/protocol/qport

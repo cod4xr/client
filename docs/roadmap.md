@@ -32,7 +32,8 @@ with real UDP coverage across reordered frames and explicit application rejectio
 Prepared owner handles now couple typed validation to one retained frame, with
 exclusive inspection, cancellation and explicit commit/release counters.
 Reviewed installed-client defaults now import through a separate deterministic
-content crate and bounded metadata-only inspection command. Next are default/wire
+content crate and bounded metadata-only inspection command. Wire plans preserve
+original block starts for correct per-block native default restoration. Next are default/wire
 merging, other message admission, legacy coordinates, application dispatch
 and the engine's ongoing game loop. Snapshot deltas remain separate.
 Owned protocol-21 client identity records now cover gamestate and ordinary sequenced

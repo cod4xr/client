@@ -7,6 +7,8 @@
 
 #[path = "gamestate_cases/budgets.rs"]
 mod budgets;
+#[path = "gamestate_cases/default_scopes.rs"]
+mod default_scopes;
 #[path = "gamestate_cases/failures.rs"]
 mod failures;
 #[path = "gamestate_cases/reliable.rs"]

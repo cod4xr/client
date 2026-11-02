@@ -8,6 +8,7 @@ pub struct ConfigStringSlot {
     pub(in crate::gamestate) index: u32,
     pub(in crate::gamestate) offset: usize,
     pub(in crate::gamestate) length: usize,
+    pub(in crate::gamestate) first_in_block: bool,
 }
 
 /// One normalized explicit patch, with no command, path or engine authority.
@@ -15,6 +16,7 @@ pub struct ConfigStringSlot {
 pub struct ConfigString<'text> {
     pub(in crate::gamestate) index: u32,
     pub(in crate::gamestate) bytes: &'text [u8],
+    pub(in crate::gamestate) first_in_block: bool,
 }
 
 impl ConfigString<'_> {
@@ -28,6 +30,12 @@ impl ConfigString<'_> {
     pub fn bytes(&self) -> &[u8] {
         self.bytes
     }
+    /// Returns whether this patch starts its original native configstring block.
+    /// Native default reapplication depends on these boundaries, not only ID order.
+    #[must_use]
+    pub fn starts_block(&self) -> bool {
+        self.first_in_block
+    }
 }
 
 impl fmt::Debug for ConfigString<'_> {
@@ -36,6 +44,7 @@ impl fmt::Debug for ConfigString<'_> {
             .debug_struct("ConfigString")
             .field("index", &self.index)
             .field("bytes", &self.bytes.len())
+            .field("starts_block", &self.first_in_block)
             .finish_non_exhaustive()
     }
 }

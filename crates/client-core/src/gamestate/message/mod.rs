@@ -32,6 +32,7 @@ pub struct GameStateBudget {
 struct Counts {
     services: usize,
     configstrings: usize,
+    configstring_blocks: usize,
     text_bytes: usize,
     entities: usize,
     clients: usize,
