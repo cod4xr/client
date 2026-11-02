@@ -2,7 +2,7 @@
 use super::{
     BaselineWord, EntityBaselineError, LegacyMapCenter,
     field_error::FieldReadError,
-    field_values::{flags, float, ground, integer, raw},
+    field_values::{angle, flags, float, ground, integer, raw, signed_integer},
     hud_values, legacy_coordinates,
 };
 use crate::message_body::BodyReader;
@@ -82,12 +82,13 @@ pub(super) fn read_value(
         -99 => hud_values::compact_float(reader, reference)?,
         -86 => hud_values::scale(reader)?,
         -85 => hud_values::color(reader, reference)?,
+        -88 => raw(reader)? ^ reference,
+        -87 => angle(reader)?,
         -100 => {
             if reader.read_bits(1)? == 0 {
                 0
             } else {
-                let angle = reader.read_i16()?;
-                (f32::from(angle) * (360.0 / 65536.0)).to_bits()
+                angle(reader)?
             }
         }
         -98 => flags(reader, reference)?,
@@ -106,16 +107,11 @@ pub(super) fn read_value(
             // Protocol 21 writes absolute binary32 without legacy map bias.
             None => raw(reader)?,
         },
-        -8 => {
-            if reader.read_bits(1)? == 0 {
-                0
-            } else {
-                let signed = i32::from(i8::from_le_bytes([
-                    reader.read_u8()? ^ reference.to_le_bytes()[0]
-                ]));
-                u32::from_le_bytes(signed.to_le_bytes())
-            }
-        }
+        -16 | -8 => signed_integer(
+            reader,
+            u8::try_from(-field.bits).map_err(|_| FieldReadError::Encoding)?,
+            reference,
+        )?,
         1..=32 => {
             if reader.read_bits(1)? == 0 {
                 0

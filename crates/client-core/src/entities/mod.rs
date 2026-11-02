@@ -23,6 +23,7 @@ mod legacy_field_cases;
 mod map_center;
 pub mod objectives;
 mod ordered;
+pub mod player_scalars;
 mod state;
 mod tables;
 mod word;

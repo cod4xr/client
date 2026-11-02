@@ -191,6 +191,13 @@ shares ordinary value rules and checked integer-reference conversion, while colo
 scale and 12-bit float windows retain reviewed native behavior. Typed presentation,
 wider engine UI collections and resource lookup are independent of these wire words.
 
+Live player-scalar prefixes own 141 inert words behind grouped closed field keys.
+The reproduced catalog preserves conditional, unconditional and live forced-zero
+reference rules without C offsets. Candidate publication is whole-prefix atomic.
+Mode provenance records whether later command-time prediction lookup is required;
+the prefix alone does not reconcile predicted words or admit following arrays,
+complete player state, snapshot history or message acknowledgments.
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

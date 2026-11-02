@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 590 tests pass in both debug and release on the pinned
+Latest local checkpoint: 614 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (580 source files, 6 crates; all checked source
+formatting and repository policy pass (601 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,23 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 564-test consolidated-harness checkpoint passed hosted Windows/Linux CI in
-[run 41500910515](https://github.com/cod4xr/client/actions/runs/41500910515), including
-locked sources and table reproduction. Hosted player-HUD validation will
+The 590-test player-HUD checkpoint passed hosted Windows/Linux CI in
+[run 41504237250](https://github.com/cod4xr/client/actions/runs/41504237250), including
+locked sources and table reproduction. Hosted live player-scalar validation will
 follow its commit. These changes edit only the client repository and consume the
 published shared revision.
+
+Twenty-four live scalar-prefix tests add independent count/time/angle/signed-short
+vectors, both profiles, all 141 typed keys, full prefixes, all forced and
+unconditional fields, omitted references, float forms, signed masking, flags,
+events and wrapping times. All invalid counts and tested truncated full prefixes
+preserve prior words and both cursors; late compact-reference failures, profile
+binding, owned lifetimes and private Debug formatting are covered. One hundred
+twenty-eight modeled traces per profile compare all words, including forced-zero
+and unconditional behavior. All 141 native names/widths/hints match the locked
+schema; [audit metadata](player-scalar-reader-evidence.json) also verifies the live
+caller and prediction-request boundary. Whole player-state/prediction/snapshot
+admission remain open; see [live player scalars](player-scalars.md).
 
 Twenty-six player-HUD tests add independent framing vectors, all forty field rules,
 both profiles, all scale indices and alpha forms, compact full-prior/wrap behavior,

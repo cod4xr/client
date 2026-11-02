@@ -77,6 +77,9 @@ transactional results. Native wire projections remain separate from engine limit
 [Complete player-HUD sections](docs/player-hud.md) now decode both native arrays
 against explicit prior state/context, with native numeric precision, exact tail
 retention and whole-section rollback before publication.
+[Live player-scalar prefixes](docs/player-scalars.md) now cover all 141 native
+fields with grouped typed keys, live forcing/unconditional rules and explicit
+prediction-request provenance. Whole player-state and snapshot admission remain open.
 
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add

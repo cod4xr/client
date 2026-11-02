@@ -26,6 +26,22 @@ pub(super) fn integer(reader: &mut BodyReader<'_>, width: u8) -> Result<u32, Fie
     }
     Ok(value)
 }
+pub(super) fn signed_integer(
+    reader: &mut BodyReader<'_>,
+    width: u8,
+    reference: u32,
+) -> Result<u32, FieldReadError> {
+    if reader.read_bits(1)? == 0 {
+        return Ok(0);
+    }
+    let mask = u32::MAX >> (32 - u32::from(width));
+    let value = integer(reader, width)? ^ (reference & mask);
+    let shift = 32 - u32::from(width);
+    Ok(((value << shift).cast_signed() >> shift).cast_unsigned())
+}
+pub(super) fn angle(reader: &mut BodyReader<'_>) -> Result<u32, FieldReadError> {
+    Ok((f32::from(reader.read_i16()?) * (360.0 / 65536.0)).to_bits())
+}
 pub(super) fn float(reader: &mut BodyReader<'_>, reference: u32) -> Result<u32, FieldReadError> {
     if reader.read_bits(1)? == 0 {
         return Ok(reader.read_bits(1)? << 31);

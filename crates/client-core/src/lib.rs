@@ -39,6 +39,8 @@ pub use entities::deltas::stream as snapshot_entities;
 pub use entities::hud as player_hud;
 /// Complete native player-objective sections with owned, atomic decoded results.
 pub use entities::objectives as player_objectives;
+/// Owned live player-scalar prefixes before prediction and whole-state admission.
+pub use entities::player_scalars;
 pub use error::DiscoveryError;
 pub use info_response::{InfoResponse, MAX_INFO_DATAGRAM_BYTES};
 pub use profile::BaselineProtocol;
