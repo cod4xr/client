@@ -28,6 +28,7 @@ does not prove a playable connection.
 | Copied mount index | Explicit priority, native duplicate precedence, sparse IDs, model traces and catalog-to-payload integration without source ZIP retention | Native search order, pure policy and actual asset loading |
 | Owned archive host | Original retained handles, process-unique epochs, real file mutation/rename tests, bounded reads and copied-index-to-payload integration | Native search order, pure policy, asset-format interpretation and engine lifecycle |
 | IWI6 images | Checked direct layouts, bounded five-format wavelet reconstruction, explicit channel order, synthetic cube/volume vectors, private image inspection and installed pixel hashes | Wavelet volume/non-power-of-two support, GPU upload/rendering and real gameplay presentation |
+| Fastfile5 containers | Explicit unsigned PC profile, complete zlib/Adler-32 checks, exact decoded lengths, inert wide block metadata and private inspection | Serialized pointer/asset interpretation, other profiles, map/model resource loading and rendering |
 | Content/render/simulation | Checked defaults/IWD data and copied lookup; engine map/model loading, rendering and simulation remain open | Stock/custom asset loading and complete playable sessions |
 | Optional extensions | No wire behavior invented | Negotiated features and ordinary-server fallback |
 

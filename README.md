@@ -100,6 +100,10 @@ bitmap/BC mip spans. The [wavelet decoder](docs/iwi6-wavelets.md) reconstructs a
 wavelet formats into caller-owned pixels; selected-image inspection reports actual
 decoded counts and aggregate pixel fingerprints.
 
+[Fastfile container inspection](docs/fastfile5-containers.md) checks the unsigned PC
+version-5 envelope, complete zlib integrity and declared sizes before exposing any
+untyped serialized body. Asset interpretation and playable map loading remain open.
+
 ## Run
 
 Rust 1.95 is pinned. On this workstation, reuse the existing Cargo target:

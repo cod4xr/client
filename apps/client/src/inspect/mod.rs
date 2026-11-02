@@ -3,6 +3,7 @@ mod archive;
 mod archive_report;
 mod arguments;
 mod error;
+mod fastfile;
 mod file;
 mod images;
 mod report;
@@ -45,6 +46,9 @@ pub(crate) fn run() -> Result<ExitCode, InspectError> {
 }
 
 fn execute(options: &arguments::Options) -> Result<(), InspectError> {
+    if options.kind == arguments::Kind::Fastfile {
+        return fastfile::execute(&options.path);
+    }
     if options.kind != arguments::Kind::ClientImage {
         return archive::execute(&options.path, options.kind);
     }

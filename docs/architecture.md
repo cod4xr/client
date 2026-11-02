@@ -107,6 +107,13 @@ in private scratch; complete pixels publish only after every mip/face succeeds.
 Numerical codebooks reproduce from immutable public sources with retained licensing.
 The inspector host owns reusable pixel/work buffers and aggregate pixel hashes.
 
+Unsigned PC fastfile version-5 handling is another pure content boundary. A bounded
+prefix inspection yields size requirements, independently from whole zlib/Adler-32
+validation and exact-length publication. Serialized contents stay untyped; declared
+block/external sizes grant neither allocation nor pointer authority. The host owns
+file reads, fallible work/output buffers and diagnostic decoded hashes. This leaves
+asset graphs, serialized relocation and engine resource admission to later layers.
+
 Client identity records have one owned representation shared by gamestate patches
 and ordinary sequenced updates. Their small arrays are explicit native field
 capacities, without imposing a player-table allocation on the engine. Parsing

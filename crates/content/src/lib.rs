@@ -4,6 +4,7 @@
 
 pub mod asset_key;
 pub mod defaults;
+pub mod fastfile5;
 pub mod iwi6;
 pub mod mount_index;
 pub mod pe32;

@@ -36,6 +36,15 @@ fn duplicate_excessive_unknown_or_missing_arguments_reject_without_echoing_input
         vec!["--inspect-images"],
         vec!["--inspect-images", ""],
         vec!["--inspect-images", "image", "--log-format", "json", "extra"],
+        vec!["--inspect-fastfile"],
+        vec!["--inspect-fastfile", ""],
+        vec![
+            "--inspect-fastfile",
+            "image",
+            "--log-format",
+            "json",
+            "extra",
+        ],
     ] {
         let result = parse(values.into_iter().map(OsString::from).collect());
         assert!(result.is_err());
@@ -67,6 +76,7 @@ fn non_unicode_os_paths_are_preserved_instead_of_lossily_converted() {
         ("--archive", Kind::Archive),
         ("--verify-archive", Kind::VerifiedArchive),
         ("--inspect-images", Kind::Images),
+        ("--inspect-fastfile", Kind::Fastfile),
     ] {
         let options = parse(vec![flag.into(), path.clone()])
             .expect("Native archive path")

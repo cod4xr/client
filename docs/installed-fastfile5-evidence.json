@@ -1,0 +1,18 @@
+{
+  "files": 76,
+  "encoded_bytes": 2642982057,
+  "decoded_bytes": 4764264952,
+  "serialized_body_bytes": 4764261608,
+  "declared_external_bytes": 11690448308,
+  "declared_total_block_bytes": 2835315967,
+  "largest_decoded_file": 181060522,
+  "sha256_of_ordered_decoded_sha256": "3efe7068757509a3cbb8f1ead7b1b7eb548fbf5796ee0e1af1cd67f953947b9f",
+  "order": "POSIX lexical relative zone paths; names omitted",
+  "independent_python_comparison": "every full decoded SHA-256 and size field matched",
+  "asset_interpretation": "unverified",
+  "gameplay_compatibility": "unverified",
+  "modes": [
+    "debug",
+    "release"
+  ]
+}

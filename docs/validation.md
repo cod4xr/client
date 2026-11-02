@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 369 tests pass in both debug and release on the pinned
+Latest local checkpoint: 383 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (404 source files, 6 crates; all checked source
+formatting and repository policy pass (418 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,9 +14,9 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 354-test IWI6-layout checkpoint passed hosted Windows/Linux CI in
-[run 41449412941](https://github.com/cod4xr/client/actions/runs/41449412941), including
-locked sources and table reproduction. Hosted wavelet validation will
+The 369-test wavelet checkpoint passed hosted Windows/Linux CI in
+[run 41451570424](https://github.com/cod4xr/client/actions/runs/41451570424), including
+locked sources and table reproduction. Hosted fastfile validation will
 follow its commit. These changes edit only the client repository and consume the
 published shared revision.
 
@@ -194,6 +194,19 @@ bytes. A separate string-bit Python decoder matched every per-archive SHA-256 di
 26,876,561 consumed bits and 3,359,580 encoded payload bytes. [Wavelet evidence](installed-wavelet-evidence.json)
 contains aggregate metadata only. This proves the inspected data path, not rendering,
 whole engine content admission, GPU resources or playable joining.
+
+Twelve fastfile tests add independently encoded stored/dynamic-Huffman streams,
+explicit unsigned PC version-5 selection, all nine block IDs, empty containers,
+exact metadata/body lengths, checksum/truncation/tail/dictionary failures, every
+short caller capacity, independent host budgets, wide inert block totals, state
+reuse, source-independent output lifetimes and deterministic mutations. Two process
+tests separate container integrity from asset interpretation and verify private
+human/JSON reporting and failure atomicity. Nine immutable public format-source
+hashes verify through a shared bounded audit helper. Debug and release inspection
+matched all 76 installed fastfiles against independent Python zlib/size/SHA-256
+checks: 2,642,982,057 encoded bytes / 4,764,264,952 decoded bytes, with no compressed
+tails. [Container evidence](installed-fastfile5-evidence.json) records aggregate
+metadata only; no asset graph or renderer is claimed.
 
 Eight new independent loopback tests exercise the reusable network crate: one
 source socket across challenge/connect/retries/handoff, exact cookie/protocol/qport

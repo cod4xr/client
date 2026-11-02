@@ -47,3 +47,5 @@ jobs:
         run: python tools/verify_iwi_sources.py
       - name: Reproduce wavelet codeword catalogs
         run: python tools/import_iwi_wavelet_tables.py
+      - name: Verify immutable fastfile format references
+        run: python tools/verify_fastfile_sources.py

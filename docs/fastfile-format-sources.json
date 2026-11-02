@@ -1,0 +1,18 @@
+{
+  "repository": "https://github.com/Laupetin/OpenAssetTools",
+  "revision": "63e6d57b9c1866ba0ac8b3e7b134d0652c2be44c",
+  "normalization": "CRLF to LF",
+  "license": "GPL-3.0",
+  "purpose": "Immutable format evidence for fresh checked Rust container code; no upstream runtime or game payload included",
+  "sources": {
+    "src/ZoneLoading/Game/IW3/ZoneLoaderFactoryIW3.cpp": "e04ede20e88c3f8e838a84d4845a90a57e3463400af32d94415fc3ef115c997c",
+    "src/ZoneCommon/Game/IW3/ZoneConstantsIW3.h": "0cbec34b892932e41123b6c595ba313a3e7898f571b2d6cb7f44fd5ed945f489",
+    "src/Common/Zone/ZoneTypes.h": "49d2ee795f9dfa9288e1b79caf499652667411f1cb1f3250ac4ee49ad520e7ec",
+    "src/ZoneLoading/Loading/Processor/ProcessorInflate.cpp": "8f3dd20358c89c0f413e63a2fac5ec2ff0c52c7de013bf1b73348ac28b9f204b",
+    "src/ZoneLoading/Loading/Steps/StepLoadZoneSizes.cpp": "5869676b7f0e25f64223e9f2f50355419c4c2440faf28cff1ddd6eeb34e099c0",
+    "src/ZoneLoading/Loading/Steps/StepAllocXBlocks.cpp": "6a544674197fb54e84c2d94edf1af49e436dee59a468c86ec9f92a9d616b5447",
+    "src/ZoneWriting/Writing/Steps/StepWriteZoneSizes.cpp": "6fb678dbb77c334d2d63d376c3b0edd180180c7742c5ab6653706929ba919dfe",
+    "src/ZoneLoading/Game/IW3/ContentLoaderIW3.cpp": "f33f9cdf788e68879df7b17d5dec02f30001a73bfcc5949c6c484fbca58fa605",
+    "src/Common/Game/IW3/IW3_Assets.h": "5602d4c23532c884443cad2fe9165989699af57f80aa5edd75ff5081b911b76c"
+  }
+}

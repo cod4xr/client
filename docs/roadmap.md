@@ -64,6 +64,9 @@ PC IWI6 metadata and complete direct bitmap/BC layouts now have independent vect
 and installed-corpus inspection. All five wavelet formats have a separate bounded
 pixel decoder and independent installed-pixel comparisons. GPU resources/uploads,
 backend color policy and renderer integration remain open.
+Unsigned PC version-5 fastfile envelopes now have bounded metadata inspection and
+complete zlib/size validation before publication. Serialized relocation, typed
+asset loading, resource ownership and map/model rendering remain open.
 
 Features that remove asset/model/image/entity/configstring limits need both
 internal storage/resource design and a negotiated extended wire/content profile.
