@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 679 tests pass in both debug and release on the pinned
+Latest local checkpoint: 689 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (645 source files, 6 crates; all checked source
+formatting and repository policy pass (654 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,20 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 673-test snapshot-service checkpoint passed hosted Windows/Linux CI in
-[run 41514147677](https://github.com/cod4xr/client/actions/runs/41514147677), including
-locked sources and table reproduction. Hosted decoded snapshot-payload validation
+The 679-test decoded snapshot-payload checkpoint passed hosted Windows/Linux CI in
+[run 41516054809](https://github.com/cod4xr/client/actions/runs/41516054809), including
+locked sources and table reproduction. Hosted original-owner snapshot ACK validation
 will follow its commit. These changes edit only the client repository and consume
 the published shared revision.
+
+Eight original-owner snapshot ACK cases cover standalone cancellation/key-copy/
+slot-reuse semantics, repeated/zero/unsent/regressing prefixes, both profiles through
+actual payload decoding, cooked-data host inspection, source/workspace/sample
+lifetimes, explicit fallback and private Debug. Shared-header, decode-workspace,
+late-service and prediction failures preserve both final buffers and original key
+history. Two compile-fail examples protect original-owner leases. Existing ACK and
+payload behavior remains covered after sharing the header/prepared-key code; see
+[snapshot acknowledgements](snapshot-acknowledgements.md).
 
 Six decoded snapshot-payload cases exercise both profiles through actual shared
 compression/obfuscation and payload decoding. They cover positive retained-key ACK

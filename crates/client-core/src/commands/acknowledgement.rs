@@ -1,8 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-use super::{
-    CheckedClientAcknowledgement, ClientCommandError, LEGACY_COMMAND_SLOT_BYTES,
-    LegacyClientCommands,
-};
+use super::{CheckedClientAcknowledgement, ClientCommandError, LegacyClientCommands};
 
 impl LegacyClientCommands<'_> {
     /// Records the queued prefix admitted to actual outgoing message I/O by the host.
@@ -45,16 +42,7 @@ impl LegacyClientCommands<'_> {
     /// # Errors
     /// Revalidates regression/transmit/retention constraints without mutation on failure.
     pub fn commit_acknowledgement(&mut self, sequence: u32) -> Result<(), ClientCommandError> {
-        self.check_acknowledgement(sequence)?;
-        if sequence == self.acknowledged {
-            return Ok(());
-        }
-        let (index, length) = self.position(sequence)?;
-        let start = index * LEGACY_COMMAND_SLOT_BYTES;
-        self.key[..length].copy_from_slice(&self.pending[start..start + length]);
-        self.key[length] = 0;
-        self.key_length = length;
-        self.acknowledged = sequence;
+        self.prepare_acknowledgement(sequence)?.commit();
         Ok(())
     }
 }

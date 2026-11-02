@@ -13,6 +13,24 @@ pub struct ServerPayloadDecoder {
 }
 
 impl ServerPayloadDecoder {
+    pub(super) fn inspect_acknowledgement(
+        sequence: u32,
+        packet: &[u8],
+    ) -> Result<u32, ServerPayloadError> {
+        if sequence == 0 || sequence > 0x7fff_ffff {
+            return Err(ServerPayloadError::Sequence);
+        }
+        if packet.len() > MAX_MESSAGE_BYTES {
+            return Err(ServerPayloadError::InputCapacity);
+        }
+        let mut reader = MessageReader::try_new(packet).map_err(|_| ServerPayloadError::Header)?;
+        let number = reader.read_i32().map_err(|_| ServerPayloadError::Header)?;
+        if packet.len() == SERVER_ACKNOWLEDGEMENT_BYTES {
+            return Err(ServerPayloadError::Empty);
+        }
+        Ok(number.cast_unsigned())
+    }
+
     /// Selects the original explicit message profile and compatibility cookie.
     /// Neither value is inferred from an incoming packet or discovery advertisement.
     #[must_use]
@@ -51,19 +69,9 @@ impl ServerPayloadDecoder {
         work: &mut [u8],
         output: &'decoded mut [u8],
     ) -> Result<DecodedServerPayload<'decoded, 'history>, ServerPayloadError> {
-        if sequence == 0 || sequence > 0x7fff_ffff {
-            return Err(ServerPayloadError::Sequence);
-        }
-        if packet.len() > MAX_MESSAGE_BYTES {
-            return Err(ServerPayloadError::InputCapacity);
-        }
-        let mut reader = MessageReader::try_new(packet).map_err(|_| ServerPayloadError::Header)?;
-        let number = reader.read_i32().map_err(|_| ServerPayloadError::Header)?;
-        if packet.len() == SERVER_ACKNOWLEDGEMENT_BYTES {
-            return Err(ServerPayloadError::Empty);
-        }
+        let number = Self::inspect_acknowledgement(sequence, packet)?;
         let acknowledgement = history
-            .check_acknowledgement(u32::from_le_bytes(number.to_le_bytes()))
+            .check_acknowledgement(number)
             .map_err(ServerPayloadError::Acknowledgement)?;
         let encrypted = &packet[SERVER_ACKNOWLEDGEMENT_BYTES..];
         if work.len() < encrypted.len() {

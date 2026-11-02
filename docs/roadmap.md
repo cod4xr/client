@@ -87,7 +87,9 @@ Snapshot-only service carriers now validate NOP/snapshot/EOF framing before any
 publication, rejecting unsupported mixed services without skipping their bodies.
 Snapshot payload adapters now bind the actual decoded profile/message sequence
 and preserve checked ACK metadata without mutating the outgoing key owner.
-Host history/session ownership, combined routing and joint ACK admission remain open.
+Original-owner snapshot ACK preparation now retains the checked command key through
+decoding and host preflight, then commits key publication without a fallible step.
+Connection-wide history/session ownership and combined service routing remain open.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 

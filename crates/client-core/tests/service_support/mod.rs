@@ -18,6 +18,10 @@ pub(crate) struct Fixture {
 }
 
 impl Fixture {
+    pub(crate) fn packet(&self) -> &[u8] {
+        &self.packet
+    }
+
     pub(crate) fn new(source: &[u8], acknowledge: u32, key: &[u8]) -> Self {
         Self::at_sequence(source, acknowledge, key, 7)
     }

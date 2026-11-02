@@ -7,12 +7,14 @@ mod command;
 mod enqueue;
 mod error;
 mod history;
+mod prepared_ack;
 #[cfg(test)]
 mod sequence_tests;
 
 pub use command::{CheckedClientAcknowledgement, ClientCommand};
 pub use error::ClientCommandError;
 pub use history::LegacyClientCommands;
+pub use prepared_ack::PreparedClientAcknowledgement;
 
 /// Pinned baseline maximum pending ordinary commands; not a custom-engine limit.
 pub const MAX_LEGACY_PENDING_COMMANDS: usize = 128;

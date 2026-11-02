@@ -104,6 +104,11 @@ rejected, and native padding after logical EOF remains uninterpreted.
 carrier to the actual payload profile/message sequence and retain checked ACK
 metadata without changing command-key ownership or admitting a connection ACK.
 
+[Original-owner snapshot ACK preparation](docs/snapshot-acknowledgements.md) now
+keeps the checked outgoing command key retained through cooked snapshot decoding
+and host preflight. Cancellation leaves the ACK unchanged; consuming commitment
+copies the checked key before its pending slot becomes reusable.
+
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add
 caller-funded fragment retention, selective metadata and bounded stream reads.

@@ -5,10 +5,15 @@
 mod decoded;
 mod decoder;
 mod error;
+mod snapshot_ack;
 
 pub use decoded::DecodedServerPayload;
 pub use decoder::ServerPayloadDecoder;
 pub use error::ServerPayloadError;
+pub use snapshot_ack::{
+    PreparedSnapshotAcknowledgement, SnapshotAcknowledgementError, SnapshotDecodeStorage,
+    SnapshotPayloadRequest,
+};
 
 /// Plaintext client-command acknowledgement preceding the transformed server payload.
 pub const SERVER_ACKNOWLEDGEMENT_BYTES: usize = 4;

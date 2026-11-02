@@ -237,6 +237,14 @@ metadata. Temporary payload/key-history borrows end after parsing, while actual
 ACK/history mutation remains with the original connection owner. Shared ordinary
 profile widths are unchanged; see [snapshot payloads](snapshot-payloads.md).
 
+Original-owner snapshot ACK preparation shares the payload decoder's header
+inspector and obtains an exclusive checked command-key lease before decoding.
+Decoded snapshot construction borrows that original owner immutably; cooked data
+outlives source buffers, while the ACK lease persists through host preflight.
+Commit copies the prechecked key without a fallible operation; dropping cancels
+ACK release. Connection-wide session/history ownership and mixed routing remain
+separate; see [snapshot acknowledgements](snapshot-acknowledgements.md).
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

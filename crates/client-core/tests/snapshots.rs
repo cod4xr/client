@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //! Whole native snapshot wire transactions, coherent references and prediction.
 #![allow(clippy::expect_used, reason = "Bounded independent snapshot fixtures.")]
+#[path = "snapshot_cases/ack_commands.rs"]
+mod ack_commands;
+#[path = "snapshot_cases/ack_failures.rs"]
+mod ack_failures;
+#[path = "snapshot_cases/ack_vectors.rs"]
+mod ack_vectors;
 #[path = "snapshot_cases/bindings.rs"]
 mod bindings;
 #[path = "snapshot_cases/ownership.rs"]
