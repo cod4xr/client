@@ -5,6 +5,18 @@ use crate::message_body::BodyReader;
 pub(super) fn raw(reader: &mut BodyReader<'_>) -> Result<u32, FieldReadError> {
     Ok(u32::from_le_bytes(reader.read_i32()?.to_le_bytes()))
 }
+
+#[allow(
+    clippy::cast_possible_truncation,
+    reason = "Native truncated float references are checked against exact signed-32 bounds."
+)]
+pub(super) fn truncated_i32(value: f32) -> Option<i32> {
+    let truncated = f64::from(value).trunc();
+    if !(f64::from(i32::MIN)..=f64::from(i32::MAX)).contains(&truncated) {
+        return None;
+    }
+    Some(truncated as i32)
+}
 pub(super) fn integer(reader: &mut BodyReader<'_>, width: u8) -> Result<u32, FieldReadError> {
     // Low residual bits use the bit cursor, then whole bytes use the byte cursor.
     let residual = width % 8;

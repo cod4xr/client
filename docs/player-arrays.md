@@ -46,5 +46,6 @@ signed extremes, high mask bits, first/last entries, absolute updates, zero clea
 empty masks, omitted retention, raw model bytes, cached/following fields, every
 tested truncation including late clip/model bytes, profile checks before reading,
 owned lifetimes, private Debug output and 128 modeled traces per section/profile.
-Player scalar/prediction and HUD decoding, full reference history and complete
-snapshot/message admission remain open.
+[Complete HUD sections](player-hud.md) now have separate coverage. Player
+scalar/prediction decoding, full reference history and complete snapshot/message
+admission remain open.

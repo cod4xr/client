@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 564 tests pass in both debug and release on the pinned
+Latest local checkpoint: 590 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (563 source files, 6 crates; all checked source
+formatting and repository policy pass (580 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,23 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 564-test player-array checkpoint passed hosted Windows/Linux CI in
-[run 41499569969](https://github.com/cod4xr/client/actions/runs/41499569969), including
-locked sources and table reproduction. Hosted consolidated-harness validation will
+The 564-test consolidated-harness checkpoint passed hosted Windows/Linux CI in
+[run 41500910515](https://github.com/cod4xr/client/actions/runs/41500910515), including
+locked sources and table reproduction. Hosted player-HUD validation will
 follow its commit. These changes edit only the client repository and consume the
 published shared revision.
+
+Twenty-six player-HUD tests add independent framing vectors, all forty field rules,
+both profiles, all scale indices and alpha forms, compact full-prior/wrap behavior,
+raw floats, modern origins, explicit legacy centers and wrapping message times.
+They cover both 31-slot arrays, exact first-free tail retention, inactive words used
+by later deltas, owned lifetimes, private Debug output, every tested truncated full
+section, all invalid last-field indices and failures in the last current element
+after valid archival changes. One hundred twenty-eight modeled array traces compare
+prefix updates and native clearing independently. The reproduced catalog matches
+all forty native offsets/widths/hints; [audit metadata](player-hud-reader-evidence.json)
+also binds the precise scale constants and numeric branches. Scalar/prediction and
+complete snapshot admission remain open; see [player HUD](player-hud.md).
 
 The core integration harness now loads all 31 component suites in one executable
 and shares four fixture modules once. Before/after listing comparisons preserved
@@ -38,7 +50,7 @@ Profile mismatches reject before reading; cooked values outlive inputs and Debug
 output excludes inventory/model contents. One hundred twenty-eight modeled traces
 per section/profile compare every retained value.
 [Native audit metadata](player-array-reader-evidence.json) binds group counts, signed extension and model
-bytes to the reviewed reader. Scalar/prediction and HUD sections remain open;
+bytes to the reviewed reader. Scalar/prediction decoding remains open;
 see [player arrays](player-arrays.md).
 
 Fourteen player-objective section tests add both explicit profiles, independent

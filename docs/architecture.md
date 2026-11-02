@@ -184,6 +184,13 @@ byte replacements. The 64-entry stored-ammo wire projection is distinct from the
 128-entry native struct and any wider engine inventory; applying it cannot imply
 clearing out-of-projection entries. No source borrow or global native array is kept.
 
+Native HUD storage owns both complete 31-slot wire arrays, retaining inert free-slot
+words needed by future deltas. Private candidate state/reader publication makes
+late errors atomic across archival and current arrays. The reproduced field table
+shares ordinary value rules and checked integer-reference conversion, while color,
+scale and 12-bit float windows retain reviewed native behavior. Typed presentation,
+wider engine UI collections and resource lookup are independent of these wire words.
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

@@ -3,7 +3,7 @@ use super::{
     BaselineWord, EntityBaselineError, LegacyMapCenter,
     field_error::FieldReadError,
     field_values::{flags, float, ground, integer, raw},
-    legacy_coordinates,
+    hud_values, legacy_coordinates,
 };
 use crate::message_body::BodyReader;
 
@@ -79,6 +79,9 @@ pub(super) fn read_value(
     }
     Ok(match field.bits {
         0 => float(reader, reference)?,
+        -99 => hud_values::compact_float(reader, reference)?,
+        -86 => hud_values::scale(reader)?,
+        -85 => hud_values::color(reader, reference)?,
         -100 => {
             if reader.read_bits(1)? == 0 {
                 0

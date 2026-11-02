@@ -41,5 +41,6 @@ zero clearing from nonfinite references, cached/following fields, every truncate
 full-section prefix, late invalid-reference rollback, profile binding, owned
 lifetimes, private Debug output and 128 independent modeled traces per profile.
 [Stats, ammunition and weapon-model sections](player-arrays.md) now have separate
-coverage. Player scalar fields, prediction provenance, HUD and whole-snapshot/
-reference-history admission remain separate work.
+coverage, along with [complete HUD sections](player-hud.md). Player scalar fields,
+prediction provenance and whole-snapshot/reference-history admission remain
+separate work.

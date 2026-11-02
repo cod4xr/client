@@ -15,6 +15,8 @@ mod field_cases;
 mod field_error;
 mod field_values;
 mod fields;
+pub mod hud;
+mod hud_values;
 mod legacy_coordinates;
 #[cfg(test)]
 mod legacy_field_cases;

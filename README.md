@@ -74,6 +74,9 @@ reader rollback. Remaining player-state sections and full snapshots remain open.
 [Player-array sections](docs/player-arrays.md) now decode mixed-width stats,
 absolute ammunition groups and complete raw weapon-model tables into owned
 transactional results. Native wire projections remain separate from engine limits.
+[Complete player-HUD sections](docs/player-hud.md) now decode both native arrays
+against explicit prior state/context, with native numeric precision, exact tail
+retention and whole-section rollback before publication.
 
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add

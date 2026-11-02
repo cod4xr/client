@@ -28,6 +28,7 @@ mod legacy_entity_support;
 mod message_body;
 mod mixed_services;
 mod player_arrays;
+mod player_hud;
 mod player_objectives;
 mod pre_game;
 mod server_commands;

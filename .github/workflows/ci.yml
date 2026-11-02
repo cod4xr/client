@@ -47,6 +47,8 @@ jobs:
         run: python tools/import_client_state_table.py reference-client
       - name: Verify generated player-objective schema
         run: python tools/import_objective_table.py reference-client
+      - name: Verify generated player-HUD schema
+        run: python tools/import_hud_table.py reference-client
       - name: Verify immutable image format references
         run: python tools/verify_iwi_sources.py
       - name: Reproduce wavelet codeword catalogs
