@@ -68,6 +68,9 @@ with transactional framing/index/field reads for both baseline profiles.
 [Complete client-state substreams](docs/snapshot-client-streams.md) now merge prior
 states, updates and removals before publishing caller-owned final cells. Cooked
 results can be reused as explicit prior sources without retaining network buffers.
+[Player-objective sections](docs/player-objectives.md) now decode all sixteen native
+slots into owned results, preserving raw status/value bits with whole-section
+reader rollback. Remaining player-state sections and full snapshots remain open.
 
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add

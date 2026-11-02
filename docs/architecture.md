@@ -170,6 +170,13 @@ checks late retention and final tails before committing any caller cells or read
 cursors. Cooked source views retain only final storage; connection/generation and
 snapshot-history admission remain host responsibilities.
 
+Player-objective sections reuse the same position-independent scalar value rules
+and a reproduced six-field semantic catalog. A privately owned sixteen-slot
+candidate and cloned reader make complete-section publication atomic without
+peer-selected allocation or borrowed network storage. Raw statuses and resource
+words remain inert; reference profiles are checked before reading, while epoch,
+sequence and full player-state admission remain separate host preflight.
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

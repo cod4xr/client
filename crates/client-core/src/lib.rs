@@ -34,6 +34,8 @@ pub use entities::clients::stream as snapshot_clients;
 pub use entities::deltas as entity_deltas;
 /// Complete native entity substreams with transactional merged output.
 pub use entities::deltas::stream as snapshot_entities;
+/// Complete native player-objective sections with owned, atomic decoded results.
+pub use entities::objectives as player_objectives;
 pub use error::DiscoveryError;
 pub use info_response::{InfoResponse, MAX_INFO_DATAGRAM_BYTES};
 pub use profile::BaselineProtocol;

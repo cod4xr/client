@@ -1,0 +1,42 @@
+{
+  "operation": "read_only_installed_player_objective_section_audit",
+  "file_name": "iw3mp.exe",
+  "sha256": "f50f8a520581754e73cb7cae67b02adcbad5f2e71aaa412a013bb3ef57a391a5",
+  "image_bytes": 3330048,
+  "preferred_image_base": "0x00400000",
+  "player_state_reader_address": "0x00507110",
+  "section_changed_bit_address": "0x0050774a",
+  "slot_count_assignment_address": "0x00507769",
+  "status_three_bit_read_address": "0x00507772",
+  "status_assignment_address": "0x00507781",
+  "objective_delta_call_address": "0x00507789",
+  "slot_stride_address": "0x00507791",
+  "slot_loop_address": "0x00507797",
+  "objective_delta_reader_address": "0x00506c40",
+  "entry_changed_bit_address": "0x00506c4e",
+  "shared_value_reader_call_address": "0x00506c6e",
+  "unchanged_words_copy_address": "0x00506c86",
+  "native_field_table_address": "0x006bb930",
+  "native_objective_slots": 16,
+  "native_non_status_words": 6,
+  "native_slot_bytes": 28,
+  "catalog_comparison": "all_6_offsets_widths_and_hints_match_locked_public_schema",
+  "audited_rules": [
+    "unchanged_section_retains_prior_set",
+    "changed_section_serializes_all_sixteen_slots",
+    "three_bit_status_separate_from_word_delta_flag",
+    "changed_entry_has_six_per_field_flags_without_prefix_count",
+    "unchanged_entry_retains_all_six_words_without_overwriting_new_status",
+    "ordinary_float_origin_rules_without_legacy_map_bias",
+    "shared_integer_and_float_value_reader"
+  ],
+  "source_binding": {
+    "repository": "https://github.com/callofduty4x/CoD4x_Client_pub.git",
+    "revision": "17182c7bf04b859dea5c0db4acdb0b83c28d6dd2",
+    "files": ["src/msg.c", "src/q_shared.h"]
+  },
+  "binary_or_disassembly_included": false,
+  "game_data_values_recorded": false,
+  "publisher_authentication_claimed": false,
+  "gameplay_session_tested": false
+}

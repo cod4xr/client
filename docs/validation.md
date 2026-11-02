@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 529 tests pass in both debug and release on the pinned
+Latest local checkpoint: 543 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (538 source files, 6 crates; all checked source
+formatting and repository policy pass (550 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,22 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 515-test client-state-record checkpoint passed hosted Windows/Linux CI in
-[run 41492019597](https://github.com/cod4xr/client/actions/runs/41492019597), including
-locked sources and table reproduction. Hosted client-state-stream validation will
+The 529-test client-state-stream checkpoint passed hosted Windows/Linux CI in
+[run 41494785908](https://github.com/cod4xr/client/actions/runs/41494785908), including
+locked sources and table reproduction. Hosted player-objective validation will
 follow its commit. These changes edit only the client repository and consume the
 published shared revision.
+
+Fourteen player-objective section tests add both explicit profiles, independent
+physical status vectors, raw reserved statuses, whole-set/entry/word retention,
+all six fields, prior XOR and float forms, zero clearing, cached/following fields,
+every truncated full-section prefix, late compact-reference rollback, profile
+binding and source-independent ownership. Debug output hides all objective words.
+One hundred twenty-eight modeled traces per profile compare every slot/status/word
+against independent arrays. The reproduced catalog matches all six native offsets,
+widths and hints; [audit metadata](player-objective-reader-evidence.json) records
+the parent sixteen-slot loop and leaf reader. Remaining player-state sections and
+whole snapshots remain open; see [player objectives](player-objectives.md).
 
 Thirteen complete client-state substream tests add native end-bit framing, client
 63, cached/following fields, all sixty-four clients with exact header budgets,

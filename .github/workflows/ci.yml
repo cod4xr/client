@@ -45,6 +45,8 @@ jobs:
         run: python tools/import_entity_baseline_tables.py reference-client
       - name: Verify generated snapshot client-state schema
         run: python tools/import_client_state_table.py reference-client
+      - name: Verify generated player-objective schema
+        run: python tools/import_objective_table.py reference-client
       - name: Verify immutable image format references
         run: python tools/verify_iwi_sources.py
       - name: Reproduce wavelet codeword catalogs

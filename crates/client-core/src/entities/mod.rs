@@ -19,6 +19,7 @@ mod legacy_coordinates;
 #[cfg(test)]
 mod legacy_field_cases;
 mod map_center;
+pub mod objectives;
 mod ordered;
 mod state;
 mod tables;
