@@ -26,8 +26,10 @@ view cap without turning that cap into an engine memory or asset limit.
 Typed gamestate constituents live under client-core's `gamestate` module. Explicit
 configstring blocks use independent wire namespace and host work/storage budgets.
 Validation precedes publication into caller-owned text and metadata; plans borrow
-only cooked output. Whole-message validation and engine application remain later
-boundaries, with native constant defaults and entity deltas still unimplemented.
+only cooked output. Protocol-21 zero-reference entity baselines now have a separate
+owned semantic-word representation and shared ordered-index state. Whole-message
+validation and engine application remain later boundaries, with native constant
+defaults, legacy coordinate fields and nonzero-reference snapshot deltas still open.
 
 Client identity records have one owned representation shared by gamestate patches
 and ordinary sequenced updates. Their small arrays are explicit native field

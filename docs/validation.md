@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 211 tests pass in both debug and release on the pinned
+Latest local checkpoint: 221 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (233 source files, 4 crates; all checked source
+formatting and repository policy pass (251 source files, 4 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -12,9 +12,9 @@ application framing, paced auxiliary UDP sends and socket/clock/endpoint ownersh
 Typed configstring blocks now have constituent-level coverage. The ongoing game
 loop, typed command delivery, complete gamestate and ordinary gameplay remain open.
 
-The 205-test configstring-block checkpoint passed hosted Windows/Linux CI in
-[run 41395582898](https://github.com/cod4xr/client/actions/runs/41395582898).
-Hosted validation for the owned client-data work will follow its commit. These
+The 211-test owned client-data checkpoint passed hosted Windows/Linux CI in
+[run 41396160007](https://github.com/cod4xr/client/actions/runs/41396160007).
+Hosted validation for the entity-baseline work will follow its commit. These
 changes edit only the client repository and consume the published shared revision.
 
 Ten configstring-block tests add independent legacy packed-index and protocol-21
@@ -31,6 +31,15 @@ source-independent ownership, large reader offsets, unsupported profiles, every
 truncation, strict field/identifier bounds, sequence high-bit preservation, cached
 bit rollback and private debug output. Sequence admission, engine updates and
 complete gamestate/service dispatch remain separate unimplemented gates.
+
+Ten entity-baseline tests add independent physical field/header vectors, all eighteen
+full protocol-21 layouts plus unknown-type fallback, unconditional-field positions,
+integer/float/angle/flag/time/ground forms, signed union values, large/raw coordinate
+bits, owned results, large input offsets, following byte/bit fields, every tested
+truncation, invalid counts/removal/order/namespaces, explicit reset and existing-cache
+rollback. Generated field catalogs reproduce from the same locked client source
+hashes locally; hosted CI now includes the same check. No native captures, legacy coordinate support,
+nonzero-reference snapshots or engine application are claimed.
 
 Eight new independent loopback tests exercise the reusable network crate: one
 source socket across challenge/connect/retries/handoff, exact cookie/protocol/qport

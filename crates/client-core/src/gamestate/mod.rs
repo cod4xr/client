@@ -3,3 +3,4 @@
 //! Entity baselines, constant configstring defaults and full dispatch remain separate.
 
 pub mod configstrings;
+pub mod entity_baselines;

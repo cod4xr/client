@@ -69,6 +69,8 @@ explicit whole-message budgets. [Configstring block plans](docs/gamestate-config
 now validate both baseline gamestate patch formats into caller-owned storage.
 [Owned client data](docs/client-data.md) decodes protocol-21 names/tags in gamestate
 and sequenced service records without applying engine or sequence state.
+[Entity baselines](docs/entity-baselines.md) now decode all eighteen protocol-21
+field layouts from zero references, with transactional index/message cursors.
 Full gamestate validation, the game loop and typed application dispatch remain open.
 
 ## Run

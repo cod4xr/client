@@ -24,8 +24,10 @@ Connection owners now bind the original socket, actual host clock and endpoint,
 with scoped ordinary callbacks and bounded packet operations. Complete-body reader
 views now preserve shared field codecs beyond 128 KiB. Typed configstring blocks
 now validate both baseline formats with caller-funded storage and whole-block
-rollback. Next are entity baseline deltas, default merging, complete gamestate
-validation, application dispatch and the engine's ongoing game loop.
+rollback. Protocol-21 initial entity baselines now decode all eighteen native
+layouts, with shared index handling and owned semantic words. Next are default
+merging, complete gamestate validation, legacy coordinates, application dispatch
+and the engine's ongoing game loop. Snapshot deltas remain separate.
 Owned protocol-21 client identity records now cover gamestate and ordinary sequenced
 forms; config-data sequence admission remains part of the upcoming session work.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.

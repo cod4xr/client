@@ -42,5 +42,6 @@ Ten focused tests cover independent native vectors, mixed bit/byte cursor state,
 raw/normalized/empty values, source-independent plan lifetimes, full namespaces,
 a 160 KiB block, maximum strings, invalid counts/order/IDs, every input truncation
 and short caller capacity, budgets, dirty metadata and rollback of existing cache
-state. Entity baseline deltas, default merging, full gamestate dispatch and real
-ordinary-server interoperability remain open.
+state. Protocol-21 initial entity baselines now have a separate decoder. Default
+merging, legacy coordinates, full gamestate dispatch and real ordinary-server
+interoperability remain open.

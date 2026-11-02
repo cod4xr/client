@@ -41,3 +41,5 @@ jobs:
           git clone --no-checkout https://github.com/callofduty4x/CoD4x_Server.git reference-server
           git -C reference-server checkout --detach ddd65fce1a1093017bad2dbb6840d75d11c0d56f
           python tools/verify_upstream.py reference-client reference-server
+      - name: Verify generated entity baseline catalogs
+        run: python tools/import_entity_baseline_tables.py reference-client
