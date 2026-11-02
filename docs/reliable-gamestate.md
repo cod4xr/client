@@ -46,5 +46,6 @@ Typed decoding never silently releases a frame or commits session/engine state.
 `ReliableConnection::prepare_game_state` now provides an exclusive inspected-frame
 handle: drop retains the frame; explicit commit releases it and returns the cooked
 plan. This remains separate from session or engine application.
-Native default importing, session sequence admission, content/application ownership,
+Reviewed native defaults now have a separate importer. Default/wire merging,
+session sequence admission, content/application ownership,
 other application commands and real ordinary-server gameplay remain open.

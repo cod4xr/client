@@ -24,4 +24,6 @@ The independent server repository is https://github.com/cod4xr/server.
   client's exact development executable if locked; do not kill unrelated builds.
 - Preserve in-progress server work; it is a separate repository.
 - Client-only scope: do not edit server source files or server worktrees.
+- Content imports accept caller-provided bytes; keep filesystem/process ownership
+  in the host. Record image profile hashes/metadata only, never game values/binaries.
 - Do not use Graphify. Preserve the user's branch and publishing instructions.

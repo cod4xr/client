@@ -37,8 +37,8 @@ and slots retain their previous values and are excluded from plan views. Debug
 formatting reports counts only, excluding private text, entity words and checksum feed.
 
 The plan contains explicit patches, not synthesized native constant defaults. Those
-defaults live in the original executable and require a separately verified content
-import. Applying sequences, defaults, resources or baselines to a running engine
+defaults live in the original executable and now have a separately hash-reviewed
+content importer. Merging/applying defaults, sequences, resources or baselines to a running engine
 remains separate from byte validation. Unknown inner opcodes reject without skipping
 or executing their bodies. Client records omit the ordinary update's sequence prefix.
 

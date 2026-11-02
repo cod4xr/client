@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 240 tests pass in both debug and release on the pinned
+Latest local checkpoint: 261 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (269 source files, 4 crates; all checked source
+formatting and repository policy pass (296 source files, 5 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,9 +14,9 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 236-test reliable-gamestate checkpoint passed hosted Windows/Linux CI in
-[run 41399451897](https://github.com/cod4xr/client/actions/runs/41399451897), including
-locked sources and table reproduction. Hosted validation for prepared frames will follow their commit. These
+The 240-test prepared-frame checkpoint passed hosted Windows/Linux CI in
+[run 41400219750](https://github.com/cod4xr/client/actions/runs/41400219750), including
+locked sources and table reproduction. Hosted validation for content imports will follow their commit. These
 changes edit only the client repository and consume the published shared revision.
 
 Ten configstring-block tests add independent legacy packed-index and protocol-21
@@ -69,6 +69,17 @@ discard followed by valid admission. New saturating counters distinguish attempt
 decode failures and commits, without changing receipt time or byte ACK state. One
 compile-fail documentation test prevents replacing a frame while its prepared
 handle remains live. Session/engine updates remain separate from frame commit.
+
+Twenty-one content/inspector tests add synthetic PE32 header/section/address
+validation, every required prefix, virtual-only/overflow geometry, deterministic
+header/address mutations, exact image identity, native table shape/order/terminators,
+short budgets/storage with complete rollback, raw defaults beyond wire lengths,
+source-independent plans, native/non-Unicode arguments, bounded regular-file reads
+and JSON/human process failures without paths or values. Debug and release inspector
+runs against the reviewed installed client both imported 832 records/18,813 value
+bytes; [metadata evidence](client-image-defaults-evidence.json) records its identity.
+No game binary or values are included in fixtures or Git. Game-state merging,
+engine/content application, maps/rendering and playable sessions remain open.
 
 Eight new independent loopback tests exercise the reusable network crate: one
 source socket across challenge/connect/retries/handoff, exact cookie/protocol/qport

@@ -5,8 +5,8 @@ the client runtime; [cod4xr/server](https://github.com/cod4xr/server) supplies s
 protocol libraries at an immutable revision. Mods and communities can use future
 features without defining the core product.
 
-**Current status: runnable discovery and challenge probes.** The client sends real
-UDP `getinfo` queries and nonce-correlated `getchallenge` requests. Rendering, assets,
+**Current status: discovery/challenge probes and reviewed content inspection.** The client sends real
+UDP `getinfo` queries and nonce-correlated `getchallenge` requests. Rendering, map/model loading,
 movement, snapshots, GSC presentation and playable joins are not implemented.
 
 The compatibility target is existing CoD4/CoD4X servers accepting **no-auth
@@ -77,6 +77,8 @@ now validate the complete auxiliary wrapper and trailing fields before publicati
 [Prepared frame handles](docs/prepared-gamestate.md) bind decoding to the original
 connection, with cancellable inspection and explicit frame commit/release.
 Other message admission, engine/content application, the game loop and typed dispatch remain open.
+[Installed client defaults](docs/client-image-defaults.md) now import from an exact
+reviewed user-provided image into caller-owned storage, with a metadata-only inspector.
 
 ## Run
 
@@ -87,6 +89,7 @@ Rust 1.95 is pinned. On this workstation, reuse the existing Cargo target:
 cargo run -p cod4xr-client -- query 127.0.0.1:28960
 cargo run -p cod4xr-client -- query 127.0.0.1:28960 --log-format json
 cargo run -p cod4xr-client -- probe-challenge 127.0.0.1:28960 --retry-ms 500 --max-attempts 3
+cargo run -p cod4xr-client --bin cod4xr-client-inspect -- PATH_TO_IW3MP_EXE
 ```
 
 Other workstations should supply their own **existing** target directory. The
@@ -114,6 +117,7 @@ core and use lossy UTF-8 only for display. Raw peer strings/tokens stay out of l
 - `crates/client-core`: deterministic discovery and connection state over shared codecs.
 - `crates/client-net`: owned sockets, bounded blocking I/O and phase transitions.
 - `crates/reliable`: dependency-free auxiliary reliable bodies and receive windows.
+- `crates/content`: deterministic checked imports from caller-provided game data.
 - `apps/client`: arguments, logging and report output.
 - `docs`: architecture, source evidence, compatibility gates and remaining work.
 - `tools`: source/dependency checks, reference verification and local build setup.

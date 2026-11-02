@@ -31,7 +31,9 @@ Complete reliable gamestate bodies now validate their wrapper/tail before output
 with real UDP coverage across reordered frames and explicit application rejection.
 Prepared owner handles now couple typed validation to one retained frame, with
 exclusive inspection, cancellation and explicit commit/release counters.
-Next are default importing/merging, other message admission, legacy coordinates, application dispatch
+Reviewed installed-client defaults now import through a separate deterministic
+content crate and bounded metadata-only inspection command. Next are default/wire
+merging, other message admission, legacy coordinates, application dispatch
 and the engine's ongoing game loop. Snapshot deltas remain separate.
 Owned protocol-21 client identity records now cover gamestate and ordinary sequenced
 forms; config-data sequence admission remains part of the upcoming session work.

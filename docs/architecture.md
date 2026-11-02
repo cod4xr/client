@@ -41,6 +41,14 @@ inspects cooked output; drop cancels release, and commit releases exactly that f
 Decode work/failures and explicit commits have separate saturating counters. The
 returned plan retains no socket/input-frame borrow or engine-update authority.
 
+The new `cod4xr-content` crate owns deterministic file-data validation, beginning
+with checked PE32 byte views and hash-reviewed native configstring defaults. It
+has no filesystem/process/engine ownership and depends only on pinned SHA-256.
+Host-side inspection opens an explicit user-selected file under a byte quota,
+imports into prefunded buffers and reports metadata through the shared logger.
+Game binaries and default values are not distributed. Native default importing
+is separate from merging or applying a validated gamestate to an engine.
+
 Client identity records have one owned representation shared by gamestate patches
 and ordinary sequenced updates. Their small arrays are explicit native field
 capacities, without imposing a player-table allocation on the engine. Parsing

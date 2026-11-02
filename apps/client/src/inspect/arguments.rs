@@ -1,0 +1,68 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+use super::InspectError;
+use cod4x_observability::ConsoleFormat;
+use std::{
+    ffi::{OsStr, OsString},
+    path::PathBuf,
+};
+
+#[cfg(test)]
+#[path = "argument_cases.rs"]
+mod cases;
+
+pub(super) const HELP: &str = "CoD4XR installed-client data inspector\n\
+Usage: cod4xr-client-inspect PATH_TO_IW3MP_EXE [--log-format human|json|auto]\n\
+Imports reviewed default data and reports counts. Requires a caller-provided game file.\n\
+Reports use JSON stdout; logs use stderr. Source values and paths stay out of logs.\n";
+
+pub(super) struct Options {
+    pub path: PathBuf,
+    pub logs: ConsoleFormat,
+}
+pub(super) fn from_environment() -> Result<Option<Options>, InspectError> {
+    let values: Vec<_> = std::env::args_os().skip(1).take(4).collect();
+    parse(values)
+}
+pub(super) fn parse(values: Vec<OsString>) -> Result<Option<Options>, InspectError> {
+    if values.is_empty() {
+        return Ok(None);
+    }
+    if values[0] == OsStr::new("--help") || values[0] == OsStr::new("-h") {
+        if values.len() != 1 {
+            return Err(InspectError::Arguments("unexpected help arguments"));
+        }
+        return Ok(None);
+    }
+    if values.len() != 1 && values.len() != 3 {
+        return Err(InspectError::Arguments(
+            "expected an image path and optional log format",
+        ));
+    }
+    if values[0].is_empty() {
+        return Err(InspectError::Arguments("image path cannot be empty"));
+    }
+    let mut logs = ConsoleFormat::Auto;
+    if values.len() == 3 {
+        if values[1] != OsStr::new("--log-format") {
+            return Err(InspectError::Arguments("unknown inspection option"));
+        }
+        logs = match values[2].to_str() {
+            Some("human") => ConsoleFormat::Human,
+            Some("json") => ConsoleFormat::Json,
+            Some("auto") => ConsoleFormat::Auto,
+            _ => {
+                return Err(InspectError::Arguments(
+                    "expected human, json or auto log format",
+                ));
+            }
+        };
+    }
+    let path = values
+        .into_iter()
+        .next()
+        .ok_or(InspectError::Arguments("image path missing"))?;
+    Ok(Some(Options {
+        path: PathBuf::from(path),
+        logs,
+    }))
+}
