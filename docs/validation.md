@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 704 tests pass in both debug and release on the pinned
+Latest local checkpoint: 705 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (672 source files, 6 crates; all checked source
+formatting and repository policy pass (676 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -16,9 +16,15 @@ engine/content application and ordinary gameplay remain open.
 
 The 699-test mixed snapshot-carrier checkpoint passed hosted Windows/Linux CI in
 [run 41521657642](https://github.com/cod4xr/client/actions/runs/41521657642), including
-locked sources and table reproduction. Hosted mixed original-owner ACK validation
-will follow its commit. These changes edit only the client repository and consume
+locked sources and table reproduction. The 704-test mixed original-owner ACK run is
+[41523347146](https://github.com/cod4xr/client/actions/runs/41523347146); its final hosted
+status is separate from the successful local checks. These changes edit only the client repository and consume
 the published shared revision.
+
+A real protocol-21 loopback UDP case returns prepared mixed snapshots from scoped
+receive without copying packet bytes, rejects malformed tails, retries host identity
+resource preflight and verifies the next control's original key and three ACK words.
+This adds synthetic transport evidence, not native gameplay interoperability.
 
 Four mixed original-owner ACK cases cover actual decode in both profiles, original
 key cancellation/retry and slot reuse, packet/workspace/scratch lifetimes, private

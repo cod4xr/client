@@ -93,6 +93,8 @@ Mixed control/one-snapshot carriers now validate commands and protocol-21 identi
 on both sides through EOF, preserving all four final buffers until validation.
 Mixed original-owner ACK preparation now spans complete decoding and incoming-owner
 resource preflight, with cancellation and infallible checked-key commitment.
+Real protocol-21 loopback UDP now carries that prepared mixed result out of the
+scoped receive callback and verifies the next control's original key and all ACKs.
 Connection-wide gameplay/history ownership and broader routing remain open.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.

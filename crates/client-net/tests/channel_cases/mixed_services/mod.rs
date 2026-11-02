@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-mod support;
+pub(crate) mod support;
 use crate::{channel_support::acknowledged, support::server};
 use cod4xr_client_core::{
     BaselineProtocol,

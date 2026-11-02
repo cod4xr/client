@@ -31,4 +31,6 @@ mod send;
 mod server_payload;
 #[path = "channel_cases/services.rs"]
 mod services;
+#[path = "channel_cases/snapshot_messages/mod.rs"]
+mod snapshot_messages;
 mod support;

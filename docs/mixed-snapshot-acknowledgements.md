@@ -29,8 +29,9 @@ performs no I/O or fallible validation. The final consuming ACK commit copies th
 checked original key before its pending slot becomes reusable and returns the
 complete cooked mixed plan. No incoming owner is mutated by parsing itself.
 
-A resource-budget rejection after successful wire parsing must drop all sibling
-preparations and the ACK holder. This differs from wire failure: successful cooked
+A resource-budget rejection after successful wire parsing must cancel sibling
+preparations before retrying preflight, or drop them and the ACK holder to abandon
+the message. This differs from wire failure: successful cooked
 buffer data remains valid, while command/identity histories and outgoing ACK remain
 unchanged. Identity sequence gaps retain the existing native ignore semantics;
 this adapter does not reinterpret them as wire or admission errors.
@@ -41,6 +42,17 @@ identity preflight followed by commit, actual identity resource-budget rejection
 and late wire/prediction failures preserving all four outputs and original key.
 A compile-fail example prevents replacing the original owner while prepared.
 Existing native framing, codecs and owner suites remain in the workspace checks.
+
+A real loopback UDP case uses the original acknowledged channel's decoder inside
+its scoped receive callback. The prepared result outlives packet/decode/control
+scratch without copying the packet body. A malformed suffix preserves all four
+outputs and ACK/history owners even though transport receipt advances. Valid data
+then survives identity resource-preflight rejection and retry; child histories
+commit before the original ACK. The independent responder decodes the next actual
+control packet and verifies message ACK eight, command key four, identity ACK eleven
+and the original connection's transform. The snapshot keeps its earlier command
+prefix three, independently of the later command four. This is synthetic protocol-21
+transport evidence, not a native-peer session or a playable client.
 
 The supported mixed carrier contains one snapshot, commands, NOPs, reviewed
 protocol-21 identities and EOF. Wider service routing, legacy identity schema,

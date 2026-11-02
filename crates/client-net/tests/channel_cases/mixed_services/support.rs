@@ -83,7 +83,7 @@ pub(super) fn serve(socket: &UdpSocket, proceed: &Receiver<()>) {
     assert_eq!(&text[..length], b"next");
     assert_eq!(reader.read_bits(3).expect("EOF"), 3);
 }
-pub(super) fn seed(state: &mut ClientIdentityState<'_>) {
+pub(crate) fn seed(state: &mut ClientIdentityState<'_>) {
     let body = [
         1, 0, 0, 0, 1, 0, 0, 0, 0, 7, 9, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     ];
@@ -119,7 +119,7 @@ pub(super) fn seed(state: &mut ClientIdentityState<'_>) {
         .expect("Baseline preflight")
         .commit();
 }
-pub(super) fn send(
+pub(crate) fn send(
     channel: &mut ClientChannel<'_>,
     client: &mut LegacyClientCommands<'_>,
     server: &ServerCommandHistory<'_>,
