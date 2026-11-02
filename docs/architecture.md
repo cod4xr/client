@@ -82,6 +82,11 @@ Copied entry metadata contains numeric spans/declarations without borrowed ZIP b
 The payload decoder accepts a separately supplied exact byte range through the same
 stream/length/CRC checks. Future virtual indexes can retain copied keys/metadata;
 the host must own the original archive handles, epochs and bounded I/O.
+Virtual mount indexes sort caller-owned source positions over immutable canonical
+candidates. Last input wins each duplicate group; complete retention/storage
+preflight precedes final key/metadata copying. The result borrows no source ZIP,
+candidate or scratch data. Binary lookup returns copied routing/declarations;
+archive IDs never imply priority, ownership or allocation by identifier magnitude.
 
 Client identity records have one owned representation shared by gamestate patches
 and ordinary sequenced updates. Their small arrays are explicit native field

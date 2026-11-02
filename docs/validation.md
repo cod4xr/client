@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 321 tests pass in both debug and release on the pinned
+Latest local checkpoint: 328 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (351 source files, 5 crates; all checked source
+formatting and repository policy pass (361 source files, 5 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,9 +14,9 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 318-test virtual-key checkpoint passed hosted Windows/Linux CI in
-[run 41411065523](https://github.com/cod4xr/client/actions/runs/41411065523), including
-locked sources and table reproduction. Hosted copied-metadata validation will
+The 321-test copied-metadata checkpoint passed hosted Windows/Linux CI in
+[run 41412078616](https://github.com/cod4xr/client/actions/runs/41412078616), including
+locked sources and table reproduction. Hosted mount-index validation will
 follow its commit. These changes edit only the client repository and consume the
 published shared revision.
 
@@ -145,6 +145,15 @@ lengths, catalog-budget precedence and same-sized corrupted replacement bytes.
 The existing borrowed-entry decoder now delegates through the same separate-source
 implementation, retaining all stream/length/CRC and final-output rollback coverage.
 No file provider, handle/epoch owner or virtual mount index is claimed yet.
+
+Seven mount-index tests add native ordered duplicates, canonical lookup and missing
+keys, source-independent final storage/results, sparse archive IDs, empty inputs,
+dirty scratch reuse, unused tails and private Debug output. Every short key/slot
+capacity and exact input/retention budget cover whole final-output rollback. An
+independent ordered map checks 256 traces; a catalog-to-payload integration releases
+all original ZIP/key/candidate buffers before looking up and CRC-checking the last
+duplicate. Actual file-provider ownership, archive search order, pure policy and
+engine asset loading remain open.
 
 Eight new independent loopback tests exercise the reusable network crate: one
 source socket across challenge/connect/retries/handoff, exact cookie/protocol/qport

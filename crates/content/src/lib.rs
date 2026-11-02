@@ -4,6 +4,7 @@
 
 pub mod asset_key;
 pub mod defaults;
+pub mod mount_index;
 pub mod pe32;
 pub mod zip32;
 pub mod zip_payload;

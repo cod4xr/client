@@ -23,6 +23,10 @@ impl<'a> Spec<'a> {
         }
     }
 }
+#[allow(
+    dead_code,
+    reason = "Routing fields serve different shared integration-test binaries."
+)]
 pub(super) struct Fixture {
     pub bytes: Vec<u8>,
     pub locals: Vec<usize>,

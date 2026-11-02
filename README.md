@@ -91,6 +91,8 @@ exact lengths, CRC32 and rollback; explicit verification mode checks entries in 
 names with explicit budgets and atomic validation, before mount or filesystem policy.
 [Copied archive metadata](docs/archive-entry-metadata.md) allows later bounded
 payload reads without retaining the original whole-archive buffer.
+[Copied virtual indexes](docs/mount-index.md) now provide ordered duplicate handling
+and lookup without retaining source ZIP buffers, before host file ownership or asset loading.
 
 ## Run
 

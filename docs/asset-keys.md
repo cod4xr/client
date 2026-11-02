@@ -35,8 +35,8 @@ A separate Python metadata audit found 24,094 file records and 149 directory mar
 in the installed main IWDs. All file names fit this strict form, with at most five
 components. Ten exact-name duplicates occur within archives, each with different
 payload metadata. This is preliminary namespace evidence, not a Rust mount test.
-An upcoming index must preserve native last-entry precedence and explicit archive
-order instead of rejecting these ordinary duplicate records. The index should copy
+The [copied index](mount-index.md) now preserves native last-entry precedence and
+explicit archive order instead of rejecting ordinary duplicate records. It copies
 keys and entry metadata so archive byte buffers need not remain resident for lookup.
 
 Source evidence is the hash-locked read-only client reference's

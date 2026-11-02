@@ -26,5 +26,6 @@ cover all codecs, stream prefixes/trailers, storage bounds and publication rollb
 
 This is a data/I/O ownership boundary, not a filesystem implementation. Archive
 handle retention, virtual mount/duplicate policy, actual seek/read ownership and
-native pure checksums remain separate work. The planned index must retain native
-last-entry precedence for duplicate file names and explicit archive priority.
+native pure checksums remain separate work. The [copied index](mount-index.md) now
+retains native last-entry precedence and caller-specified archive priority without
+borrowing original ZIP buffers.
