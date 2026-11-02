@@ -30,6 +30,9 @@ impl PlayerScalars {
     pub fn word(&self, word: PlayerWord) -> u32 {
         self.words[word.index()]
     }
+    pub(in crate::entities) fn replace_word(&mut self, word: PlayerWord, value: u32) {
+        self.words[word.index()] = value;
+    }
 }
 impl fmt::Debug for PlayerScalars {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {

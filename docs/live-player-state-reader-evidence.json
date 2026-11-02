@@ -1,0 +1,71 @@
+{
+  "operation": "read_only_installed_live_player_state_composition_audit",
+  "file_name": "iw3mp.exe",
+  "sha256": "f50f8a520581754e73cb7cae67b02adcbad5f2e71aaa412a013bb3ef57a391a5",
+  "image_bytes": 3330048,
+  "preferred_image_base": "0x00400000",
+  "player_state_reader_address": "0x00507110",
+  "origin_mode_branch_address": "0x00507252",
+  "prediction_command_time_load_address": "0x0050726a",
+  "prediction_lookup_call_address": "0x00507280",
+  "prediction_lookup_address": "0x00472d00",
+  "lookup_at_or_before_comparison_address": "0x00472d38",
+  "lookup_exact_match_diagnostic_address": "0x00472d65",
+  "lookup_vector_copy_start_address": "0x00472d7a",
+  "lookup_integer_copy_start_address": "0x00472dd9",
+  "prior_fallback_start_address": "0x00507298",
+  "prior_fallback_last_vector_store_address": "0x005072fa",
+  "prediction_replaced_words": 11,
+  "native_prior_offsets": {
+    "origin_xyz": [
+      28,
+      32,
+      36
+    ],
+    "velocity_xyz": [
+      40,
+      44,
+      48
+    ],
+    "view_angles_xyz": [
+      264,
+      268,
+      272
+    ],
+    "bob_cycle": 8,
+    "movement_direction": 172
+  },
+  "section_order": [
+    "scalar_prefix",
+    "stats",
+    "stored_ammunition",
+    "clip_ammunition",
+    "objectives",
+    "archival_hud",
+    "current_hud",
+    "weapon_models"
+  ],
+  "constituent_evidence": [
+    "player-scalar-reader-evidence.json",
+    "player-array-reader-evidence.json",
+    "player-objective-reader-evidence.json",
+    "player-hud-reader-evidence.json"
+  ],
+  "api_sample_policy": "exact_profile_and_command_time_match_required_no_native_ring_search",
+  "fallback_policy": "explicit_prior_eleven_words_or_zero_without_prior",
+  "binary_or_disassembly_included": false,
+  "game_data_values_recorded": false,
+  "gameplay_session_tested": false,
+  "whole_snapshot_admission_claimed": false,
+  "source_binding": {
+    "repository": "https://github.com/callofduty4x/CoD4x_Client_pub.git",
+    "revision": "17182c7bf04b859dea5c0db4acdb0b83c28d6dd2",
+    "files": [
+      "src/msg.c",
+      "src/q_shared.h",
+      "src/client.h",
+      "src/cl_main.c",
+      "src/callbacks.asm"
+    ]
+  }
+}

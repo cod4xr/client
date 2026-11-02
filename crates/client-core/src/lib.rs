@@ -41,6 +41,8 @@ pub use entities::hud as player_hud;
 pub use entities::objectives as player_objectives;
 /// Owned live player-scalar prefixes before prediction and whole-state admission.
 pub use entities::player_scalars;
+/// Transactional complete live player-state wire projections and prediction resolution.
+pub use entities::player_state;
 pub use error::DiscoveryError;
 pub use info_response::{InfoResponse, MAX_INFO_DATAGRAM_BYTES};
 pub use profile::BaselineProtocol;

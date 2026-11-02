@@ -198,6 +198,15 @@ Mode provenance records whether later command-time prediction lookup is required
 the prefix alone does not reconcile predicted words or admit following arrays,
 complete player state, snapshot history or message acknowledgments.
 
+Complete live player-state preparation composes all native sections behind one
+exclusive reader lease. All candidates and prior prediction words are owned;
+reference lifetimes end after preparation. Commitment selects transmitted values,
+an exact profile/command-time sample or explicit native prior fallback, replacing
+only eleven reviewed scalar words. Failed decoding/selection or dropped preparation
+preserves the original reader; no unreconciled state escapes. Host-scoped prediction
+queues, reference epochs, whole snapshots and message/ACK admission remain separate.
+See [live player-state transactions](live-player-state.md).
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

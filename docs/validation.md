@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 614 tests pass in both debug and release on the pinned
+Latest local checkpoint: 631 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (601 source files, 6 crates; all checked source
+formatting and repository policy pass (614 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,21 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 590-test player-HUD checkpoint passed hosted Windows/Linux CI in
-[run 41504237250](https://github.com/cod4xr/client/actions/runs/41504237250), including
-locked sources and table reproduction. Hosted live player-scalar validation will
-follow its commit. These changes edit only the client repository and consume the
-published shared revision.
+The 614-test live player-scalar checkpoint passed hosted Windows/Linux CI in
+[run 41508380597](https://github.com/cod4xr/client/actions/runs/41508380597), including
+locked sources and table reproduction. Hosted whole live player-state validation
+will follow its commit. These changes edit only the client repository and consume
+the published shared revision.
+
+Fifteen complete live player-state cases cover native section composition, both
+profiles, independent empty-state vectors, following byte/cached-bit operations,
+exact/wrapping prediction keys, all eleven replacements and explicit prior fallback.
+Every tested mixed-body truncation, late current-HUD failure, invalid commit choice
+and mismatched sample preserves the original reader. Prior/source/sample lifetimes,
+context changes and private formatting are covered. Two compile-fail examples
+protect the exclusive reader lease and consuming commitment. Prediction production,
+reference epochs and whole snapshot/message admission remain open; see
+[live player-state transactions](live-player-state.md).
 
 Twenty-four live scalar-prefix tests add independent count/time/angle/signed-short
 vectors, both profiles, all 141 typed keys, full prefixes, all forced and

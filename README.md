@@ -70,7 +70,7 @@ states, updates and removals before publishing caller-owned final cells. Cooked
 results can be reused as explicit prior sources without retaining network buffers.
 [Player-objective sections](docs/player-objectives.md) now decode all sixteen native
 slots into owned results, preserving raw status/value bits with whole-section
-reader rollback. Remaining player-state sections and full snapshots remain open.
+reader rollback. Full snapshot admission remains open.
 [Player-array sections](docs/player-arrays.md) now decode mixed-width stats,
 absolute ammunition groups and complete raw weapon-model tables into owned
 transactional results. Native wire projections remain separate from engine limits.
@@ -79,7 +79,11 @@ against explicit prior state/context, with native numeric precision, exact tail
 retention and whole-section rollback before publication.
 [Live player-scalar prefixes](docs/player-scalars.md) now cover all 141 native
 fields with grouped typed keys, live forcing/unconditional rules and explicit
-prediction-request provenance. Whole player-state and snapshot admission remain open.
+prediction-request provenance.
+[Complete live player-state transactions](docs/live-player-state.md) now compose all
+sections with an exclusive reader lease, exact prediction-sample matching or
+explicit native prior fallback. Whole snapshot/history/message admission and
+prediction production remain open.
 
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add

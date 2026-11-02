@@ -31,6 +31,7 @@ mod player_arrays;
 mod player_hud;
 mod player_objectives;
 mod player_scalars;
+mod player_state;
 mod pre_game;
 mod server_commands;
 mod server_payloads;

@@ -24,6 +24,7 @@ mod map_center;
 pub mod objectives;
 mod ordered;
 pub mod player_scalars;
+pub mod player_state;
 mod state;
 mod tables;
 mod word;

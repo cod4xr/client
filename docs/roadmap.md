@@ -75,8 +75,10 @@ rollback. Stats, ammunition groups and raw weapon-model tables now have separate
 owned transactional codecs with native wire projections. Complete HUD sections now
 decode both arrays with native numeric/tail rules and explicit coordinate context.
 Live scalar prefixes now decode all 141 fields with reviewed hint behavior and
-prediction-request provenance. Prediction resolution and whole player-state
-composition remain required before complete player-state and snapshot admission.
+prediction-request provenance. Complete live player-state transactions now compose
+all sections and require transmitted commitment, exact prediction-sample matching
+or explicit native prior fallback before reader publication. Prediction production,
+session-bound reference history and whole snapshot/message admission remain open.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 
