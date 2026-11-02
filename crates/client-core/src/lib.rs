@@ -11,6 +11,7 @@ pub mod control;
 mod error;
 pub mod handshake;
 mod info_response;
+pub mod message_body;
 mod profile;
 mod request;
 pub mod server_commands;

@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 188 tests pass in both debug and release on the pinned
+Latest local checkpoint: 195 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (206 source files, 4 crates; all checked source
+formatting and repository policy pass (216 source files, 4 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -11,9 +11,9 @@ retention, auxiliary reliable bodies, receive/send windows, whole ACK admission,
 application framing, paced auxiliary UDP sends and socket/clock/endpoint ownership.
 The ongoing game loop, typed command delivery, gamestate and ordinary gameplay remain open.
 
-The 182-test endpoint checkpoint passed hosted Windows/Linux CI in
-[run 41391951101](https://github.com/cod4xr/client/actions/runs/41391951101).
-Hosted validation for the connection-owner work will follow its commit. These
+The 188-test connection-owner checkpoint passed hosted Windows/Linux CI in
+[run 41393141877](https://github.com/cod4xr/client/actions/runs/41393141877).
+Hosted validation for the complete-body reader work will follow its commit. These
 changes edit only the client repository and consume the published shared revision.
 
 Eight new independent loopback tests exercise the reusable network crate: one
@@ -156,6 +156,13 @@ expired waits without work or timestamp refresh, terminal framing failure before
 more socket operations, and profile/storage/timer failures preserving supplied
 buffers. Counters include work before failure and count terminal transitions once.
 The ordinary sender wrapper exposes no external auxiliary windows or schedulers.
+
+Seven body-reader tests add independent cached-bit vectors around 128 KiB and
+beyond 1 MiB, a differential mixed primitive trace against shared readers, large
+byte copies, shared big-string normalization, exact input/output failure atomicity,
+invalid bit widths, missing terminators, concrete shared entity/client index forms
+and joint cache/index rollback. The adapter allocates nothing and changes storage
+views only; pinned shared code still owns every field's wire decoding.
 
 ## Initial foundation
 

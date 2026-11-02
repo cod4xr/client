@@ -21,8 +21,9 @@ have model tests; explicit auxiliary UDP sends now couple OS I/O to transmission
 admission. Scheduling now paces original retries and ACKs with combined I/O admission.
 Unified endpoints now own windows, framing, whole-packet admission and scheduling.
 Connection owners now bind the original socket, actual host clock and endpoint,
-with scoped ordinary callbacks and bounded packet operations. Next are typed
-message dispatch, complete gamestate handling and the engine's ongoing game loop.
+with scoped ordinary callbacks and bounded packet operations. Complete-body reader
+views now preserve shared field codecs beyond 128 KiB. Next are typed gamestate
+configstrings/baselines, application dispatch and the engine's ongoing game loop.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 

@@ -57,5 +57,7 @@ admission, scoped ordinary/connectionless callbacks, original ordinary sending,
 receipt time after a delayed response, expired waits without charged work,
 terminal failure before further I/O, unsupported profiles and late constructor
 failures preserving buffers. Native gameplay sessions and typed gamestate dispatch
-remain open. The CLI still exposes discovery/challenge probes; these operations
-are library building blocks for the engine's ongoing I/O loop.
+remain open. [Complete-body readers](message-body-reader.md) now provide the
+shared-codec view adapter needed for bodies larger than 128 KiB. The CLI still
+exposes discovery/challenge probes; these operations are library building blocks
+for the engine's ongoing I/O loop.

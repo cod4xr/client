@@ -17,6 +17,12 @@ body codec, retaining the shared outer envelope rather than duplicating it. This
 boundary permits later reuse without depending on client OS or game ownership;
 no server source or published shared revision changes are required.
 
+Complete reliable bodies use a client-core storage-view adapter over the pinned
+shared primitive reader. It rebases bounded views and preserves the legacy cached
+bit byte; integer, bit, string and index field decoding still has one shared
+implementation. This permits native reliable bodies larger than the primitive
+view cap without turning that cap into an engine memory or asset limit.
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

@@ -63,7 +63,9 @@ periodic/forced ACKs, committing timers and data only after successful I/O.
 whole-packet admission, bounded drains and scheduling over one set of buffers.
 [Connection owners](docs/reliable-connection.md) now retain the acknowledged socket,
 endpoint and internal clock, with bounded I/O operations and receipt/work counters.
-The engine's ongoing game loop and typed application dispatch remain open.
+[Complete-body readers](docs/message-body-reader.md) now reuse shared primitive
+codecs beyond a single 128 KiB backing view, preserving legacy cached bits and
+explicit whole-message budgets. The game loop and typed application dispatch remain open.
 
 ## Run
 
