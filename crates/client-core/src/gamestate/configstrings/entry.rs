@@ -5,16 +5,16 @@ use std::fmt;
 /// Dirty/reused slots are overwritten only after complete block validation.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct ConfigStringSlot {
-    pub(super) index: u32,
-    pub(super) offset: usize,
-    pub(super) length: usize,
+    pub(in crate::gamestate) index: u32,
+    pub(in crate::gamestate) offset: usize,
+    pub(in crate::gamestate) length: usize,
 }
 
 /// One normalized explicit patch, with no command, path or engine authority.
 #[derive(Clone, Copy)]
 pub struct ConfigString<'text> {
-    pub(super) index: u32,
-    pub(super) bytes: &'text [u8],
+    pub(in crate::gamestate) index: u32,
+    pub(in crate::gamestate) bytes: &'text [u8],
 }
 
 impl ConfigString<'_> {

@@ -5,7 +5,7 @@
 mod entry;
 mod error;
 mod plan;
-mod scan;
+pub(in crate::gamestate) mod scan;
 
 pub use entry::{ConfigString, ConfigStringSlot};
 pub use error::ConfigStringError;

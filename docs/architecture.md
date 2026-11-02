@@ -27,8 +27,10 @@ Typed gamestate constituents live under client-core's `gamestate` module. Explic
 configstring blocks use independent wire namespace and host work/storage budgets.
 Validation precedes publication into caller-owned text and metadata; plans borrow
 only cooked output. Protocol-21 zero-reference entity baselines now have a separate
-owned semantic-word representation and shared ordered-index state. Whole-message
-validation and engine application remain later boundaries, with native constant
+owned semantic-word representation and shared ordered-index state. Complete
+gamestate constituents use one private two-pass walker, validating all records,
+trailers and capacities before publishing any final output. Outer-message
+admission and engine application remain later boundaries, with native constant
 defaults, legacy coordinate fields and nonzero-reference snapshot deltas still open.
 
 Client identity records have one owned representation shared by gamestate patches

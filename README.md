@@ -31,7 +31,7 @@ refusals and notices with exact peers, admitted requests, quotas and deadlines.
 through challenge, connect retries and acknowledgement, or closes it on refusal.
 The CLI continues to expose standalone probes. The [ordinary channel](docs/ordinary-channel.md)
 now reuses shared sequencing and fragmentation on the acknowledged socket, with
-pacing under caller control. Typed command delivery, gamestate and the
+pacing under caller control. Typed command delivery, gamestate application and the
 remaining gameplay lifecycle are required for live joins.
 
 [Client-command history](docs/client-command-history.md) separates queued,
@@ -43,7 +43,7 @@ connection-context checks before channel reservation.
 [Server-payload decoding](docs/server-payloads.md) now checks retained transmitted
 command keys before shared transformation/decompression.
 [Service-control plans](docs/service-controls.md) now validate complete NOP/command/
-EOF streams before exposing normalized records. Command dispatch, gamestate and
+EOF streams before exposing normalized records. Command dispatch, gamestate application and
 the remaining gameplay lifecycle are still required for live sessions.
 [Server-command history](docs/server-command-history.md) now supports configurable
 retention beyond the native 128 entries, full command text and preflighted updates
@@ -71,7 +71,9 @@ now validate both baseline gamestate patch formats into caller-owned storage.
 and sequenced service records without applying engine or sequence state.
 [Entity baselines](docs/entity-baselines.md) now decode all eighteen protocol-21
 field layouts from zero references, with transactional index/message cursors.
-Full gamestate validation, the game loop and typed application dispatch remain open.
+[Gamestate plans](docs/gamestate-plans.md) now validate complete protocol-21
+constituents before publishing any caller output. Outer-message admission,
+engine/content application, the game loop and typed dispatch remain open.
 
 ## Run
 

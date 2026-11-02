@@ -25,8 +25,9 @@ with scoped ordinary callbacks and bounded packet operations. Complete-body read
 views now preserve shared field codecs beyond 128 KiB. Typed configstring blocks
 now validate both baseline formats with caller-funded storage and whole-block
 rollback. Protocol-21 initial entity baselines now decode all eighteen native
-layouts, with shared index handling and owned semantic words. Next are default
-merging, complete gamestate validation, legacy coordinates, application dispatch
+layouts, with shared index handling and owned semantic words. Complete protocol-21
+gamestate constituents now validate all records/trailers before output publication.
+Next are default importing/merging, outer-message admission, legacy coordinates, application dispatch
 and the engine's ongoing game loop. Snapshot deltas remain separate.
 Owned protocol-21 client identity records now cover gamestate and ordinary sequenced
 forms; config-data sequence admission remains part of the upcoming session work.

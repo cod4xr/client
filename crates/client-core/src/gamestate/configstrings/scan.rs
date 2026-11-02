@@ -13,7 +13,7 @@ fn namespace(profile: BaselineProtocol) -> u32 {
     }
 }
 
-pub(super) fn count(
+pub(in crate::gamestate) fn count(
     reader: &mut BodyReader<'_>,
     profile: BaselineProtocol,
     budget: ConfigStringBudget,
@@ -37,7 +37,7 @@ pub(super) fn count(
     Ok(count)
 }
 
-pub(super) fn entry(
+pub(in crate::gamestate) fn entry(
     reader: &mut BodyReader<'_>,
     profile: BaselineProtocol,
     previous: &mut Option<u32>,
@@ -63,7 +63,7 @@ pub(super) fn entry(
     Ok((index, length))
 }
 
-pub(super) fn text_size(
+pub(in crate::gamestate) fn text_size(
     current: usize,
     length: usize,
     budget: ConfigStringBudget,

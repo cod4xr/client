@@ -16,6 +16,7 @@ does not prove a playable connection.
 | Gamestate configstring blocks | Independent vectors for both profiles, whole-block validation, caller-funded storage, complete namespaces and large bodies | Constant defaults, entity deltas, full gamestate validation and ordinary peer captures |
 | Client identity records | Owned protocol-21 gamestate/update vectors, exact text capacities, sequence-bit preservation and complete-record rollback | Whole-message validation, session sequence admission and ordinary peer captures |
 | Initial entity baselines | Protocol-21 field vectors, all eighteen source-reproduced layouts, owned words and atomic index/message admission | Native peer captures, legacy coordinates, engine interpretation and later snapshot deltas |
+| Complete gamestate constituent | Protocol-21 header/records/trailer, whole-output rollback, full wire namespaces and configurable retention | Outer-message admission, native defaults/content, legacy coordinates, engine application and real peer captures |
 | Content/render/simulation | Not implemented | Stock/custom content and complete playable sessions |
 | Optional extensions | No wire behavior invented | Negotiated features and ordinary-server fallback |
 

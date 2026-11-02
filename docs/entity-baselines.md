@@ -55,6 +55,7 @@ every fixture truncation, namespace exhaustion, index order/reset, malformed cou
 removal rejection, private debug output and rollback of existing cache/index state.
 These are source-grounded conformance fixtures, not captures from a live native peer.
 
-Complete gamestate assembly, native constant-default imports, legacy coordinates,
-snapshot deltas, engine interpretation and ordinary-server interoperability remain
-open. A successful baseline parse alone does not establish a playable connection.
+Complete protocol-21 gamestate constituents now have a separate transactional
+plan. Native constant-default imports, enclosing-message admission, legacy
+coordinates, snapshot deltas, engine interpretation and ordinary-server
+interoperability remain open. A baseline parse alone does not establish a playable connection.
