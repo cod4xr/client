@@ -177,6 +177,13 @@ peer-selected allocation or borrowed network storage. Raw statuses and resource
 words remain inert; reference profiles are checked before reading, while epoch,
 sequence and full player-state admission remain separate host preflight.
 
+Player stats, ammunition and weapon-model tables use independent owned section
+types with explicit reference-profile checks and private candidate readers. Values
+remain raw/inert; signed short arrays are absolute, and model tables are complete
+byte replacements. The 64-entry stored-ammo wire projection is distinct from the
+128-entry native struct and any wider engine inventory; applying it cannot imply
+clearing out-of-projection entries. No source borrow or global native array is kept.
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

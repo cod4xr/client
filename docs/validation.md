@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 543 tests pass in both debug and release on the pinned
+Latest local checkpoint: 564 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (550 source files, 6 crates; all checked source
+formatting and repository policy pass (562 source files, 6 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,11 +14,23 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 529-test client-state-stream checkpoint passed hosted Windows/Linux CI in
-[run 41494785908](https://github.com/cod4xr/client/actions/runs/41494785908), including
-locked sources and table reproduction. Hosted player-objective validation will
+The 543-test player-objective checkpoint passed hosted Windows/Linux CI in
+[run 41496814095](https://github.com/cod4xr/client/actions/runs/41496814095), including
+locked sources and table reproduction. Hosted player-array validation will
 follow its commit. These changes edit only the client repository and consume the
 published shared revision.
+
+Twenty-one player-array tests add native stats/ammunition physical vectors, both
+profiles, signed/unsigned boundaries, absolute updates versus XOR, high mask bits,
+first/last wire slots, all groups, explicit zero clearing, empty masks, omitted
+retention and raw model-table replacement. All tested truncations preserve cached
+reader bits and prior ownership, including the last clip flag and last model byte.
+Profile mismatches reject before reading; cooked values outlive inputs and Debug
+output excludes inventory/model contents. One hundred twenty-eight modeled traces
+per section/profile compare every retained value.
+[Native audit metadata](player-array-reader-evidence.json) binds group counts, signed extension and model
+bytes to the reviewed reader. Scalar/prediction and HUD sections remain open;
+see [player arrays](player-arrays.md).
 
 Fourteen player-objective section tests add both explicit profiles, independent
 physical status vectors, raw reserved statuses, whole-set/entry/word retention,

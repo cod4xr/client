@@ -71,6 +71,9 @@ results can be reused as explicit prior sources without retaining network buffer
 [Player-objective sections](docs/player-objectives.md) now decode all sixteen native
 slots into owned results, preserving raw status/value bits with whole-section
 reader rollback. Remaining player-state sections and full snapshots remain open.
+[Player-array sections](docs/player-arrays.md) now decode mixed-width stats,
+absolute ammunition groups and complete raw weapon-model tables into owned
+transactional results. Native wire projections remain separate from engine limits.
 
 [Auxiliary reliable bodies](docs/auxiliary-reliable.md) now have a separate bounded
 codec and checked UDP routing. [Receive windows](docs/reliable-receive.md) add

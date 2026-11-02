@@ -40,5 +40,6 @@ status-only and unchanged retention, every field and semantic mapping, float for
 zero clearing from nonfinite references, cached/following fields, every truncated
 full-section prefix, late invalid-reference rollback, profile binding, owned
 lifetimes, private Debug output and 128 independent modeled traces per profile.
-Player scalar fields, prediction provenance, ammo/clips, HUD, weapon models and
-whole-snapshot/reference-history admission remain separate work.
+[Stats, ammunition and weapon-model sections](player-arrays.md) now have separate
+coverage. Player scalar fields, prediction provenance, HUD and whole-snapshot/
+reference-history admission remain separate work.

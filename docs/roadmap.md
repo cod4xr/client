@@ -71,8 +71,9 @@ supporting cooked-source reuse. Player-state decoding remains a gate before
 whole-snapshot admission and epoch-bound history.
 Complete native player-objective sections now return owned sixteen-slot results
 with explicit profile binding, raw status preservation and whole-section reader
-rollback. Remaining scalar/prediction, ammo/clips, HUD and weapon-model sections
-are still required before complete player-state and snapshot admission.
+rollback. Stats, ammunition groups and raw weapon-model tables now have separate
+owned transactional codecs with native wire projections. Scalar/prediction and HUD
+sections are still required before complete player-state and snapshot admission.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 
