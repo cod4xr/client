@@ -29,6 +29,12 @@ Validation precedes publication into caller-owned text and metadata; plans borro
 only cooked output. Whole-message validation and engine application remain later
 boundaries, with native constant defaults and entity deltas still unimplemented.
 
+Client identity records have one owned representation shared by gamestate patches
+and ordinary sequenced updates. Their small arrays are explicit native field
+capacities, without imposing a player-table allocation on the engine. Parsing
+retains raw normalized text and sequence bits; session admission and whole-message
+application remain separate. Neither logs nor debug formatting contains that text.
+
 The deterministic core owns request encoding and checked borrowed metadata.
 It has no sockets, clocks, logging subscriber, filesystem access, renderer or
 process-global state. The network crate owns UDP resources, challenge entropy,

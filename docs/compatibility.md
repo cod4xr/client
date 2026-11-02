@@ -14,6 +14,7 @@ does not prove a playable connection.
 | No-auth connect | Owned challenge/connect/acknowledged socket transitions, retry stability, inert refusals and bounded state | Clean disconnect and ordinary peer traces |
 | Channel/snapshots | Ordinary transport, control/payload/service validation, configurable command histories and socket/clock/endpoint ownership with paced UDP I/O | Game loop, typed execution, gamestate, snapshots and input replay |
 | Gamestate configstring blocks | Independent vectors for both profiles, whole-block validation, caller-funded storage, complete namespaces and large bodies | Constant defaults, entity deltas, full gamestate validation and ordinary peer captures |
+| Client identity records | Owned protocol-21 gamestate/update vectors, exact text capacities, sequence-bit preservation and complete-record rollback | Whole-message validation, session sequence admission and ordinary peer captures |
 | Content/render/simulation | Not implemented | Stock/custom content and complete playable sessions |
 | Optional extensions | No wire behavior invented | Negotiated features and ordinary-server fallback |
 

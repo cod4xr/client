@@ -26,6 +26,8 @@ views now preserve shared field codecs beyond 128 KiB. Typed configstring blocks
 now validate both baseline formats with caller-funded storage and whole-block
 rollback. Next are entity baseline deltas, default merging, complete gamestate
 validation, application dispatch and the engine's ongoing game loop.
+Owned protocol-21 client identity records now cover gamestate and ordinary sequenced
+forms; config-data sequence admission remains part of the upcoming session work.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 

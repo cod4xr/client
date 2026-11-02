@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 205 tests pass in both debug and release on the pinned
+Latest local checkpoint: 211 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (226 source files, 4 crates; all checked source
+formatting and repository policy pass (233 source files, 4 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -12,9 +12,9 @@ application framing, paced auxiliary UDP sends and socket/clock/endpoint ownersh
 Typed configstring blocks now have constituent-level coverage. The ongoing game
 loop, typed command delivery, complete gamestate and ordinary gameplay remain open.
 
-The 195-test complete-body reader checkpoint passed hosted Windows/Linux CI in
-[run 41394838941](https://github.com/cod4xr/client/actions/runs/41394838941).
-Hosted validation for the configstring-block work will follow its commit. These
+The 205-test configstring-block checkpoint passed hosted Windows/Linux CI in
+[run 41395582898](https://github.com/cod4xr/client/actions/runs/41395582898).
+Hosted validation for the owned client-data work will follow its commit. These
 changes edit only the client repository and consume the published shared revision.
 
 Ten configstring-block tests add independent legacy packed-index and protocol-21
@@ -24,6 +24,13 @@ invalid counts/order/IDs; every input truncation and short caller capacity; host
 budgets; dirty metadata and preservation of original reader/cache state on late
 failure. This validates explicit patches, without native constant defaults, entity
 baseline deltas, whole gamestate application or a real gameplay peer.
+
+Six client-data tests add owned protocol-21 gamestate and ordinary sequenced
+identity vectors, maximum/empty names and tags, raw bytes and percent normalization,
+source-independent ownership, large reader offsets, unsupported profiles, every
+truncation, strict field/identifier bounds, sequence high-bit preservation, cached
+bit rollback and private debug output. Sequence admission, engine updates and
+complete gamestate/service dispatch remain separate unimplemented gates.
 
 Eight new independent loopback tests exercise the reusable network crate: one
 source socket across challenge/connect/retries/handoff, exact cookie/protocol/qport

@@ -5,6 +5,7 @@
 //! authenticated identity or negotiated extension support.
 
 mod challenge;
+pub mod client_data;
 pub mod commands;
 pub mod connect;
 pub mod control;

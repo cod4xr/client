@@ -67,6 +67,8 @@ endpoint and internal clock, with bounded I/O operations and receipt/work counte
 codecs beyond a single 128 KiB backing view, preserving legacy cached bits and
 explicit whole-message budgets. [Configstring block plans](docs/gamestate-configstrings.md)
 now validate both baseline gamestate patch formats into caller-owned storage.
+[Owned client data](docs/client-data.md) decodes protocol-21 names/tags in gamestate
+and sequenced service records without applying engine or sequence state.
 Full gamestate validation, the game loop and typed application dispatch remain open.
 
 ## Run
