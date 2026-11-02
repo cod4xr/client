@@ -19,14 +19,14 @@ use std::{
     time::{Duration, Instant},
 };
 
-const BODY: &[u8] = &[
+pub(super) const BODY: &[u8] = &[
     1, 0, 0, 0, 1, // Application command and embedded opcode.
     7, 0, 0, 0, // Server command baseline.
     2, 1, 0, 0, 0, 0, 0, 0, 0, b'n', b'e', b'w', b'%', 0, // One patch.
     7, 9, 0, 0, 0, 3, 0, 0, 0, 0x44, 0x33, 0x22, 0x11, // EOF/trailer.
     0, 0, 0, 0, // Reserved final word.
 ];
-const BUDGET: GameStateBudget = GameStateBudget {
+pub(super) const BUDGET: GameStateBudget = GameStateBudget {
     max_services: 2,
     max_configstrings: 1,
     max_text_bytes: 4,
@@ -34,7 +34,7 @@ const BUDGET: GameStateBudget = GameStateBudget {
     max_client_records: 0,
 };
 
-fn framed(body: &[u8]) -> Vec<u8> {
+pub(super) fn framed(body: &[u8]) -> Vec<u8> {
     let mut bytes = i32::try_from(body.len())
         .expect("Small frame")
         .to_le_bytes()

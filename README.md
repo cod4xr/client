@@ -74,6 +74,8 @@ field layouts from zero references, with transactional index/message cursors.
 [Gamestate plans](docs/gamestate-plans.md) now validate complete protocol-21
 constituents before publishing any caller output. [Reliable gamestate bodies](docs/reliable-gamestate.md)
 now validate the complete auxiliary wrapper and trailing fields before publication.
+[Prepared frame handles](docs/prepared-gamestate.md) bind decoding to the original
+connection, with cancellable inspection and explicit frame commit/release.
 Other message admission, engine/content application, the game loop and typed dispatch remain open.
 
 ## Run

@@ -18,6 +18,7 @@ does not prove a playable connection.
 | Initial entity baselines | Protocol-21 field vectors, all eighteen source-reproduced layouts, owned words and atomic index/message admission | Native peer captures, legacy coordinates, engine interpretation and later snapshot deltas |
 | Complete gamestate constituent | Protocol-21 header/records/trailer, whole-output rollback, full wire namespaces and configurable retention | Outer-message admission, native defaults/content, legacy coordinates, engine application and real peer captures |
 | Reliable gamestate body | Immutable wrapper/tail evidence, complete-output rollback, reordered real UDP frames and source-independent cooked plans | Session admission, native defaults/content, application ownership and ordinary peer captures |
+| Typed frame ownership | Original-profile preparation, exclusive frame identity, cancel/commit behavior, work counters and real UDP tests | Session epochs, engine/content preflight and ordinary peer captures |
 | Content/render/simulation | Not implemented | Stock/custom content and complete playable sessions |
 | Optional extensions | No wire behavior invented | Negotiated features and ordinary-server fallback |
 

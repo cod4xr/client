@@ -35,6 +35,12 @@ that same publication pass. Other message admission and engine application remai
 later boundaries, with native constant
 defaults, legacy coordinate fields and nonzero-reference snapshot deltas still open.
 
+The network owner can prepare a whole typed gamestate over its original ready
+frame. An exclusive handle prevents concurrent frame replacement while the host
+inspects cooked output; drop cancels release, and commit releases exactly that frame.
+Decode work/failures and explicit commits have separate saturating counters. The
+returned plan retains no socket/input-frame borrow or engine-update authority.
+
 Client identity records have one owned representation shared by gamestate patches
 and ordinary sequenced updates. Their small arrays are explicit native field
 capacities, without imposing a player-table allocation on the engine. Parsing

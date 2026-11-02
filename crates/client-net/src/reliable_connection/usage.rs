@@ -20,6 +20,12 @@ pub struct ReliableUsage {
     pub released_frames: u64,
     /// Transitions into terminal framing failure, counted once per connection.
     pub framing_failures: u64,
+    /// Typed gamestate decode attempts on a complete ready frame, including retries.
+    pub gamestate_decode_attempts: u64,
+    /// Attempts rejected by body, host budget or caller capacity validation.
+    pub gamestate_decode_failures: u64,
+    /// Prepared gamestate frames explicitly committed and released by the host.
+    pub committed_gamestates: u64,
 }
 
 /// Copyable connection evidence for logging and host resource decisions.

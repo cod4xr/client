@@ -43,5 +43,8 @@ body and retains its cooked plan after releasing the network frame.
 That test also separates byte-transport ACKs from application validity: reliable
 fragment receipt may be acknowledged while an application frame is later rejected.
 Typed decoding never silently releases a frame or commits session/engine state.
+`ReliableConnection::prepare_game_state` now provides an exclusive inspected-frame
+handle: drop retains the frame; explicit commit releases it and returns the cooked
+plan. This remains separate from session or engine application.
 Native default importing, session sequence admission, content/application ownership,
 other application commands and real ordinary-server gameplay remain open.

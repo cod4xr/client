@@ -1,8 +1,8 @@
 # Validation evidence
 
-Latest local checkpoint: 236 tests pass in both debug and release on the pinned
+Latest local checkpoint: 240 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (265 source files, 4 crates; all checked source
+formatting and repository policy pass (269 source files, 4 crates; all checked source
 files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
@@ -14,9 +14,9 @@ Reliable gamestate bodies now have whole-frame admission coverage. Other message
 admission, the ongoing game loop, typed command delivery,
 engine/content application and ordinary gameplay remain open.
 
-The 230-test gamestate-plan checkpoint passed hosted Windows/Linux CI in
-[run 41398476604](https://github.com/cod4xr/client/actions/runs/41398476604), including
-source-table reproduction. Hosted validation for reliable gamestate bodies will follow their commit. These
+The 236-test reliable-gamestate checkpoint passed hosted Windows/Linux CI in
+[run 41399451897](https://github.com/cod4xr/client/actions/runs/41399451897), including
+locked sources and table reproduction. Hosted validation for prepared frames will follow their commit. These
 changes edit only the client repository and consume the published shared revision.
 
 Ten configstring-block tests add independent legacy packed-index and protocol-21
@@ -61,6 +61,14 @@ discards it, admits the next valid body and retains the cooked plan after networ
 frame release. Transport byte ACKs remain separate from application validity. An
 additional immutable public writer file is hash-locked from read-only remote evidence;
 local server source/worktrees were not read or edited for that verification.
+
+Three owner-preparation UDP tests add no-frame/terminal rejection without decode
+work, exclusive preparation, cancel/retry, exact-once typed commit/release, cooked
+data after socket/source-buffer release, failed decode preservation and explicit
+discard followed by valid admission. New saturating counters distinguish attempts,
+decode failures and commits, without changing receipt time or byte ACK state. One
+compile-fail documentation test prevents replacing a frame while its prepared
+handle remains live. Session/engine updates remain separate from frame commit.
 
 Eight new independent loopback tests exercise the reusable network crate: one
 source socket across challenge/connect/retries/handoff, exact cookie/protocol/qport
