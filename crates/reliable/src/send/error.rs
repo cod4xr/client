@@ -1,9 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+use crate::framing::FrameError;
 use std::{error::Error, fmt};
 
 /// Fixed queue/transmission/ACK failures without retained bytes or routing values.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum SendError {
+    /// A complete application frame could not form its length prefix.
+    Frame(FrameError),
     /// Invalid exact caller storage or explicit in-flight span.
     Storage,
     /// The complete enqueue operation cannot fit without overwriting retained data.
@@ -28,19 +31,42 @@ pub enum SendError {
 
 impl fmt::Display for SendError {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        formatter.write_str(match self {
-            Self::Storage => "invalid reliable send storage geometry",
-            Self::Capacity => "reliable send queue capacity insufficient",
-            Self::SequenceExhausted => "reliable send sequence exhausted; reconnect required",
-            Self::Missing => "reliable fragment is not retained in the send queue",
-            Self::OutsideWindow => "reliable fragment lies beyond the current send span",
-            Self::Selective => "reliable fragment was selectively acknowledged",
-            Self::AckRegression => "reliable cumulative acknowledgement regressed",
-            Self::AckFuture => "reliable cumulative acknowledgement exceeds the send window",
-            Self::AckUnsent => "reliable acknowledgement claims unsent data",
-            Self::AckRange => "reliable selective acknowledgement exceeds retained send data",
-        })
+        match self {
+            Self::Frame(error) => error.fmt(formatter),
+            Self::Storage => formatter.write_str("invalid reliable send storage geometry"),
+            Self::Capacity => formatter.write_str("reliable send queue capacity insufficient"),
+            Self::SequenceExhausted => {
+                formatter.write_str("reliable send sequence exhausted; reconnect required")
+            }
+            Self::Missing => {
+                formatter.write_str("reliable fragment is not retained in the send queue")
+            }
+            Self::OutsideWindow => {
+                formatter.write_str("reliable fragment lies beyond the current send span")
+            }
+            Self::Selective => {
+                formatter.write_str("reliable fragment was selectively acknowledged")
+            }
+            Self::AckRegression => {
+                formatter.write_str("reliable cumulative acknowledgement regressed")
+            }
+            Self::AckFuture => {
+                formatter.write_str("reliable cumulative acknowledgement exceeds the send window")
+            }
+            Self::AckUnsent => formatter.write_str("reliable acknowledgement claims unsent data"),
+            Self::AckRange => {
+                formatter.write_str("reliable selective acknowledgement exceeds retained send data")
+            }
+        }
     }
 }
 
-impl Error for SendError {}
+impl Error for SendError {
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        if let Self::Frame(error) = self {
+            Some(error)
+        } else {
+            None
+        }
+    }
+}

@@ -59,7 +59,9 @@ retain original outgoing bytes and preflight whole ACK updates against admitted 
 complete OS sends, with explicit ACK-only sends and profile checks.
 [Reliable scheduling](docs/reliable-schedule.md) now paces original retries and
 periodic/forced ACKs, committing timers and data only after successful I/O.
-Session orchestration and typed application dispatch remain open.
+[Unified endpoints](docs/reliable-endpoint.md) now coordinate framed queues,
+whole-packet admission, bounded drains and scheduling over one set of buffers.
+Continuous connection I/O and typed application dispatch remain open.
 
 ## Run
 

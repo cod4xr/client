@@ -6,6 +6,7 @@
 mod acks;
 mod decode;
 mod encode;
+pub mod endpoint;
 mod error;
 pub mod framing;
 mod header;

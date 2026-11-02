@@ -49,6 +49,16 @@ impl<'body> ReliableFrame<'body> {
         FRAME_PREFIX_BYTES + self.body.len()
     }
 
+    /// Returns the validated four-byte body length for scatter/gather queue ownership.
+    ///
+    /// # Errors
+    /// Rejects an unrepresentable body length without changing any output.
+    pub fn length_prefix(&self) -> Result<[u8; FRAME_PREFIX_BYTES], FrameError> {
+        Ok(i32::try_from(self.body.len())
+            .map_err(|_| FrameError::Length)?
+            .to_le_bytes())
+    }
+
     /// Encodes a complete prefix and body after preflighting all output bounds.
     ///
     /// # Errors
@@ -58,8 +68,8 @@ impl<'body> ReliableFrame<'body> {
         if output.len() < length {
             return Err(FrameError::OutputCapacity);
         }
-        let declared = i32::try_from(self.body.len()).map_err(|_| FrameError::Length)?;
-        output[..FRAME_PREFIX_BYTES].copy_from_slice(&declared.to_le_bytes());
+        let prefix = self.length_prefix()?;
+        output[..FRAME_PREFIX_BYTES].copy_from_slice(&prefix);
         output[FRAME_PREFIX_BYTES..length].copy_from_slice(self.body);
         Ok(length)
     }

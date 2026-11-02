@@ -38,14 +38,7 @@ impl<'buffers> SendWindow<'buffers> {
         slots: &'buffers mut [SendSlot],
         span: u16,
     ) -> Result<Self, SendError> {
-        if bytes.len() != required_send_bytes(slots.len())?
-            || span == 0
-            || span > MAX_SEND_WINDOW_FRAGMENTS
-            || usize::from(span) > slots.len()
-        {
-            return Err(SendError::Storage);
-        }
-        let hint = i16::try_from(span).map_err(|_| SendError::Storage)?;
+        let hint = Self::validate_geometry(bytes.len(), slots.len(), span)?;
         slots.fill(SendSlot::default());
         Ok(Self {
             bytes,
@@ -58,6 +51,21 @@ impl<'buffers> SendWindow<'buffers> {
             queued: 0,
             buffered: 0,
         })
+    }
+
+    pub(crate) fn validate_geometry(
+        bytes: usize,
+        slots: usize,
+        span: u16,
+    ) -> Result<i16, SendError> {
+        if bytes != required_send_bytes(slots)?
+            || span == 0
+            || span > MAX_SEND_WINDOW_FRAGMENTS
+            || usize::from(span) > slots
+        {
+            return Err(SendError::Storage);
+        }
+        i16::try_from(span).map_err(|_| SendError::Storage)
     }
 
     /// Returns total host-funded queued fragment slots.

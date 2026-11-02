@@ -7,6 +7,8 @@
 
 #[path = "send_cases/acks.rs"]
 mod acks;
+#[path = "send_cases/frames.rs"]
+mod frames;
 #[path = "send_cases/limits.rs"]
 mod limits;
 #[path = "send_cases/model.rs"]

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 use super::{SendError, SendSlot, SendWindow};
+use crate::framing::ReliableFrame;
 use crate::{MAX_RELIABLE_ACKNOWLEDGEMENT, MAX_RELIABLE_PAYLOAD_BYTES};
 
 /// Metadata for one atomic enqueue operation; the ID interval may be empty.
@@ -23,7 +24,29 @@ impl SendWindow<'_> {
     /// # Errors
     /// Rejects insufficient complete queue capacity and signed sequence exhaustion.
     pub fn enqueue(&mut self, input: &[u8]) -> Result<QueuedFragments, SendError> {
-        let count = input.len().div_ceil(MAX_RELIABLE_PAYLOAD_BYTES);
+        self.enqueue_parts(input, b"")
+    }
+
+    /// Atomically copies a complete frame prefix/body directly into outgoing slots.
+    /// No full-message temporary allocation or partially queued prefix is required.
+    ///
+    /// # Errors
+    /// Rejects prefix representation, complete queue capacity and sequence exhaustion
+    /// before changing any retained bytes, tags or counters.
+    pub fn enqueue_frame(
+        &mut self,
+        frame: ReliableFrame<'_>,
+    ) -> Result<QueuedFragments, SendError> {
+        let prefix = frame.length_prefix().map_err(SendError::Frame)?;
+        self.enqueue_parts(&prefix, frame.body())
+    }
+
+    fn enqueue_parts(&mut self, first: &[u8], second: &[u8]) -> Result<QueuedFragments, SendError> {
+        let length = first
+            .len()
+            .checked_add(second.len())
+            .ok_or(SendError::Capacity)?;
+        let count = length.div_ceil(MAX_RELIABLE_PAYLOAD_BYTES);
         if count > self.capacity() - self.queued {
             return Err(SendError::Capacity);
         }
@@ -37,24 +60,34 @@ impl SendWindow<'_> {
             first_sequence: self.next,
             next_sequence: next,
             fragments: count,
-            bytes: input.len(),
+            bytes: length,
         };
-        for (sequence, (offset, payload)) in
-            (self.next..next).zip(input.chunks(MAX_RELIABLE_PAYLOAD_BYTES).enumerate())
+        for (sequence, offset) in
+            (self.next..next).zip((0..length).step_by(MAX_RELIABLE_PAYLOAD_BYTES))
         {
-            let index = (self.head + self.queued + offset) % self.capacity();
+            let index =
+                (self.head + self.queued + (offset / MAX_RELIABLE_PAYLOAD_BYTES)) % self.capacity();
             let start = index * MAX_RELIABLE_PAYLOAD_BYTES;
-            self.bytes[start..start + payload.len()].copy_from_slice(payload);
+            let take = (length - offset).min(MAX_RELIABLE_PAYLOAD_BYTES);
+            let from_first = first.len().saturating_sub(offset).min(take);
+            let output = &mut self.bytes[start..start + take];
+            if from_first != 0 {
+                output[..from_first].copy_from_slice(&first[offset..offset + from_first]);
+            }
+            if from_first != take {
+                let from = offset + from_first - first.len();
+                output[from_first..].copy_from_slice(&second[from..from + take - from_first]);
+            }
             self.slots[index] = SendSlot {
                 sequence: Some(sequence),
-                length: payload.len(),
+                length: take,
                 transmitted: false,
                 selective: false,
             };
         }
         self.next = next;
         self.queued += count;
-        self.buffered += input.len();
+        self.buffered += length;
         Ok(result)
     }
 }

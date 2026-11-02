@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 mod acknowledgements;
 mod data;
+mod endpoint;
 mod limits;
 mod schedule;
 

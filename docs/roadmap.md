@@ -19,8 +19,9 @@ fragment transport. Auxiliary receive windows and application framing are covere
 by deterministic and loopback tests. Outgoing queues and whole ACK admission now
 have model tests; explicit auxiliary UDP sends now couple OS I/O to transmission
 admission. Scheduling now paces original retries and ACKs with combined I/O admission.
-Next are continuous session orchestration, typed message dispatch and complete
-gamestate handling.
+Unified endpoints now own windows, framing, whole-packet admission and scheduling.
+Next are continuous connection I/O, typed message dispatch and complete gamestate
+handling.
 Do not use discovery's protocol-6 field alone to choose a gameplay dialect.
 Capture compatible ordinary-peer traces before claiming broad interoperability.
 

@@ -138,6 +138,24 @@ impl<'storage> FrameAssembler<'storage> {
     pub fn capacity(&self) -> usize {
         self.body.len()
     }
+    /// Returns bytes still needed in the current prefix/body, or zero for a ready frame.
+    /// Stream drains can cap reads to this amount and never consume the next frame's bytes.
+    ///
+    /// # Errors
+    /// Rejects a permanently failed assembler.
+    pub fn next_input_bytes(&self) -> Result<usize, FrameError> {
+        if self.failed {
+            return Err(FrameError::Failed);
+        }
+        if self.ready {
+            return Ok(0);
+        }
+        Ok(self
+            .expected
+            .map_or(FRAME_PREFIX_BYTES - self.prefix_bytes, |expected| {
+                expected - self.filled
+            }))
+    }
     /// Returns admitted length/header bytes, including incomplete private body storage.
     #[must_use]
     pub fn buffered_bytes(&self) -> usize {

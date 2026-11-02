@@ -48,5 +48,7 @@ no catch-up burst, forced-ACK rate limits, clock errors and selective pagination
 A real UDP test adds expired scheduled I/O, successful original retransmissions,
 validated peer consumption and a subsequent idle ACK under scripted host ticks.
 Unsupported-profile tests also reject scheduled sends without either admission.
-Continuous session orchestration, typed gamestate/application dispatch and live
-ordinary-peer interoperability remain open.
+[Unified endpoints](reliable-endpoint.md) now combine both windows, framing and
+schedule ownership, including preflighted packet observations. Continuous socket
+orchestration, typed gamestate/application dispatch and live ordinary-peer
+interoperability remain open.

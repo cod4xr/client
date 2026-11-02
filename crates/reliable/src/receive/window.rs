@@ -34,10 +34,7 @@ impl<'buffers> ReceiveWindow<'buffers> {
         bytes: &'buffers mut [u8],
         slots: &'buffers mut [ReceiveSlot],
     ) -> Result<Self, ReceiveError> {
-        if bytes.len() != required_receive_bytes(slots.len())? {
-            return Err(ReceiveError::Storage);
-        }
-        let span = u16::try_from(slots.len()).map_err(|_| ReceiveError::Storage)?;
+        let span = Self::validate_geometry(bytes.len(), slots.len())?;
         slots.fill(ReceiveSlot::default());
         Ok(Self {
             bytes,
@@ -49,6 +46,13 @@ impl<'buffers> ReceiveWindow<'buffers> {
             occupied: 0,
             buffered: 0,
         })
+    }
+
+    pub(crate) fn validate_geometry(bytes: usize, slots: usize) -> Result<u16, ReceiveError> {
+        if bytes != required_receive_bytes(slots)? {
+            return Err(ReceiveError::Storage);
+        }
+        u16::try_from(slots).map_err(|_| ReceiveError::Storage)
     }
 
     /// Returns the host-selected fragment span, never a peer's window hint.

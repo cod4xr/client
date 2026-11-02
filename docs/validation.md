@@ -1,19 +1,19 @@
 # Validation evidence
 
-Latest local checkpoint: 173 tests pass in both debug and release on the pinned
+Latest local checkpoint: 182 tests pass in both debug and release on the pinned
 Windows/Rust host. All-target Clippy and rustdoc pass with warnings denied;
-formatting and repository policy pass (180 source files, 4 crates, largest source
-243 lines). Discovery, challenge state/runtime, owned connect requests and bounded
+formatting and repository policy pass (194 source files, 4 crates; all checked source
+files below 250 lines). Discovery, challenge state/runtime, owned connect requests and bounded
 reply decoding, bounded pending-connect state and owned UDP phase transitions are
 covered, along with ordinary-channel integration, checked client-command history,
 owned control encoding, payload/service validation, configurable server-command
 retention, auxiliary reliable bodies, receive/send windows, whole ACK admission,
-application framing and paced auxiliary UDP sends. Typed command delivery,
-continuous session orchestration, gamestate and ordinary gameplay remain open.
+application framing, paced auxiliary UDP sends and unified endpoint orchestration.
+Typed command delivery, continuous connection I/O, gamestate and ordinary gameplay remain open.
 
-The 164-test auxiliary UDP-send checkpoint passed hosted Windows/Linux CI in
-[run 41353756854](https://github.com/cod4xr/client/actions/runs/41353756854).
-Hosted validation for the scheduler work will follow its commit. These
+The 173-test scheduler checkpoint passed hosted Windows/Linux CI in
+[run 41354667657](https://github.com/cod4xr/client/actions/runs/41354667657).
+Hosted validation for the endpoint work will follow its commit. These
 changes edit only the client repository and consume the published shared revision.
 
 Eight new independent loopback tests exercise the reusable network crate: one
@@ -135,6 +135,18 @@ to both leases, preserves original retransmission bytes, consumes a validated pe
 ACK and sends an idle ACK. Scheduled profile rejection also preserves both owners.
 Host ticks in the UDP fixture are scripted; a continuous gameplay session and live
 ordinary-peer timing interoperability have not been tested.
+
+Six endpoint tests add atomic construction across all buffers/timers, combined
+receive/ACK/force-clock admission, cancelled invalid force requests, bounded
+failure-work records, terminal framing failure, partial prefixes, empty-fragment
+quotas and exact boundaries between concatenated messages. A two-endpoint model
+exchanges a 5,000-byte body and a reply under loss, duplicate delivery and receive
+backpressure. Two framed-enqueue tests cover binary prefix/body boundaries and
+capacity failure before any partial prefix write. One UDP fixture checks combined
+invalid/valid packet admission, complete body delivery and consumed ACK emission.
+
+The local workspace contains a pre-existing edit to the challenge process test;
+it is excluded from this checkpoint. Hosted CI checks the committed version.
 
 ## Initial foundation
 

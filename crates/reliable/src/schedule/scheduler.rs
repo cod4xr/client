@@ -49,13 +49,7 @@ impl ReliableScheduler {
         now: Duration,
         force_ack: bool,
     ) -> Result<(), ScheduleError> {
-        if now < self.last_now {
-            return Err(ScheduleError::ClockRegressed);
-        }
-        self.last_now = now;
-        if force_ack {
-            self.next_ack = self.next_ack.min(now);
-        }
+        self.prepare_packet_observation(now, force_ack)?.commit();
         Ok(())
     }
 

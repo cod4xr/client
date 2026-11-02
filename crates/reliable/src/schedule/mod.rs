@@ -4,11 +4,13 @@
 
 mod config;
 mod error;
+mod observation;
 mod plan;
 mod poll;
 mod scheduler;
 
 pub use config::ScheduleConfig;
 pub use error::ScheduleError;
+pub use observation::PreparedPacketObservation;
 pub use plan::{ScheduleDecision, SchedulePoll, ScheduledDatagram, ScheduledSend, SendAction};
 pub use scheduler::ReliableScheduler;

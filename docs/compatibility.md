@@ -12,7 +12,7 @@ does not prove a playable connection.
 | Discovery response | Complete info validation, correlation, unknown bytes, bounds | Version-specific real peer matrix |
 | UDP runtime | Real loopback responder/process tests; noise, endpoint, size, timeout/budget checks | Ordinary CoD4X server trials |
 | No-auth connect | Owned challenge/connect/acknowledged socket transitions, retry stability, inert refusals and bounded state | Clean disconnect and ordinary peer traces |
-| Channel/snapshots | Ordinary transport, control/payload/service validation, configurable command histories, auxiliary bodies/windows/ACKs/framing and paced UDP sends | Typed execution, continuous session orchestration, gamestate, snapshots and input replay |
+| Channel/snapshots | Ordinary transport, control/payload/service validation, configurable command histories and unified reliable endpoints with paced UDP I/O | Typed execution, continuous connection I/O, gamestate, snapshots and input replay |
 | Content/render/simulation | Not implemented | Stock/custom content and complete playable sessions |
 | Optional extensions | No wire behavior invented | Negotiated features and ordinary-server fallback |
 
